@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Verdania")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69155d372b39b507cbadf0b52e4417c024bbdaab")]
 [assembly: System.Reflection.AssemblyProductAttribute("Verdania")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Verdania")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

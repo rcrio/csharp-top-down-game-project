@@ -11,6 +11,8 @@ public class GameScene : Scene
     private Camera2D _camera;
     private MousePosition _mousePosition;
     private TileSelector _tileSelector;
+    private bool _inventoryOpen = false;
+    private InventoryWindow _inventoryWindow;
     public GameScene(InputManager inputManager, GameTime gameTime)
     {
         // Temp variables to populate MousePosition
@@ -32,62 +34,100 @@ public class GameScene : Scene
         };
         _mousePosition = new MousePosition(mouseScreen, mouseWorld);
         _tileSelector = new TileSelector(_world, _mousePosition, null);
+        _inventoryWindow = new InventoryWindow(new Vector2(100, 50));
     }
-
     public override void Update()
     {
-        // Update player
+        // -----------------------------
+        // Toggle Inventory
+        // -----------------------------
+        if (InputManager.IsActionPressed(Action.OpenInventory))
+            _inventoryOpen = !_inventoryOpen;
+
+        // -----------------------------
+        // Handle Escape / Return
+        // -----------------------------
+        if (InputManager.IsActionPressed(Action.Return))
+        {
+            if (_inventoryOpen)
+            {
+                // Close inventory first
+                _inventoryOpen = false;
+            }
+            else
+            {
+                // If inventory is closed, exit scene
+                RequestPop = true;
+            }
+        }
+
+        // -----------------------------
+        // Inventory Update
+        // -----------------------------
+        if (_inventoryOpen)
+        {
+            _inventoryWindow.Update();
+            // (Optionally: block player movement or interaction while inventory is open)
+        }
+
+        // -----------------------------
+        // Player & Camera Update
+        // -----------------------------
         _customPlayer1.Update();
 
-        // Update camera to follow player
-        // We divide by 2 to get the center to focus on.
         _camera.Target = _customPlayer1.Position + new Vector2(_customPlayer1.Width / 2, _customPlayer1.Height / 2);
         _camera.Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2);
 
-        // Zoom logic
-        if (InputManager.IsActionPressed(Action.ZoomIn))  _camera.Zoom += 0.1f; // scroll in
-        if (InputManager.IsActionPressed(Action.ZoomOut)) _camera.Zoom -= 0.1f; // scroll out
-        
-        // Zoom boundaries, so we dont zoom too far in or out
-        if (_camera.Zoom <= 0.5f) _camera.Zoom = 0.5f;
-        if (_camera.Zoom >= 3.0f) _camera.Zoom = 3.0f;
+        if (InputManager.IsActionPressed(Action.ZoomIn))  _camera.Zoom += 0.1f;
+        if (InputManager.IsActionPressed(Action.ZoomOut)) _camera.Zoom -= 0.1f;
+        _camera.Zoom = Math.Clamp(_camera.Zoom, 0.5f, 3.0f);
 
-        // Mouse update
+        // -----------------------------
+        // Mouse & Tile Selector
+        // -----------------------------
         _mousePosition.MouseScreen = Raylib.GetMousePosition();
-        _mousePosition.MouseWorld = Raylib.GetScreenToWorld2D(_mousePosition.MouseScreen, _camera); // convert for camera
+        _mousePosition.MouseWorld = Raylib.GetScreenToWorld2D(_mousePosition.MouseScreen, _camera);
 
-        // Tile selector
         _tileSelector.Update();
-
-        // Input manager to go back from game
-        if (InputManager.IsActionPressed(Action.Return))
-        {
-            RequestPop = true;
-        }
     }
+
+
+
 
     public override void Draw()
     {
         Raylib.ClearBackground(Color.Black);
 
-
         // Camera Related Graphics, we draw the bottom graphics first. Think of it like a stack.
+        // CAMERA MODE START ///////////////////////////////////////////////////////////////
         Raylib.BeginMode2D(_camera);
 
         // Draw the world
         _world.Draw();
 
+        // Draw tile selector
+        _tileSelector.DrawTile();
+
         // Draw the player
         _customPlayer1.Draw();
 
-        _tileSelector.DrawTile();
         Raylib.EndMode2D();
-        // Camera mode ends
 
+        // CAMERA MODE ENDS /////////////////////////////////////////////////////////////////
 
-        // Static drawing
+        // Static drawing //
+
         // Tile information
         _tileSelector.DrawInfo();
+        if (_inventoryOpen)
+        {
+            // In your GameScene Draw() or after initializing _inventoryWindow
+            _inventoryWindow.Position = new Vector2(
+                Raylib.GetScreenWidth() - _inventoryWindow.Size.X - 10, // 10px padding from right
+                10 // 10px padding from top
+            );
+            _inventoryWindow.Draw();
+        }
 
     }
 
@@ -95,6 +135,4 @@ public class GameScene : Scene
     {
         _customPlayer1.Unload();
     }
-
-    
 }

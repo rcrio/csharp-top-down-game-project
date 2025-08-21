@@ -144,5 +144,8 @@ public class InputManager
         BindKeys(Action.Hotbar8, KeyboardKey.Eight);
         BindKeys(Action.Hotbar9, KeyboardKey.Nine);
         BindKeys(Action.Hotbar0, KeyboardKey.Zero);
+
+        // Inventory
+        BindKeys(Action.OpenInventory, KeyboardKey.E);
     }
 }

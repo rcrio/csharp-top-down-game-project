@@ -20,3 +20,4 @@ C:\Users\p3NgR\Documents\repos\raylib\Verdania\obj\Debug\net9.0\refint\Verdania.
 C:\Users\p3NgR\Documents\repos\raylib\Verdania\obj\Debug\net9.0\Verdania.pdb
 C:\Users\p3NgR\Documents\repos\raylib\Verdania\obj\Debug\net9.0\Verdania.genruntimeconfig.cache
 C:\Users\p3NgR\Documents\repos\raylib\Verdania\obj\Debug\net9.0\ref\Verdania.dll
+C:\Users\p3NgR\Documents\repos\raylib\Verdania\obj\Debug\net9.0\Verdania.sourcelink.json

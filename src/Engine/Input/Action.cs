@@ -24,5 +24,6 @@ public enum Action
     ZoomOut,
     OnClick,
     ScrollUp,
-    ScrollDown
+    ScrollDown,
+    OpenInventory
 }

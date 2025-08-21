@@ -38,7 +38,7 @@ public class Game
             Raylib.EndDrawing();
         }
 
-        // Game loop exitted, now raylib closes
+        // Game loop exited, now raylib closes
         Raylib.CloseWindow();
     }
 }
