@@ -1,0 +1,28 @@
+public enum Action
+{
+    MoveUp,
+    MoveDown,
+    MoveLeft,
+    MoveRight,
+    Up,
+    Down,
+    Left,
+    Right,
+    Select,
+    Return,
+    Hotbar1,
+    Hotbar2,
+    Hotbar3,
+    Hotbar4,
+    Hotbar5,
+    Hotbar6,
+    Hotbar7,
+    Hotbar8,
+    Hotbar9,
+    Hotbar0,
+    ZoomIn,
+    ZoomOut,
+    OnClick,
+    ScrollUp,
+    ScrollDown
+}
