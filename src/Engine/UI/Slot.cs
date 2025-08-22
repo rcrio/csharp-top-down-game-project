@@ -29,13 +29,13 @@ public class Slot
         Raylib.DrawRectangleLinesEx(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), 1, Color.Black);
 
         // Draw hover highlight
-        if (IsHovered)
-        {
-            Raylib.DrawRectangleLinesEx(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), 3, Color.Gold);
-        }
-
         // Draw item in slot
         // ItemStack?.Draw(drawPos);
+    }
+
+    public void DrawHightlight()
+    {
+        Raylib.DrawRectangleLinesEx(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), 3, Color.Gold);
     }
 
 
@@ -47,11 +47,5 @@ public class Slot
         // Manual "Contains" check
         IsHovered = mousePos.X >= rect.X && mousePos.X <= rect.X + rect.Width &&
                     mousePos.Y >= rect.Y && mousePos.Y <= rect.Y + rect.Height;
-
-        // Click detection
-        if (IsHovered && InputManager.IsActionPressed(Action.LeftClick))
-        {
-            Console.WriteLine("Slot clicked!");
-        }
     }
 }

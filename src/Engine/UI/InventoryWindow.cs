@@ -48,7 +48,14 @@ public class InventoryWindow : Window
     {
         base.Update(); // Update base window logic
         foreach (var slot in _slots)
-            slot.Update(); // Update each slot
+        {
+            // Update each slot
+            slot.Update();
+            if (slot.IsHovered && InputManager.IsActionPressed(Action.LeftClick))
+            {
+                Console.WriteLine("Slot clicked!");
+            }
+        }
     }
 
     // Draw the window and all slots
@@ -60,6 +67,14 @@ public class InventoryWindow : Window
 
         // Draw slots relative to current window position
         foreach (var slot in _slots)
+        {
             slot.Draw(Position);
+            
+            if (slot.IsHovered)
+            {
+                slot.DrawHightlight();
+            }
+        }
+            
     }
 }
