@@ -78,9 +78,9 @@ public class InputManager
         if (action == Action.ZoomOut && Raylib.IsKeyDown(KeyboardKey.LeftControl) && Raylib.GetMouseWheelMove() < 0)
             return true;
         
-        if (action == Action.ScrollUp && Raylib.GetMouseWheelMove() > 0)
+        if (action == Action.ScrollUp && Raylib.GetMouseWheelMove() > 0 && !Raylib.IsKeyDown(KeyboardKey.LeftControl))
             return true;
-        if (action == Action.ScrollDown && Raylib.GetMouseWheelMove() < 0)
+        if (action == Action.ScrollDown && Raylib.GetMouseWheelMove() < 0 && !Raylib.IsKeyDown(KeyboardKey.LeftControl))
             return true;
 
         return false;

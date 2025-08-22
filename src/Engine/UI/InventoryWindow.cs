@@ -9,7 +9,7 @@ public class InventoryWindow : Window
     private const int Columns = 10; // Number of columns in the grid
 
     // Constructor: creates a new inventory window at the specified position
-    public InventoryWindow(Vector2 position, Inventory inventory, InputManager inputManager) : base(position, new Vector2(600, 300), inputManager) // Initial window size
+    public InventoryWindow(Vector2 position, Inventory inventory, InputManager inputManager) : base(position, new Vector2(800, 800), inputManager) // Initial window size
     {
         _inventory = inventory;
         _slots = new Slot[inventory.Size];
@@ -21,8 +21,9 @@ public class InventoryWindow : Window
         // Calculate required height based on number of rows, slot size, spacing, and padding
         float requiredHeight = 10 + rows * (Slot.SlotSize + Slot.SlotSpacing) + 10;
 
-        // Ensure window is tall enough to fit all slots
+        //Ensure window is tall enough to fit all slots
         Size = new Vector2(Size.X, Math.Max(Size.Y, requiredHeight));
+        Console.WriteLine(Size);
 
         // Create and position each slot in absolute screen coordinates
         for (int i = 0; i < inventory.Size; i++)
@@ -40,7 +41,7 @@ public class InventoryWindow : Window
 
             _slots[i] = slot;
         }
-
+    
     }
 
     // Update the window and all its slots

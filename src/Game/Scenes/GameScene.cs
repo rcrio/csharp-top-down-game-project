@@ -13,6 +13,7 @@ public class GameScene : Scene
     private TileSelector _tileSelector;
     private bool _inventoryOpen = false;
     private InventoryWindow _inventoryWindow;
+    private HotbarWindow _hotbarWindow;
     public GameScene(InputManager inputManager, GameTime gameTime)
     {
         // Temp variables to populate MousePosition
@@ -35,6 +36,7 @@ public class GameScene : Scene
         _mousePosition = new MousePosition(mouseScreen, mouseWorld);
         _tileSelector = new TileSelector(_world, _mousePosition, null);
         _inventoryWindow = new InventoryWindow(new Vector2(100, 50), _customPlayer1.Inventory, InputManager);
+        _hotbarWindow = new HotbarWindow(new Vector2(100, Raylib.GetScreenHeight() - 80), _customPlayer1.Inventory, InputManager);
     }
     public override void Update()
     {
@@ -90,7 +92,7 @@ public class GameScene : Scene
 
         _tileSelector.Update();
 
-        if (InputManager.IsActionPressed(Action.LeftClick) && _tileSelector.Tile != null)
+        if (InputManager.IsActionDown(Action.LeftClick) && _tileSelector.Tile != null)
         {
             _tileSelector.Tile.RemoveFloor();
         }
@@ -99,6 +101,8 @@ public class GameScene : Scene
         {
             _tileSelector.Tile.RemoveObject();
         }
+
+        _hotbarWindow.Update();
     }
 
 
@@ -139,6 +143,7 @@ public class GameScene : Scene
             );
             _inventoryWindow.Draw();
         }
+        _hotbarWindow.Draw();
 
     }
 
