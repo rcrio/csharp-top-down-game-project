@@ -7,13 +7,13 @@ public class CustomPlayer1 : Player
     public int Width { get; private set; } = 16;
     public int Height { get; private set; } = 16;
 
-    private Inventory _inventory;
+    public Inventory Inventory { get; private set; }
 
     // Constructor
     public CustomPlayer1(Vector2 position, InputManager inputManager, GameTime gameTime, World world, Texture2D sprite)
         : base(position, inputManager, gameTime, world, sprite)
     {
-        _inventory = new Inventory(40);
+        Inventory = new Inventory(50);
     }
 
     public override void Update()

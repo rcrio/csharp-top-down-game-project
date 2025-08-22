@@ -34,12 +34,12 @@ public class GameScene : Scene
         };
         _mousePosition = new MousePosition(mouseScreen, mouseWorld);
         _tileSelector = new TileSelector(_world, _mousePosition, null);
-        _inventoryWindow = new InventoryWindow(new Vector2(100, 50));
+        _inventoryWindow = new InventoryWindow(new Vector2(100, 50), _customPlayer1.Inventory, InputManager);
     }
     public override void Update()
     {
         // -----------------------------
-        // Toggle Inventory
+        // Handle Inventory Toggle
         // -----------------------------
         if (InputManager.IsActionPressed(Action.OpenInventory))
             _inventoryOpen = !_inventoryOpen;
@@ -51,45 +51,56 @@ public class GameScene : Scene
         {
             if (_inventoryOpen)
             {
-                // Close inventory first
+                // Close inventory if open
                 _inventoryOpen = false;
             }
             else
             {
-                // If inventory is closed, exit scene
+                // Exit scene if inventory is closed
                 RequestPop = true;
             }
         }
 
         // -----------------------------
-        // Inventory Update
+        // Update Inventory
         // -----------------------------
         if (_inventoryOpen)
         {
             _inventoryWindow.Update();
-            // (Optionally: block player movement or interaction while inventory is open)
+            // Optionally: block player movement or interaction while inventory is open
         }
 
         // -----------------------------
-        // Player & Camera Update
+        // Update Player & Camera
         // -----------------------------
         _customPlayer1.Update();
 
         _camera.Target = _customPlayer1.Position + new Vector2(_customPlayer1.Width / 2, _customPlayer1.Height / 2);
         _camera.Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2);
 
-        if (InputManager.IsActionPressed(Action.ZoomIn))  _camera.Zoom += 0.1f;
+        if (InputManager.IsActionPressed(Action.ZoomIn)) _camera.Zoom += 0.1f;
         if (InputManager.IsActionPressed(Action.ZoomOut)) _camera.Zoom -= 0.1f;
         _camera.Zoom = Math.Clamp(_camera.Zoom, 0.5f, 3.0f);
 
         // -----------------------------
-        // Mouse & Tile Selector
+        // Update Mouse & Tile Selector
         // -----------------------------
         _mousePosition.MouseScreen = Raylib.GetMousePosition();
         _mousePosition.MouseWorld = Raylib.GetScreenToWorld2D(_mousePosition.MouseScreen, _camera);
 
         _tileSelector.Update();
+
+        if (InputManager.IsActionPressed(Action.LeftClick) && _tileSelector.Tile != null)
+        {
+            _tileSelector.Tile.RemoveFloor();
+        }
+
+        if (InputManager.IsActionPressed(Action.RightClick) && _tileSelector.Tile != null)
+        {
+            _tileSelector.Tile.RemoveObject();
+        }
     }
+
 
 
 

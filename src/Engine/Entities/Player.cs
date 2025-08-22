@@ -18,24 +18,51 @@ public abstract class Player : Entity
     // Document further
     protected void Move(Vector2 direction, float deltaTime)
     {
-        if (direction != Vector2.Zero)
+        if (direction == Vector2.Zero)
+            return;
+
+        direction = Vector2.Normalize(direction);
+        Vector2 newPos = Position;
+
+        // --- Horizontal movement ---
+        if (direction.X != 0)
         {
-            direction = Vector2.Normalize(direction);
+            float deltaX = direction.X * Speed * deltaTime;
+            float stepX = Math.Sign(deltaX); // move 1 pixel at a time in the right direction
 
-            // Start with current position
-            Vector2 newPos = Position;
+            float remainingX = Math.Abs(deltaX);
+            while (remainingX > 0)
+            {
+                // Check 1-pixel step in the direction of movement
+                Vector2 testPos = new Vector2(newPos.X + stepX, newPos.Y);
+                if (!World.IsPositionWalkable(testPos, Width, Height))
+                    break; // hit a wall, stop horizontal movement
 
-            // Separate movement per axis for smooth sliding
-            Vector2 newPosX = new Vector2(Position.X + direction.X * Speed * deltaTime, Position.Y);
-            if (World.IsPositionWalkable(newPosX, Width, Height))
-                newPos.X = newPosX.X;
-
-            Vector2 newPosY = new Vector2(newPos.X, Position.Y + direction.Y * Speed * deltaTime);
-            if (World.IsPositionWalkable(newPosY, Width, Height))
-                newPos.Y = newPosY.Y;
-
-            // Apply the final position
-            Position = newPos;
+                newPos.X += stepX;
+                remainingX -= 1;
+            }
         }
+
+        // --- Vertical movement ---
+        if (direction.Y != 0)
+        {
+            float deltaY = direction.Y * Speed * deltaTime;
+            float stepY = Math.Sign(deltaY);
+
+            float remainingY = Math.Abs(deltaY);
+            while (remainingY > 0)
+            {
+                Vector2 testPos = new Vector2(newPos.X, newPos.Y + stepY);
+                if (!World.IsPositionWalkable(testPos, Width, Height))
+                    break; // hit a wall, stop vertical movement
+
+                newPos.Y += stepY;
+                remainingY -= 1;
+            }
+        }
+
+        Position = newPos;
     }
+
+
 }

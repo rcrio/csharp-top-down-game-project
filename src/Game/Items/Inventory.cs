@@ -58,4 +58,12 @@ public class Inventory
 
         return quantity <= 0; // false if not enough items to remove
     }
+
+    // Safely get the stack at a given index
+    public ItemStack GetStack(int index)
+    {
+        if (index < 0 || index >= Size)
+            return null; // out of bounds
+        return Slots[index];
+    }
 }

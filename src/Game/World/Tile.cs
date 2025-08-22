@@ -1,14 +1,35 @@
 public class Tile
 {
-    private ItemPlaceableTerrain _itemPlaceableTerrain;
-    private ItemPlaceableFloor _itemPlaceableFloor;
-    private ItemPlaceableObject _itemPlaceableObject;
+    public ItemPlaceableTerrain _itemPlaceableTerrain { get; private set; }
+    public ItemPlaceableFloor _itemPlaceableFloor { get; private set; }
+    public ItemPlaceableObject _itemPlaceableObject { get; private set; }
+
 
     public Tile(ItemPlaceableTerrain itemPlaceableTerrain, ItemPlaceableFloor itemPlaceableFloor, ItemPlaceableObject itemPlaceableObject)
     {
         _itemPlaceableTerrain = itemPlaceableTerrain;
         _itemPlaceableFloor = itemPlaceableFloor;
         _itemPlaceableObject = itemPlaceableObject;
+    }
+
+    public void AddFloor(ItemPlaceableFloor itemPlaceableFloor)
+    {
+        _itemPlaceableFloor = itemPlaceableFloor;
+    }
+
+    public void RemoveFloor()
+    {
+        _itemPlaceableFloor = null;
+    }
+
+    public void AddObject(ItemPlaceableObject itemPlaceableObject)
+    {
+        _itemPlaceableObject = itemPlaceableObject;
+    }
+
+    public void RemoveObject()
+    {
+        _itemPlaceableObject = null;
     }
 
     public void Draw(int x, int y)

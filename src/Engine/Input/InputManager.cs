@@ -131,7 +131,8 @@ public class InputManager
         // Select and unselect
         BindKeys(Action.Select, KeyboardKey.Enter);
         BindKeys(Action.Return, KeyboardKey.Escape);
-        BindMouseButtons(Action.OnClick, MouseButton.Left);
+        BindMouseButtons(Action.LeftClick, MouseButton.Left);
+        BindMouseButtons(Action.RightClick, MouseButton.Right);
 
         // Hotbar
         BindKeys(Action.Hotbar1, KeyboardKey.One);

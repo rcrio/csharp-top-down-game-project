@@ -1,6 +1,5 @@
 using Raylib_cs;
 
-// Document further
 public class TileSelector
 {
     private World _world;
@@ -18,6 +17,7 @@ public class TileSelector
         _tileX = (int)(_mousePosition.MouseWorld.X / Constants.TILE_SIZE);
         _tileY = (int)(_mousePosition.MouseWorld.Y / Constants.TILE_SIZE);
     }
+
     public void Update()
     {
         _tileX = (int)(_mousePosition.MouseWorld.X / Constants.TILE_SIZE);
@@ -62,7 +62,4 @@ public class TileSelector
             Raylib.DrawText("Impassable area", 10, 10, 10, Color.White);
         }
     }
-    
-
-    
 }

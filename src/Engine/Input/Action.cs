@@ -1,15 +1,24 @@
 public enum Action
 {
+    // Movement
     MoveUp,
     MoveDown,
     MoveLeft,
     MoveRight,
+    
+    // Arrow Selection
     Up,
     Down,
     Left,
     Right,
+
+    // OnClick, Enter and select
+    LeftClick,
+    RightClick,
     Select,
     Return,
+
+    // Hotbar
     Hotbar1,
     Hotbar2,
     Hotbar3,
@@ -20,10 +29,13 @@ public enum Action
     Hotbar8,
     Hotbar9,
     Hotbar0,
+
+    // Scroll commands
     ZoomIn,
     ZoomOut,
-    OnClick,
     ScrollUp,
     ScrollDown,
+
+    // Open inventory
     OpenInventory
 }

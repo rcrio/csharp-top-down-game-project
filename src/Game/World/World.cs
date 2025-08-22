@@ -38,28 +38,34 @@ public class World
     // Document further
     public bool IsPositionWalkable(Vector2 position, int playerWidth, int playerHeight)
     {
-        Vector2[] corners = new Vector2[]
-        {
-            position,
-            new Vector2(position.X + playerWidth, position.Y),
-            new Vector2(position.X, position.Y + playerHeight),
-            new Vector2(position.X + playerWidth, position.Y + playerHeight)
-        };
+        // Define the four corners of the player's rectangle
+        // Subtract 1 from right and bottom corners to prevent 1-pixel overshoot
+        Vector2 topLeft = position;
+        Vector2 topRight = new Vector2(position.X + playerWidth - 1, position.Y);
+        Vector2 bottomLeft = new Vector2(position.X, position.Y + playerHeight - 1);
+        Vector2 bottomRight = new Vector2(position.X + playerWidth - 1, position.Y + playerHeight - 1);
+
+        Vector2[] corners = new Vector2[] { topLeft, topRight, bottomLeft, bottomRight };
 
         foreach (var corner in corners)
         {
+            // Out of bounds check
             if (corner.X < 0 || corner.Y < 0 || corner.X >= Width * Constants.TILE_SIZE || corner.Y >= Height * Constants.TILE_SIZE)
                 return false;
 
+            // Convert corner position to tile indices
             int tileX = (int)(corner.X / Constants.TILE_SIZE);
             int tileY = (int)(corner.Y / Constants.TILE_SIZE);
 
             Tile tile = _tileGrid[tileX, tileY];
             if (!tile.IsWalkable())
-                return false;
+                return false; // Collision detected
         }
 
-        return true;
+        return true; // All corners are walkable
     }
+
+
+
     
 }

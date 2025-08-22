@@ -4,10 +4,14 @@ using Raylib_cs;
 
 public class Window : UIElement
 {
+    public InputManager InputManager { get; private set; }
     public List<UIElement> Children { get; private set; } = new List<UIElement>();
-    public Color BackgroundColor { get; set; } = Color.DarkGray;
+    public Color BackgroundColor { get; private set; } = Color.DarkGray;
 
-    public Window(Vector2 position, Vector2 size) : base(position, size) { }
+    public Window(Vector2 position, Vector2 size, InputManager inputManager) : base(position, size)
+    {
+        InputManager = inputManager;
+    }
 
     public void AddChild(UIElement child)
     {

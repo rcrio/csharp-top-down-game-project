@@ -1,40 +1,57 @@
-using Raylib_cs;
 using System.Numerics;
+using Raylib_cs;
 
-// Document Further
-public class Slot : UIElement
+public class Slot
 {
-    public ItemStack ItemStack { get; set; } = null;
+    public static float SlotSize = 48;
+    public static float SlotSpacing = 5;
 
-    public Slot(Vector2 position, Vector2 size) : base(position, size)
+    public InputManager InputManager;
+    public Vector2 RelativePosition;   // Position relative to window
+    public Vector2 WindowPosition;
+    public Vector2 DrawPosition;
+    public ItemStack ItemStack;
+    public bool IsHovered;
+
+    public Slot(Vector2 relativePosition, InputManager inputManager)
     {
+        InputManager = inputManager;
+        RelativePosition = relativePosition;
     }
-
-    public override void Update()
+    public void Draw(Vector2 windowPosition)
     {
-        // For now, nothing to update. Later we can add click/hover logic.
-    }
+        DrawPosition = windowPosition + RelativePosition;
 
-    public override void Draw()
-    {
         // Draw slot background
-        Raylib.DrawRectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y, Color.DarkGray);
-        Raylib.DrawRectangleLines((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y, Color.Black);
+        Raylib.DrawRectangleRec(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), Color.DarkGray);
 
-        // Draw item sprite if exists
-        if (ItemStack != null && ItemStack.Item.Sprite.Id != 0)
+        // Draw border inside rectangle bounds to avoid pixel spill
+        Raylib.DrawRectangleLinesEx(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), 1, Color.Black);
+
+        // Draw hover highlight
+        if (IsHovered)
         {
-            float scaleX = Size.X / 16f;
-            float scaleY = Size.Y / 16f;
-            Rectangle source = new Rectangle(0, 0, 16, 16);
-            Rectangle dest = new Rectangle(Position.X, Position.Y, 16 * scaleX, 16 * scaleY);
-            Raylib.DrawTexturePro(ItemStack.Item.Sprite, source, dest, new Vector2(0, 0), 0, Color.White);
+            Raylib.DrawRectangleLinesEx(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), 3, Color.Gold);
+        }
 
-            // Draw quantity if > 1
-            if (ItemStack.Quantity > 1)
-            {
-                Raylib.DrawText(ItemStack.Quantity.ToString(), (int)(Position.X + Size.X - 10), (int)(Position.Y + Size.Y - 12), 12, Color.White);
-            }
+        // Draw item in slot
+        // ItemStack?.Draw(drawPos);
+    }
+
+
+    // Refactor for mouse position
+    public void Update()
+    {   // Click hitbox for the slot.
+        Rectangle rect = new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize);
+        Vector2 mousePos = Raylib.GetMousePosition();
+        // Manual "Contains" check
+        IsHovered = mousePos.X >= rect.X && mousePos.X <= rect.X + rect.Width &&
+                    mousePos.Y >= rect.Y && mousePos.Y <= rect.Y + rect.Height;
+
+        // Click detection
+        if (IsHovered && InputManager.IsActionPressed(Action.LeftClick))
+        {
+            Console.WriteLine("Slot clicked!");
         }
     }
 }

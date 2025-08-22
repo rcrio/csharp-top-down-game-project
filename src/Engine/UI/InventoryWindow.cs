@@ -1,12 +1,65 @@
-// Inventory window example
+
 using System.Numerics;
+using Raylib_cs;
 
 public class InventoryWindow : Window
 {
-    public InventoryWindow(Vector2 position) : base(position, new Vector2(200, 200))
+    private Inventory _inventory;  // The inventory to display
+    private Slot[] _slots;         // Array of slot UI elements
+    private const int Columns = 10; // Number of columns in the grid
+
+    // Constructor: creates a new inventory window at the specified position
+    public InventoryWindow(Vector2 position, Inventory inventory, InputManager inputManager) : base(position, new Vector2(600, 300), inputManager) // Initial window size
     {
-        // Add slots with positions relative to the window's top-left corner
-        AddChild(new Slot(new Vector2(10, 10), new Vector2(16, 16)));
-        AddChild(new Slot(new Vector2(40, 10), new Vector2(16, 16)));
+        _inventory = inventory;
+        _slots = new Slot[inventory.Size];
+
+        // Calculate how many rows are needed for this inventory
+        int rows = inventory.Size / Columns;
+        if (inventory.Size % Columns != 0) rows += 1; // If there are remainders, we need another row.
+
+        // Calculate required height based on number of rows, slot size, spacing, and padding
+        float requiredHeight = 10 + rows * (Slot.SlotSize + Slot.SlotSpacing) + 10;
+
+        // Ensure window is tall enough to fit all slots
+        Size = new Vector2(Size.X, Math.Max(Size.Y, requiredHeight));
+
+        // Create and position each slot in absolute screen coordinates
+        for (int i = 0; i < inventory.Size; i++)
+        {
+            int row = i / Columns;
+            int col = i % Columns;
+
+            float x = 10 + col * (Slot.SlotSize + Slot.SlotSpacing); // Relative
+            float y = 10 + row * (Slot.SlotSize + Slot.SlotSpacing);
+
+            var slot = new Slot(new Vector2(x, y), inputManager)
+            {
+                ItemStack = inventory.GetStack(i)
+            };
+
+            _slots[i] = slot;
+        }
+
+    }
+
+    // Update the window and all its slots
+    public override void Update()
+    {
+        base.Update(); // Update base window logic
+        foreach (var slot in _slots)
+            slot.Update(); // Update each slot
+    }
+
+    // Draw the window and all slots
+    public override void Draw()
+    {
+        // Draw window background
+        Raylib.DrawRectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y, Color.LightGray);
+        Raylib.DrawRectangleLines((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y, Color.Black);
+
+        // Draw slots relative to current window position
+        foreach (var slot in _slots)
+            slot.Draw(Position);
     }
 }
