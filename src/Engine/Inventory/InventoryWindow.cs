@@ -48,6 +48,10 @@ public class InventoryWindow : Window
     public override void Update()
     {
         base.Update(); // Update base window logic
+        Position = new Vector2(
+                Raylib.GetScreenWidth() - Size.X - 10, // 10px padding from right
+                10 // 10px padding from top
+            );
         foreach (var slot in _slots)
         {
             // Update each slot

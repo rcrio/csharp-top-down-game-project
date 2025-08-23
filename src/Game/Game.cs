@@ -34,6 +34,7 @@ public class Game
 
             // Draw
             Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.Black);
             _sceneManager.Draw();
             Raylib.EndDrawing();
         }
