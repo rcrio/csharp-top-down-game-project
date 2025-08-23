@@ -12,7 +12,7 @@
   </ItemGroup>
  <!-- Added item group below for loading assets. -->
   <ItemGroup>
-    <None Update="src/Assets">
+    <None Update="Assets\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

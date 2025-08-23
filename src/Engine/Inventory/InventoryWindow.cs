@@ -81,9 +81,10 @@ public class InventoryWindow : Window
             }
         }
         
+        // Refactor, 48 is a magic number here
         if (_draggedItem != null)
         {
-            _draggedItem.Draw(Raylib.GetMousePosition());
+            _draggedItem.DrawInSlot(Raylib.GetMousePosition(), 48);
         }
             
     }

@@ -3,7 +3,7 @@ using Raylib_cs;
 
 public class Slot
 {
-    public static float SlotSize = 48;
+    public static int SlotSize = 48;
     public static float SlotSpacing = 5;
 
     public Inventory Inventory { get; private set; }
@@ -41,7 +41,7 @@ public class Slot
         // Draw item in slot,
         if (ItemStack != null)
         {
-            ItemStack.Draw(DrawPosition);
+            ItemStack.DrawInSlot(DrawPosition, SlotSize);
         }
     }
 

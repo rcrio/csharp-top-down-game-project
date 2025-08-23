@@ -37,4 +37,12 @@ public class ItemStack
             Item.Draw(drawPosition);
         }
     }
+
+    public void DrawInSlot(Vector2 drawPosition, int slotSize)
+    {
+        if (Item != null)
+        {
+            Item.DrawInSlot(drawPosition, slotSize);
+        }
+    }
 }

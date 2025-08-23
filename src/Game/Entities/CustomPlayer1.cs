@@ -48,7 +48,8 @@ public class CustomPlayer1 : Player
 
     public void GenerateDefaultInventory()
     {
-        Inventory.AddItemByIndex(0, ItemFactory.Items["item_regular_sword"]);
+        Inventory.AddItemByIndex(0, ItemFactory.Items["item_regular_wooden_pickaxe"]);
+        Inventory.AddItemByIndex(1, ItemFactory.Items["item_regular_wooden_sword"]);
     }
     public override void Unload()
     {
