@@ -10,5 +10,11 @@
   <ItemGroup>
     <PackageReference Include="Raylib-cs" Version="7.0.1" />
   </ItemGroup>
+ <!-- Added item group below for loading assets. -->
+  <ItemGroup>
+    <None Update="src/Assets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
