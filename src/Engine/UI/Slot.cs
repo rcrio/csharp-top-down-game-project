@@ -6,18 +6,28 @@ public class Slot
     public static float SlotSize = 48;
     public static float SlotSpacing = 5;
 
+    public Inventory Inventory { get; private set; }
+    public int Index { get; private set; }
     public InputManager InputManager;
     public Vector2 RelativePosition;   // Position relative to window
     public Vector2 WindowPosition;
     public Vector2 DrawPosition;
-    public ItemStack ItemStack;
     public bool IsHovered;
 
-    public Slot(Vector2 relativePosition, InputManager inputManager)
+    public Slot(Inventory inventory, int index, Vector2 relativePosition, InputManager inputManager)
     {
+        Inventory = inventory;
+        Index = index;
         InputManager = inputManager;
         RelativePosition = relativePosition;
     }
+    
+    public ItemStack ItemStack
+    {
+        get => Inventory.ItemStacks[Index];
+        set => Inventory.ItemStacks[Index] = value;
+    }
+
     public void Draw(Vector2 windowPosition)
     {
         DrawPosition = windowPosition + RelativePosition;
@@ -27,7 +37,7 @@ public class Slot
 
         // Draw border inside rectangle bounds to avoid pixel spill
         Raylib.DrawRectangleLinesEx(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), 1, Color.Black);
-        
+
         // Draw item in slot,
         if (ItemStack != null)
         {

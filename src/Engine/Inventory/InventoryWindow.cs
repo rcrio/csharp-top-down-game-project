@@ -7,6 +7,8 @@ public class InventoryWindow : Window
     private Inventory _inventory;  // The inventory to display
     private Slot[] _slots;         // Array of slot UI elements
     private const int Columns = 10; // Number of columns in the grid
+    private ItemStack _draggedItem = null;
+    private Slot _draggedFromSlot = null;
 
     // Constructor: creates a new inventory window at the specified position
     public InventoryWindow(Vector2 position, Inventory inventory, InputManager inputManager) : base(position, new Vector2(800, 800), inputManager) // Initial window size
@@ -29,18 +31,12 @@ public class InventoryWindow : Window
         {
             int row = i / Columns;
             int col = i % Columns;
-
-            float x = 10 + col * (Slot.SlotSize + Slot.SlotSpacing); // Relative
+            float x = 10 + col * (Slot.SlotSize + Slot.SlotSpacing);
             float y = 10 + row * (Slot.SlotSize + Slot.SlotSpacing);
 
-            var slot = new Slot(new Vector2(x, y), inputManager)
-            {
-                ItemStack = inventory.GetStack(i)
-            };
-
-            _slots[i] = slot;
+            _slots[i] = new Slot(inventory, i, new Vector2(x, y), InputManager);
         }
-    
+
     }
 
     // Update the window and all its slots
@@ -51,13 +47,18 @@ public class InventoryWindow : Window
                 Raylib.GetScreenWidth() - Size.X - 10, // 10px padding from right
                 10 // 10px padding from top
             );
-        foreach (var slot in _slots)
+        for (int i = 0; i < _inventory.Size; i++)
         {
             // Update each slot
-            slot.Update();
-            if (slot.IsHovered && InputManager.IsActionPressed(Action.LeftClick))
+            _slots[i].Update();
+            // Hover over slot and click logic
+            if (_slots[i].IsHovered && InputManager.IsActionPressed(Action.LeftClick))
             {
-                Console.WriteLine("Slot clicked!");
+                // If the slot is not empty, we take the item from slot
+                var tempItem = _slots[i].ItemStack;
+                _slots[i].ItemStack = _draggedItem;
+                _draggedItem = tempItem;
+                _draggedFromSlot = _slots[i];
             }
         }
     }
@@ -73,11 +74,16 @@ public class InventoryWindow : Window
         foreach (var slot in _slots)
         {
             slot.Draw(Position);
-            
+
             if (slot.IsHovered)
             {
                 slot.DrawHightlight();
             }
+        }
+        
+        if (_draggedItem != null)
+        {
+            _draggedItem.Draw(Raylib.GetMousePosition());
         }
             
     }

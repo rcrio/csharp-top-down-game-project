@@ -1,12 +1,12 @@
 public class Inventory
 {
     public int Size { get; private set; }
-    public ItemStack[] Slots { get; private set; }
+    public ItemStack[] ItemStacks { get; private set; }
 
     public Inventory(int size)
     {
         Size = size;
-        Slots = new ItemStack[size]; // all slots initialized to null by default
+        ItemStacks = new ItemStack[size]; // all slots initialized to null by default
     }
 
     // Try to add item to inventory
@@ -16,22 +16,22 @@ public class Inventory
         if (!item.CanBeInInventory) return false;
 
         // First try to add to existing stack
-        for (int i = 0; i < Slots.Length; i++)
+        for (int i = 0; i < ItemStacks.Length; i++)
         {
-            if (Slots[i] != null && Slots[i].Item.GetType() == item.GetType() && !Slots[i].IsFull)
+            if (ItemStacks[i] != null && ItemStacks[i].Item.GetType() == item.GetType() && !ItemStacks[i].IsFull)
             {
-                quantity = Slots[i].Add(quantity);
+                quantity = ItemStacks[i].Add(quantity);
                 if (quantity <= 0) return true;
             }
         }
 
         // Then try to add to empty slot
-        for (int i = 0; i < Slots.Length; i++)
+        for (int i = 0; i < ItemStacks.Length; i++)
         {
-            if (Slots[i] == null)
+            if (ItemStacks[i] == null)
             {
                 int toAdd = Math.Min(quantity, 99); // default max stack
-                Slots[i] = new ItemStack(item, toAdd);
+                ItemStacks[i] = new ItemStack(item, toAdd);
                 quantity -= toAdd;
                 if (quantity <= 0) return true;
             }
@@ -49,15 +49,15 @@ public class Inventory
         // Exit if index is out of bounds.
         if (index > Size - 1) return;
 
-        if (Slots[index] != null && Slots[index].Item.GetId() == item.GetId() && !Slots[index].IsFull)
+        if (ItemStacks[index] != null && ItemStacks[index].Item.GetId() == item.GetId() && !ItemStacks[index].IsFull)
         {
-            quantity = Slots[index].Add(quantity);
+            quantity = ItemStacks[index].Add(quantity);
             if (quantity <= 0) return;
         }
-        else if (Slots[index] == null) // create a new stack if empty
+        else if (ItemStacks[index] == null) // create a new stack if empty
         {
             int toAdd = Math.Min(quantity, 99);
-            Slots[index] = new ItemStack(item, toAdd);
+            ItemStacks[index] = new ItemStack(item, toAdd);
             Console.WriteLine("It happened!");
             quantity -= toAdd;
         }
@@ -65,15 +65,15 @@ public class Inventory
 
     public bool RemoveItem(Item item, int quantity = 1)
     {
-        for (int i = 0; i < Slots.Length; i++)
+        for (int i = 0; i < ItemStacks.Length; i++)
         {
-            if (Slots[i] != null && Slots[i].Item.GetId() == item.GetId())
+            if (ItemStacks[i] != null && ItemStacks[i].Item.GetId() == item.GetId())
             {
-                int removed = Slots[i].Remove(quantity);
+                int removed = ItemStacks[i].Remove(quantity);
                 quantity -= removed;
 
-                if (Slots[i].Quantity == 0)
-                    Slots[i] = null;
+                if (ItemStacks[i].Quantity == 0)
+                    ItemStacks[i] = null;
 
                 if (quantity <= 0) return true;
             }
@@ -87,6 +87,6 @@ public class Inventory
     {
         if (index < 0 || index >= Size)
             return null; // out of bounds
-        return Slots[index];
+        return ItemStacks[index];
     }
 }

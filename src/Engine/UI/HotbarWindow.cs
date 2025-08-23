@@ -15,27 +15,24 @@ public class HotbarWindow : Window
         _slots = new Slot[HotbarSize];
         _currentIndex = 0;
 
-        float y = 10; // vertical offset in window
         for (int i = 0; i < HotbarSize; i++)
         {
-            float x = 10 + i * (Slot.SlotSize + Slot.SlotSpacing); // horizontal position
-
-            var slot = new Slot(new Vector2(x, y), inputManager)
-            {
-                ItemStack = inventory.GetStack(i)
-            };
-
-            _slots[i] = slot;
+            float x = 10 + i * (Slot.SlotSize + Slot.SlotSpacing);
+            float y = 10;
+            _slots[i] = new Slot(_inventory, i, new Vector2(x, y), InputManager);
         }
     }
 
     public override void Update()
     {
         base.Update();
-        foreach (var slot in _slots)
+        for (int i = 0; i < HotbarSize; i++)
         {
-            slot.Update();
+            // Update each slot
+            _slots[i].Update();
         }
+        
+        // Hotbar scrolling check
         if (InputManager.IsActionPressed(Action.ScrollUp))
         {
             _currentIndex = (_currentIndex + 1) % HotbarSize;
