@@ -9,15 +9,17 @@ public class CameraManager
     private Vector2 _target;
     private float _rotation;
     private float _zoom;
-    
-    
-    public CameraManager(Vector2 offset, Vector2 target)
+    private InputManager _inputManager;
+
+
+    public CameraManager(Vector2 offset, Vector2 target, InputManager inputManager)
     {
         _offset = offset;   // screen center
         _target = target;   // world position (player)
         _rotation = 0.0f;
         _zoom = 1.0f;
         Camera = new Camera2D(_offset, _target, _rotation, _zoom);
+        _inputManager = inputManager;
     }
     public void Update(Vector2 offset, Vector2 target)
     {
@@ -25,15 +27,17 @@ public class CameraManager
         _target = target;   // player position
         Camera.Target = _target;
         Camera.Offset = _offset;
+        if (_inputManager.IsActionPressed(Action.ZoomIn)) ZoomIn();
+        if (_inputManager.IsActionPressed(Action.ZoomOut)) ZoomOut();
     }
 
     public void ZoomOut()
     {
-        if (Camera.Zoom < 3.0f) Camera.Zoom -= 0.1f;
+        if (Camera.Zoom > 0.5f) Camera.Zoom -= 0.1f;
     }
 
     public void ZoomIn()
     {
-        if (Camera.Zoom > 0.5f) Camera.Zoom += 0.1f;
+        if (Camera.Zoom < 3.0f) Camera.Zoom += 0.1f;
     }
 }

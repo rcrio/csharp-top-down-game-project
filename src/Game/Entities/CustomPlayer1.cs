@@ -3,9 +3,10 @@ using Raylib_cs;
 
 public class CustomPlayer1 : Player
 {
-    public float Speed { get; private set; } = 250f;
-    public int Width { get; private set; } = 16;
-    public int Height { get; private set; } = 16;
+    public float Speed { get; private set; }
+    public int Width { get; private set; }
+    public int Height { get; private set; }
+    public Vector2 Center { get; private set; }
 
     public Inventory Inventory { get; private set; }
 
@@ -13,6 +14,10 @@ public class CustomPlayer1 : Player
     public CustomPlayer1(Vector2 position, InputManager inputManager, GameTime gameTime, World world, Texture2D sprite)
         : base(position, inputManager, gameTime, world, sprite)
     {
+        Speed = 250f;
+        Width = 16;
+        Height = 16;
+        Center = new Vector2(Width / 2, Height / 2);
         Inventory = new Inventory(50);
     }
 

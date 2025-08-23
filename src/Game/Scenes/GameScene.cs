@@ -31,7 +31,7 @@ public class GameScene : Scene
 
         _inventoryWindow = new InventoryWindow(new Vector2(100, 50), _customPlayer1.Inventory, InputManager);
         _hotbarWindow = new HotbarWindow(new Vector2(100, Raylib.GetScreenHeight() - 80), _customPlayer1.Inventory, InputManager);
-        _cameraManager = new CameraManager(new Vector2(400, 400), _customPlayer1.Position);
+        _cameraManager = new CameraManager(new Vector2(400, 400), _customPlayer1.Position, inputManager);
 
         // Temp variables to populate MousePosition
         Vector2 mouseScreen = Raylib.GetMousePosition();
