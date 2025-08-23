@@ -11,7 +11,7 @@ public class InventoryWindow : Window
     private Slot _draggedFromSlot = null;
 
     // Constructor: creates a new inventory window at the specified position
-    public InventoryWindow(Vector2 position, Inventory inventory, InputManager inputManager) : base(position, new Vector2(800, 800), inputManager) // Initial window size
+    public InventoryWindow(Vector2 position, Inventory inventory, InputManager inputManager) : base(position, new Vector2(600, 600), inputManager) // Initial window size
     {
         _inventory = inventory;
         _slots = new Slot[inventory.Size];

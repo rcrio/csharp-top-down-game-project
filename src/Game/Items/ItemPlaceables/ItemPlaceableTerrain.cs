@@ -2,7 +2,7 @@ using Raylib_cs;
 
 public class ItemPlaceableTerrain : ItemPlaceable
 {
-    public ItemPlaceableTerrain(string id, string name, string description, Texture2D sprite = default) : base(id, name, description, sprite)
+    public ItemPlaceableTerrain(string id, string name, string description, int maxStack, Texture2D sprite = default) : base(id, name, description, maxStack, sprite)
     {
         IsWalkable = true;
         CanBeInInventory = false;
