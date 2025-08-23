@@ -2,7 +2,7 @@ using Raylib_cs;
 
 public class ItemPlaceableObject : ItemPlaceable
 {
-    public ItemPlaceableObject(string name, string description, Texture2D sprite) : base(name, description, sprite)
+    public ItemPlaceableObject(string id, string name, string description, Texture2D sprite = default) : base(id, name, description, sprite)
     {
         IsWalkable = false;
     }

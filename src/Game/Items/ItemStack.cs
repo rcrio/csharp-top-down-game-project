@@ -1,3 +1,5 @@
+using System.Numerics;
+
 public class ItemStack
 {
     public Item Item { get; private set; }
@@ -26,5 +28,13 @@ public class ItemStack
         int toRemove = Math.Min(Quantity, amount);
         Quantity -= toRemove;
         return toRemove;
+    }
+
+    public void Draw(Vector2 drawPosition)
+    {
+        if (Item != null)
+        {
+            Item.Draw(drawPosition);
+        }
     }
 }

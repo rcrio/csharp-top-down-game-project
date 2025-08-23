@@ -19,6 +19,7 @@ public class CustomPlayer1 : Player
         Height = 16;
         Center = new Vector2(Width / 2, Height / 2);
         Inventory = new Inventory(50);
+        GenerateDefaultInventory();
     }
 
     public override void Update()
@@ -45,8 +46,12 @@ public class CustomPlayer1 : Player
         );
     }
 
+    public void GenerateDefaultInventory()
+    {
+        Inventory.AddItemByIndex(0, ItemFactory.Items["item_regular_sword"]);
+    }
     public override void Unload()
     {
-        
+
     }
 }

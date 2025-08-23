@@ -3,7 +3,7 @@ using Raylib_cs;
 public abstract class ItemPlaceable : Item
 {
     public bool IsWalkable { get; set; }
-    protected ItemPlaceable(string name, string description, Texture2D sprite) : base(name, description, sprite)
+    public ItemPlaceable(string id, string name, string description, Texture2D sprite = default) : base(id, name, description, sprite)
     {
 
     }

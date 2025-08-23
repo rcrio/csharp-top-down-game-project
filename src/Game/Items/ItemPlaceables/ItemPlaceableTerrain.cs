@@ -1,9 +1,8 @@
-using System.Security.Cryptography.X509Certificates;
 using Raylib_cs;
 
 public class ItemPlaceableTerrain : ItemPlaceable
 {
-    public ItemPlaceableTerrain(string name, string description, Texture2D sprite) : base(name, description, sprite)
+    public ItemPlaceableTerrain(string id, string name, string description, Texture2D sprite = default) : base(id, name, description, sprite)
     {
         IsWalkable = true;
         CanBeInInventory = false;

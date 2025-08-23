@@ -23,7 +23,6 @@ public class InventoryWindow : Window
 
         //Ensure window is tall enough to fit all slots
         Size = new Vector2(Size.X, Math.Max(Size.Y, requiredHeight));
-        Console.WriteLine(Size);
 
         // Create and position each slot in absolute screen coordinates
         for (int i = 0; i < inventory.Size; i++)

@@ -12,6 +12,7 @@ public class Inventory
     // Try to add item to inventory
     public bool AddItem(Item item, int quantity = 1)
     {
+        // Exit out the method if item cannot be added to inventory.
         if (!item.CanBeInInventory) return false;
 
         // First try to add to existing stack
@@ -40,11 +41,33 @@ public class Inventory
         return quantity <= 0;
     }
 
+    public void AddItemByIndex(int index, Item item, int quantity = 1)
+    {
+        // Exit out the method if item cannot be added to inventory.
+        if (!item.CanBeInInventory) return;
+
+        // Exit if index is out of bounds.
+        if (index > Size - 1) return;
+
+        if (Slots[index] != null && Slots[index].Item.GetId() == item.GetId() && !Slots[index].IsFull)
+        {
+            quantity = Slots[index].Add(quantity);
+            if (quantity <= 0) return;
+        }
+        else if (Slots[index] == null) // create a new stack if empty
+        {
+            int toAdd = Math.Min(quantity, 99);
+            Slots[index] = new ItemStack(item, toAdd);
+            Console.WriteLine("It happened!");
+            quantity -= toAdd;
+        }
+    }
+
     public bool RemoveItem(Item item, int quantity = 1)
     {
         for (int i = 0; i < Slots.Length; i++)
         {
-            if (Slots[i] != null && Slots[i].Item.GetType() == item.GetType())
+            if (Slots[i] != null && Slots[i].Item.GetId() == item.GetId())
             {
                 int removed = Slots[i].Remove(quantity);
                 quantity -= removed;

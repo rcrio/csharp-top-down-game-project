@@ -27,10 +27,12 @@ public class Slot
 
         // Draw border inside rectangle bounds to avoid pixel spill
         Raylib.DrawRectangleLinesEx(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), 1, Color.Black);
-
-        // Draw hover highlight
-        // Draw item in slot
-        // ItemStack?.Draw(drawPos);
+        
+        // Draw item in slot,
+        if (ItemStack != null)
+        {
+            ItemStack.Draw(DrawPosition);
+        }
     }
 
     public void DrawHightlight()

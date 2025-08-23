@@ -6,9 +6,9 @@ public class WorldBuilder
     {
         // Create some default items for terrain, floor, object
         // Refactor when TileFactory is setup.
-        var terrain = new ItemPlaceableTerrain("Grass", "Grassy.", new Texture2D());
-        var floor = new ItemPlaceableFloor("Wood", "Woody.", new Texture2D());
-        var obstacle = new ItemPlaceableObject("Stone Wall", "Stony.", new Texture2D());
+        var terrain = new ItemPlaceableTerrain("terrain_grass", "Grass", "Grassy.");
+        var floor = new ItemPlaceableFloor("terrain_wood", "Wood", "Woody.");
+        var obstacle = new ItemPlaceableObject("wall_stone", "Stone Wall", "Stony.");
 
         // Create a 2D array of tiles to use as a parameter for World
         Tile[,] tiles = new Tile[width, height];
