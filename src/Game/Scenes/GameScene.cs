@@ -62,10 +62,6 @@ public class GameScene : Scene
         var offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2);
         _cameraManager.Update(offset, target);
 
-        // can refactor inside camera manager
-        if (InputManager.IsActionPressed(Action.ZoomIn)) _cameraManager.ZoomIn();
-        if (InputManager.IsActionPressed(Action.ZoomOut)) _cameraManager.ZoomOut();
-
         // Handle escape and return. This is temporary and we will have an escape menu to save and exit.
         if (InputManager.IsActionPressed(Action.Return) && !_inventoryOpen) RequestPop = true;
 
