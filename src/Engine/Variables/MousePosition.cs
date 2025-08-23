@@ -10,4 +10,6 @@ public class MousePosition
         MouseScreen = mouseScreen;
         MouseWorld = mouseWorld;
     }
+
+    
 }

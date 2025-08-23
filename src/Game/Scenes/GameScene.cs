@@ -40,35 +40,16 @@ public class GameScene : Scene
     }
     public override void Update()
     {
-        // -----------------------------
-        // Handle Inventory Toggle
-        // -----------------------------
+        // Inventory management
         if (InputManager.IsActionPressed(Action.OpenInventory))
-            _inventoryOpen = !_inventoryOpen;
-
-        // -----------------------------
-        // Handle Escape / Return
-        // -----------------------------
-        if (InputManager.IsActionPressed(Action.Return))
         {
-            if (_inventoryOpen)
-            {
-                // Close inventory if open
-                _inventoryOpen = false;
-            }
-            else
-            {
-                // Exit scene if inventory is closed
-                RequestPop = true;
-            }
+            _inventoryOpen = !_inventoryOpen;
         }
 
-        // -----------------------------
-        // Update Inventory
-        // -----------------------------
         if (_inventoryOpen)
         {
             _inventoryWindow.Update();
+            if (InputManager.IsActionPressed(Action.Return)) _inventoryOpen = false;
             // Optionally: block player movement or interaction while inventory is open
         }
 
@@ -84,9 +65,10 @@ public class GameScene : Scene
         if (InputManager.IsActionPressed(Action.ZoomOut)) _camera.Zoom -= 0.1f;
         _camera.Zoom = Math.Clamp(_camera.Zoom, 0.5f, 3.0f);
 
-        // -----------------------------
-        // Update Mouse & Tile Selector
-        // -----------------------------
+        // Handle escape and return. This is temporary and we will have an escape menu to save and exit.
+        if (InputManager.IsActionPressed(Action.Return) && !_inventoryOpen) RequestPop = true;
+
+        // Tile selector and mouse. Needs refactoring, mousePosition.update just needs to be called, and tileselector needs inputmanager to be passed through.
         _mousePosition.MouseScreen = Raylib.GetMousePosition();
         _mousePosition.MouseWorld = Raylib.GetScreenToWorld2D(_mousePosition.MouseScreen, _camera);
 
@@ -102,6 +84,7 @@ public class GameScene : Scene
             _tileSelector.Tile.RemoveObject();
         }
 
+        // hotbar update
         _hotbarWindow.Update();
     }
 
