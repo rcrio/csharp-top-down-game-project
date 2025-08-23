@@ -1,14 +1,21 @@
 using System.Numerics;
+using Raylib_cs;
 
 public class MousePosition
 {
     public Vector2 MouseScreen { get; set; }
     public Vector2 MouseWorld { get; set; }
+    private Camera2D _camera;
 
-    public MousePosition(Vector2 mouseScreen, Vector2 mouseWorld)
+    public MousePosition(Camera2D camera)
     {
-        MouseScreen = mouseScreen;
-        MouseWorld = mouseWorld;
+        Update(camera);
+    }
+
+    public void Update(Camera2D camera)
+    {
+        MouseScreen = Raylib.GetMousePosition();
+        MouseWorld = Raylib.GetScreenToWorld2D(MouseScreen, camera);
     }
 
     

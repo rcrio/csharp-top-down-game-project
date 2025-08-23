@@ -34,9 +34,7 @@ public class GameScene : Scene
         _cameraManager = new CameraManager(new Vector2(400, 400), _customPlayer1.Position, inputManager);
 
         // Temp variables to populate MousePosition
-        Vector2 mouseScreen = Raylib.GetMousePosition();
-        Vector2 mouseWorld = Raylib.GetScreenToWorld2D(mouseScreen, _cameraManager.Camera);
-        _mousePosition = new MousePosition(mouseScreen, mouseWorld);
+        _mousePosition = new MousePosition(_cameraManager.Camera);
         _tileSelector = new TileSelector(_world, _mousePosition, null);
     }
     public override void Update()
@@ -58,7 +56,7 @@ public class GameScene : Scene
         _customPlayer1.Update();
 
         // Update camera
-        var target = _customPlayer1.Position + new Vector2(_customPlayer1.Width / 2, _customPlayer1.Height / 2);
+        var target = _customPlayer1.Position + _customPlayer1.Center;
         var offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2);
         _cameraManager.Update(offset, target);
 
@@ -66,8 +64,7 @@ public class GameScene : Scene
         if (InputManager.IsActionPressed(Action.Return) && !_inventoryOpen) RequestPop = true;
 
         // Tile selector and mouse. Needs refactoring, mousePosition.update just needs to be called, and tileselector needs inputmanager to be passed through.
-        _mousePosition.MouseScreen = Raylib.GetMousePosition();
-        _mousePosition.MouseWorld = Raylib.GetScreenToWorld2D(_mousePosition.MouseScreen, _cameraManager.Camera);
+        _mousePosition.Update(_cameraManager.Camera);
 
         _tileSelector.Update();
 
