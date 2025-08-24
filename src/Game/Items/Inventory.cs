@@ -58,7 +58,6 @@ public class Inventory
         {
             int toAdd = Math.Min(quantity, 99);
             ItemStacks[index] = new ItemStack(item, toAdd);
-            Console.WriteLine("It happened!");
             quantity -= toAdd;
         }
     }

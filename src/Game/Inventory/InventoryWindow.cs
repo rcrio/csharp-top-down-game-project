@@ -44,9 +44,9 @@ public class InventoryWindow : Window
     {
         base.Update(); // Update base window logic
         Position = new Vector2(
-                Raylib.GetScreenWidth() - Size.X - 10, // 10px padding from right
-                10 // 10px padding from top
-            );
+            Raylib.GetScreenWidth() - Size.X - 10,   // 10px from right edge
+            Raylib.GetScreenHeight() - Size.Y - 100   // 10px from bottom edge
+        );
         for (int i = 0; i < _inventory.Size; i++)
         {
             

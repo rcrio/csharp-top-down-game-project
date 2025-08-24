@@ -4,7 +4,7 @@ using Raylib_cs;
 public class GameScene : Scene
 {
     // InputManager and GameTime inherited from Scene
-
+    private GameClock _gameClock;
     private WorldBuilder _worldBuilder;
     private World _world;
     private CustomPlayer1 _customPlayer1;
@@ -20,6 +20,7 @@ public class GameScene : Scene
         // reorganise variables
         InputManager = inputManager;
         GameTime = gameTime;
+        _gameClock = new GameClock();
         _worldBuilder = new WorldBuilder();
         _world = _worldBuilder.BuildDefaultWorld(Constants.WORLD_SIZE, Constants.WORLD_SIZE);
         _customPlayer1 = new CustomPlayer1(new Vector2(0, 0), InputManager, GameTime, _world, new Texture2D());
@@ -31,6 +32,9 @@ public class GameScene : Scene
     }
     public override void Update()
     {
+        // Time
+        GameTime.Update();                     // updates delta time
+        _gameClock.Update(GameTime.DeltaTime); // ticks in-game clock
         // Handle escape and return. This is temporary and we will have an escape menu to save and exit.
         // Must be before inventory logic
         if (InputManager.Return() && !_inventoryOpen) RequestPop = true;
@@ -98,6 +102,9 @@ public class GameScene : Scene
             _inventoryWindow.Draw();
         }
         _hotbarWindow.Draw();
+
+        // HUD
+        _gameClock.DrawClock();
     }
 
     public override void Unload()
