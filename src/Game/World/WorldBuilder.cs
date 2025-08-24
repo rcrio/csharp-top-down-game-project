@@ -3,10 +3,10 @@ public class WorldBuilder
     public World BuildDefaultWorld(int width, int height)
     {
         // Create some default items for terrain, floor, object
-        // Refactor when TileFactory is setup.
-        var terrain = new ItemPlaceableTerrain("terrain_grass", "Grass", "Grassy.", 1);
-        var floor = new ItemPlaceableFloor("terrain_wood", "Wood", "Woody.", 1);
-        var obstacle = new ItemPlaceableObject("wall_stone", "Stone Wall", "Stony.", 1);
+        // Refactor PlaceableItemFactory, at the moment we are using the Upper class to make ItemPlaceable.
+        var terrain = (ItemPlaceableTerrain)ItemPlaceableFactory.PlaceableItems["terrain_grass"];
+        var floor = (ItemPlaceableFloor)ItemPlaceableFactory.PlaceableItems["floor_wood"];
+        var obstacle = (ItemPlaceableObject)ItemPlaceableFactory.PlaceableItems["wall_stone"];
 
         // Create a 2D array of tiles to use as a parameter for World
         Tile[,] tiles = new Tile[width, height];

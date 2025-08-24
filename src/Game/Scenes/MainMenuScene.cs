@@ -1,3 +1,4 @@
+using System.Numerics;
 using Raylib_cs;
 
 public class MainMenuScene : Scene
@@ -62,10 +63,27 @@ public class MainMenuScene : Scene
     public override void Draw()
     {
         Raylib.ClearBackground(Color.Black);
-        Raylib.DrawText("->", 20, _selectorPosY, 20, Color.RayWhite);
-        Raylib.DrawText("Play", 50, 20, 20, Color.RayWhite);
-        Raylib.DrawText("Options", 50, 50, 20, Color.RayWhite);
-        Raylib.DrawText("Exit", 50, 80, 20, Color.RayWhite);
+
+        Font font = FontHandler.GetFontMenu();
+        float fontSize = 32;
+        float spacing = 1f;
+        float lineHeight = fontSize + 10; // smaller padding than +30 for tighter look
+        Vector2 startPos = new Vector2(50, 50);
+
+        string[] menuItems = { "Play", "Options", "Exit" };
+
+        for (int i = 0; i < menuItems.Length; i++)
+        {
+            Vector2 pos = new Vector2(startPos.X, startPos.Y + i * lineHeight);
+            Raylib.DrawTextEx(font, menuItems[i], pos, fontSize, spacing, Color.White);
+
+            // Draw selector arrow next to the currently selected option
+            if (i == _optionIndex) // assume you track the selected option by index
+            {
+                Vector2 selectorPos = new Vector2(startPos.X - 30, pos.Y);
+                Raylib.DrawTextEx(font, "->", selectorPos, fontSize, spacing, Color.White);
+            }
+        }
     }
 
     public override void Unload()

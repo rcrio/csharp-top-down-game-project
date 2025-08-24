@@ -23,3 +23,5 @@ C:\Users\p3NgR\Documents\repos\raylib\Verdania\obj\Debug\net9.0\ref\Verdania.dll
 C:\Users\p3NgR\Documents\repos\raylib\Verdania\obj\Debug\net9.0\Verdania.sourcelink.json
 C:\Users\p3NgR\Documents\repos\raylib\Verdania\bin\Debug\net9.0\Assets\item_regular_wooden_pickaxe.png
 C:\Users\p3NgR\Documents\repos\raylib\Verdania\bin\Debug\net9.0\Assets\item_regular_wooden_sword.png
+C:\Users\p3NgR\Documents\repos\raylib\Verdania\bin\Debug\net9.0\Assets\Roboto-Regular.ttf
+C:\Users\p3NgR\Documents\repos\raylib\Verdania\bin\Debug\net9.0\Assets\item_placeable_wooden_floor.png

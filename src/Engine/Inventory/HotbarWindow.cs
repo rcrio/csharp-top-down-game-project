@@ -53,6 +53,8 @@ public class HotbarWindow : Window
         for (int i = 0; i < HotbarSize; i++)
         {
             _slots[i].Draw(Position);
+            int number = (i + 1) % HotbarSize;
+            _slots[i].DrawNumber(number, FontHandler.GetFontNormal(), 16, Color.White);
             if (i == _currentIndex)
             {
                 _slots[i].DrawHightlight();

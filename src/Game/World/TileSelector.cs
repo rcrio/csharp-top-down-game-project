@@ -1,3 +1,4 @@
+using System.Numerics;
 using Raylib_cs;
 
 public class TileSelector
@@ -45,26 +46,40 @@ public class TileSelector
 
     public void DrawInfo()
     {
+        Font font = FontHandler.GetFontNormal();
+        float fontSize = 16;   // desired text size for drawing
+        float spacing = 1;     // optional letter spacing
+        float lineHeight = fontSize + 4; // space between lines
+        Vector2 pos = new Vector2(10, 10);
+
         if (Tile != null)
         {
-            string terrainName = Tile.TileInformation()["Terrain Name"];
-            string terrainDesc = Tile.TileInformation()["Terrain Description"];
-            string floorName = Tile.TileInformation()["Floor Name"];
-            string floorDesc = Tile.TileInformation()["Floor Description"];
-            string objectName = Tile.TileInformation()["Object Name"];
-            string objectDesc = Tile.TileInformation()["Object Description"];
-            Raylib.DrawText("Terrain: " + terrainName, 10, 10, 10, Color.White);
-            Raylib.DrawText("Description: " + terrainDesc, 10, 20, 10, Color.White);
-            Raylib.DrawText("Floor: " + floorName, 10, 30, 10, Color.White);
-            Raylib.DrawText("Description: " + floorDesc, 10, 40, 10, Color.White);
-            Raylib.DrawText("Object/Wall: " + objectName, 10, 50, 10, Color.White);
-            Raylib.DrawText("Description: " + objectDesc, 10, 60, 10, Color.White);
+            var info = Tile.TileInformation(); // call once
+
+            Raylib.DrawTextEx(font, "Terrain: " + info["Terrain Name"], pos, fontSize, spacing, Color.White);
+            pos.Y += lineHeight;
+
+            Raylib.DrawTextEx(font, "Description: " + info["Terrain Description"], pos, fontSize, spacing, Color.White);
+            pos.Y += lineHeight;
+
+            Raylib.DrawTextEx(font, "Floor: " + info["Floor Name"], pos, fontSize, spacing, Color.White);
+            pos.Y += lineHeight;
+
+            Raylib.DrawTextEx(font, "Description: " + info["Floor Description"], pos, fontSize, spacing, Color.White);
+            pos.Y += lineHeight;
+
+            Raylib.DrawTextEx(font, "Object/Wall: " + info["Object Name"], pos, fontSize, spacing, Color.White);
+            pos.Y += lineHeight;
+
+            Raylib.DrawTextEx(font, "Description: " + info["Object Description"], pos, fontSize, spacing, Color.White);
         }
         else
         {
-            Raylib.DrawText("Impassable area", 10, 10, 10, Color.White);
+            Raylib.DrawTextEx(font, "Impassable area", pos, fontSize, spacing, Color.White);
         }
     }
+
+
 
     public void ChangeTile()
     {

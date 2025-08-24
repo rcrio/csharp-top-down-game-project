@@ -52,14 +52,23 @@ public class InventoryWindow : Window
             // Update each slot
             _slots[i].Update();
             // Hover over slot and click logic
-            if (_slots[i].IsHovered && InputManager.IsActionPressed(Action.LeftClick))
+            if (_slots[i].IsHovered)
             {
-                // If the slot is not empty, we take the item from slot
-                var tempItem = _slots[i].ItemStack;
-                _slots[i].ItemStack = _draggedItem;
-                _draggedItem = tempItem;
-                _draggedFromSlot = _slots[i];
+                if (InputManager.IsActionPressed(Action.LeftClick))
+                {
+                    // If the slot is not empty, we take the item from slot
+                    var tempItem = _slots[i].ItemStack;
+                    _slots[i].ItemStack = _draggedItem;
+                    _draggedItem = tempItem;
+                    _draggedFromSlot = _slots[i];
+                }
+                if (_draggedItem == null)
+                {
+                    // update logic for drawing information window
+                }
+                
             }
+            
         }
     }
 

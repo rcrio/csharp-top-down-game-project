@@ -1,6 +1,8 @@
 using System.Numerics;
 using Raylib_cs;
 
+// slot now is linked to an inventory
+
 public class Slot
 {
     public static int SlotSize = 48;
@@ -21,7 +23,7 @@ public class Slot
         InputManager = inputManager;
         RelativePosition = relativePosition;
     }
-    
+
     public ItemStack ItemStack
     {
         get => Inventory.ItemStacks[Index];
@@ -43,6 +45,25 @@ public class Slot
         {
             ItemStack.DrawInSlot(DrawPosition, SlotSize);
         }
+    }
+
+    // for hotbar
+    public void DrawNumber(int number, Font font, int fontSize, Color color)
+    {
+        // Convert number to text
+        string text = number.ToString();
+
+        // Measure text so we can align it properly
+        Vector2 textSize = Raylib.MeasureTextEx(font, text, fontSize, 1);
+
+        // Calculate position (top-right, but inset a few pixels for padding)
+        Vector2 position = new Vector2(
+            DrawPosition.X + SlotSize - textSize.X - 2, // right edge - text width - padding
+            DrawPosition.Y + 2 // small padding from top
+        );
+
+        // Draw text
+        Raylib.DrawTextEx(font, text, position, fontSize, 1, color);
     }
 
     public void DrawHightlight()

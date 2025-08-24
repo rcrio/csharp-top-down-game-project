@@ -9,6 +9,8 @@ public class Game
     private GameTime _gameTime;
     private InputManager _inputManager;
     private SceneManager _sceneManager;
+    // can refactor by passing the reference down
+
 
     // Constructor
     public Game()
@@ -22,8 +24,11 @@ public class Game
     // Initalise the window, and the game loop then runs
     public void Run()
     {
+        
         // Initialise the window
         _windowManager.Init();
+        // Load font
+        FontHandler.LoadFont();
 
         // Main game loop
         while (!Raylib.WindowShouldClose() && !_sceneManager.ShouldClose())
@@ -40,6 +45,7 @@ public class Game
         }
 
         // Game loop exited, now raylib closes
+        FontHandler.UnloadFont();
         Raylib.CloseWindow();
     }
 }
