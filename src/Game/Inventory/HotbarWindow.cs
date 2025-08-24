@@ -26,6 +26,11 @@ public class HotbarWindow : Window
     public override void Update()
     {
         base.Update();
+        // this repositions window according to resolution
+        Position = new Vector2(
+            (Raylib.GetScreenWidth() - Size.X) / 2,        // center horizontally
+            Raylib.GetScreenHeight() - Size.Y - 10        // 10px padding from bottom
+        );
         for (int i = 0; i < HotbarSize; i++)
         {
             // Update each slot

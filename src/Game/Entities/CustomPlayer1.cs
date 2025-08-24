@@ -50,6 +50,7 @@ public class CustomPlayer1 : Player
     {
         Inventory.AddItemByIndex(0, ItemFactory.Items["item_regular_wooden_pickaxe"]);
         Inventory.AddItemByIndex(1, ItemFactory.Items["item_regular_wooden_sword"]);
+        Inventory.AddItemByIndex(2, ItemPlaceableFactory.PlaceableItems["floor_wood"], 98);
     }
     public override void Unload()
     {

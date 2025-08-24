@@ -66,7 +66,6 @@ public class InventoryWindow : Window
                 {
                     // update logic for drawing information window
                 }
-                
             }
             
         }
@@ -80,15 +79,22 @@ public class InventoryWindow : Window
         Raylib.DrawRectangleLines((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y, Color.Black);
 
         // Draw slots relative to current window position
-        foreach (var slot in _slots)
+        for (int i = 0; i < _inventory.Size; i++)
         {
-            slot.Draw(Position);
-
-            if (slot.IsHovered)
+            _slots[i].Draw(Position);
+            // ehhhhh change 10 to hotbar size or some shit (refactor)
+            int number = (i + 1) % 10;
+            if (i >= 0 && i < 10)
             {
-                slot.DrawHightlight();
+                _slots[i].DrawNumber(number, FontHandler.GetFontNormal(), 16, Color.White);
+                if (_slots[i].IsHovered)
+                {
+                    _slots[i].DrawHightlight();
+                }
             }
         }
+
+        
         
         // Refactor, 48 is a magic number here
         if (_draggedItem != null)
