@@ -11,7 +11,7 @@ public class OptionsScene : Scene
 
     public override void Update()
     {
-        if (base.InputManager.IsActionPressed(Action.Return))
+        if (InputManager.Return())
         {
             RequestPop = true;
         }

@@ -58,7 +58,7 @@ public class InventoryWindow : Window
                 var slotStack = _slots[i].ItemStack;
 
                 // ---------------- LEFT CLICK ----------------
-                if (InputManager.IsActionPressed(Action.LeftClick))
+                if (InputManager.LeftClick())
                 {
                     if (_draggedItem == null)
                     {
@@ -107,7 +107,7 @@ public class InventoryWindow : Window
                 }
 
                 // ---------------- RIGHT CLICK ----------------
-                if (InputManager.IsActionPressed(Action.RightClick) && _draggedItem != null)
+                if (InputManager.RightClick() && _draggedItem != null)
                 {
                     if (slotStack == null)
                     {

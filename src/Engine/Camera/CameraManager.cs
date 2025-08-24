@@ -27,8 +27,8 @@ public class CameraManager
         _target = target;   // player position
         Camera.Target = _target;
         Camera.Offset = _offset;
-        if (_inputManager.IsActionPressed(Action.ZoomIn)) ZoomIn();
-        if (_inputManager.IsActionPressed(Action.ZoomOut)) ZoomOut();
+        if (_inputManager.ZoomIn()) ZoomIn();
+        if (_inputManager.ZoomOut()) ZoomOut();
     }
 
     public void ZoomOut()

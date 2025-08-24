@@ -33,14 +33,14 @@ public class GameScene : Scene
     {
         // Handle escape and return. This is temporary and we will have an escape menu to save and exit.
         // Must be before inventory logic
-        if (InputManager.IsActionPressed(Action.Return) && !_inventoryOpen) RequestPop = true;
+        if (InputManager.Return() && !_inventoryOpen) RequestPop = true;
 
 
         // Inventory management, may need an InventoryManager in the future.
         // can move this, pass screenwidth? or use it
         
         
-        if (InputManager.IsActionPressed(Action.OpenInventory))
+        if (InputManager.OpenInventory())
         {
             _inventoryOpen = !_inventoryOpen;
         }
@@ -48,7 +48,7 @@ public class GameScene : Scene
         if (_inventoryOpen)
         {
             _inventoryWindow.Update();
-            if (InputManager.IsActionPressed(Action.Return)) _inventoryOpen = false;
+            if (InputManager.Return()) _inventoryOpen = false;
             // Optionally: block player movement or interaction while inventory is open
         }
 

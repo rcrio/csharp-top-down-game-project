@@ -26,10 +26,10 @@ public class CustomPlayer1 : Player
     {
         Vector2 input = Vector2.Zero;
 
-        if (InputManager.IsActionDown(Action.MoveUp)) input.Y -= 1;
-        if (InputManager.IsActionDown(Action.MoveDown)) input.Y += 1;
-        if (InputManager.IsActionDown(Action.MoveLeft)) input.X -= 1;
-        if (InputManager.IsActionDown(Action.MoveRight)) input.X += 1;
+        if (InputManager.MoveUp()) input.Y -= 1;
+        if (InputManager.MoveDown()) input.Y += 1;
+        if (InputManager.MoveLeft()) input.X -= 1;
+        if (InputManager.MoveRight()) input.X += 1;
 
         Move(input, GameTime.DeltaTime);
     }

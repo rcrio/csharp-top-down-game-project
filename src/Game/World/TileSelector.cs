@@ -83,12 +83,12 @@ public class TileSelector
 
     public void ChangeTile()
     {
-        if (_inputManager.IsActionDown(Action.LeftClick) && Tile != null)
+        if (_inputManager.LeftClick() && Tile != null)
         {
             Tile.RemoveFloor();
         }
 
-        if (_inputManager.IsActionPressed(Action.RightClick) && Tile != null)
+        if (_inputManager.RightClick() && Tile != null)
         {
             Tile.RemoveObject();
         }

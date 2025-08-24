@@ -38,11 +38,11 @@ public class HotbarWindow : Window
         }
         
         // Hotbar scrolling check
-        if (InputManager.IsActionPressed(Action.ScrollUp))
+        if (InputManager.ScrollUp())
         {
             _currentIndex = (_currentIndex + 1) % HotbarSize;
         }
-        if (InputManager.IsActionPressed(Action.ScrollDown))
+        if (InputManager.ScrollDown())
         {
             _currentIndex = (_currentIndex - 1 + HotbarSize) % HotbarSize;
         }

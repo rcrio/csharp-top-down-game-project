@@ -21,12 +21,12 @@ public class MainMenuScene : Scene
     public override void Update()
     {
         // Logic for option selector
-        if (InputManager.IsActionPressed(Action.MoveUp) || InputManager.IsActionPressed(Action.Up))
+        if (InputManager.MoveUpSelect() || InputManager.ArrowUp())
         {
             _optionIndex = (_optionIndex - 1 + _optionAmount) % _optionAmount;
         }
 
-        if (InputManager.IsActionPressed(Action.MoveDown) || InputManager.IsActionPressed(Action.Down))
+        if (InputManager.MoveDownSelect() || InputManager.ArrowDown())
         {
             _optionIndex = (_optionIndex + 1) % _optionAmount;
         }
@@ -35,7 +35,7 @@ public class MainMenuScene : Scene
         if (_optionIndex == 0) // Play
         {
             _selectorPosY = 20;
-            if (InputManager.IsActionPressed(Action.Select))
+            if (InputManager.Select())
             {
                 RequestPush = new GameScene(InputManager, GameTime);
             }
@@ -44,7 +44,7 @@ public class MainMenuScene : Scene
         if (_optionIndex == 1) // Options
         {
             _selectorPosY = 50;
-            if (InputManager.IsActionPressed(Action.Select))
+            if (InputManager.Select())
             {
                 RequestPush = new OptionsScene(InputManager, GameTime);
             }
@@ -53,7 +53,7 @@ public class MainMenuScene : Scene
         if (_optionIndex == 2) // Exit
         {
             _selectorPosY = 80;
-            if (InputManager.IsActionPressed(Action.Select))
+            if (InputManager.Select())
             {
                 RequestExit = true;
             }
