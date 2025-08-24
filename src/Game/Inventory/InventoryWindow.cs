@@ -94,13 +94,30 @@ public class InventoryWindow : Window
             }
         }
 
-        
-        
+
+
         // Refactor, 48 is a magic number here
         if (_draggedItem != null)
         {
-            _draggedItem.DrawInSlot(Raylib.GetMousePosition(), 48);
+            Vector2 mousePos = Raylib.GetMousePosition();
+
+            // Draw the item at the mouse
+            _draggedItem.DrawInSlot(mousePos, 48);
+
+            // Draw the stack amount at bottom-left of the sprite
+            // Can perhaps refactor, maybe move it to ItemStack? this also means we could move the number amount drawing to stack!
+            string text = _draggedItem.Quantity.ToString();
+            Font font = FontHandler.GetFontNormal();
+            int fontSize = 16;
+
+            Vector2 textSize = Raylib.MeasureTextEx(font, text, fontSize, 1);
+
+            Vector2 position = new Vector2(
+                mousePos.X + 2,                   // small padding from left
+                mousePos.Y + 48 - textSize.Y - 2  // bottom-left inside sprite
+            );
+
+            Raylib.DrawTextEx(font, text, position, fontSize, 1, Color.White);
         }
-            
     }
 }
