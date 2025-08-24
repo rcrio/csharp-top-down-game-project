@@ -30,6 +30,20 @@ public class Slot
         set => Inventory.ItemStacks[Index] = value;
     }
 
+    // Refactor for mouse position
+    public void Update()
+    {   // Click hitbox for the slot.
+        if (ItemStack != null && ItemStack.Quantity == 0)
+        {
+            ItemStack = null;
+        }
+        Rectangle rect = new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize);
+        Vector2 mousePos = Raylib.GetMousePosition();
+        // Manual "Contains" check
+        IsHovered = mousePos.X >= rect.X && mousePos.X <= rect.X + rect.Width &&
+                    mousePos.Y >= rect.Y && mousePos.Y <= rect.Y + rect.Height;
+    }
+
     public void Draw(Vector2 windowPosition)
     {
         DrawPosition = windowPosition + RelativePosition;
@@ -42,7 +56,7 @@ public class Slot
 
         // Draw item in slot,
         if (ItemStack != null)
-        {   
+        {
             // Sprite drawing in slot
             ItemStack.DrawInSlot(DrawPosition, SlotSize);
             DrawStackAmount(ItemStack.Quantity, FontHandler.GetFontNormal(), 16, Color.White);
@@ -95,14 +109,9 @@ public class Slot
         Raylib.DrawRectangleLinesEx(new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize), 3, Color.Gold);
     }
 
-
-    // Refactor for mouse position
-    public void Update()
-    {   // Click hitbox for the slot.
-        Rectangle rect = new Rectangle(DrawPosition.X, DrawPosition.Y, SlotSize, SlotSize);
-        Vector2 mousePos = Raylib.GetMousePosition();
-        // Manual "Contains" check
-        IsHovered = mousePos.X >= rect.X && mousePos.X <= rect.X + rect.Width &&
-                    mousePos.Y >= rect.Y && mousePos.Y <= rect.Y + rect.Height;
+    public void SetItemStack(ItemStack itemStack, int quantity)
+    {
+        ItemStack = itemStack;
+        itemStack.Quantity = quantity;
     }
 }

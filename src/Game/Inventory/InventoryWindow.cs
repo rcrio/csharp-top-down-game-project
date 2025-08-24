@@ -39,7 +39,7 @@ public class InventoryWindow : Window
 
     }
 
-    // Update the window and all its slots
+    // Update the window and all its slots, refactor/recomment
     public override void Update()
     {
         base.Update(); // Update base window logic
@@ -49,23 +49,84 @@ public class InventoryWindow : Window
             );
         for (int i = 0; i < _inventory.Size; i++)
         {
+            
             // Update each slot
             _slots[i].Update();
             // Hover over slot and click logic
             if (_slots[i].IsHovered)
             {
+                var slotStack = _slots[i].ItemStack;
+
+                // ---------------- LEFT CLICK ----------------
                 if (InputManager.IsActionPressed(Action.LeftClick))
                 {
-                    // If the slot is not empty, we take the item from slot
-                    var tempItem = _slots[i].ItemStack;
-                    _slots[i].ItemStack = _draggedItem;
-                    _draggedItem = tempItem;
-                    _draggedFromSlot = _slots[i];
+                    if (_draggedItem == null)
+                    {
+                        // Pick up the entire stack from the slot
+                        if (slotStack != null)
+                        {
+                            _draggedItem = slotStack;
+                            _slots[i].ItemStack = null;
+                            _draggedFromSlot = _slots[i];
+                        }
+                    }
+                    else
+                    {
+                        // Place the dragged item into the slot
+                        if (slotStack == null)
+                        {
+                            _slots[i].ItemStack = _draggedItem;
+                            _draggedItem = null;
+                        }
+                        else if (slotStack.GetId() == _draggedItem.GetId())
+                        {
+                            // Same type: try to merge stacks
+                            int total = slotStack.Quantity + _draggedItem.Quantity;
+                            int max = _draggedItem.MaxStack;
+
+                            if (total <= max)
+                            {
+                                slotStack.Add(_draggedItem.Quantity);
+                                _draggedItem = null;
+                            }
+                            else
+                            {
+                                int remaining = total - max;
+                                slotStack.Quantity = max;
+                                _draggedItem.Quantity = remaining;
+                            }
+                        }
+                        else
+                        {
+                            // Different type: swap stacks
+                            var temp = slotStack;
+                            _slots[i].ItemStack = _draggedItem;
+                            _draggedItem = temp;
+                        }
+                    }
                 }
-                if (_draggedItem == null)
+
+                // ---------------- RIGHT CLICK ----------------
+                if (InputManager.IsActionPressed(Action.RightClick) && _draggedItem != null)
                 {
-                    // update logic for drawing information window
+                    if (slotStack == null)
+                    {
+                        // Place **one item** from cursor into empty slot
+                        var newStack = _draggedItem.Clone(1);
+                        _slots[i].ItemStack = newStack;
+                        _draggedItem.Remove(1);
+                    }
+                    else if (slotStack.GetId() == _draggedItem.GetId() && slotStack.Quantity < slotStack.MaxStack)
+                    {
+                        // Add **one item** from cursor into slot
+                        slotStack.Add(1);
+                        _draggedItem.Remove(1);
+                    }
                 }
+
+                // Remove cursor stack if empty
+                if (_draggedItem != null && _draggedItem.Quantity <= 0)
+                    _draggedItem = null;
             }
             
         }

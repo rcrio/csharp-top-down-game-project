@@ -3,7 +3,7 @@ using System.Numerics;
 public class ItemStack
 {
     public Item Item { get; private set; }
-    public int Quantity { get; private set; }
+    public int Quantity { get; set; } // setter used in Slot
     public int MaxStack { get; private set; }
 
     public ItemStack(Item item, int quantity = 1, int maxStack = 99)
@@ -44,5 +44,16 @@ public class ItemStack
         {
             Item.DrawInSlot(drawPosition, slotSize);
         }
+    }
+
+    public ItemStack Clone(int quantity)
+    {
+        return new ItemStack(Item, quantity);
+    }
+
+    // could refactor to type? but Id works fine
+    public string GetId()
+    {
+        return Item.GetId();
     }
 }
