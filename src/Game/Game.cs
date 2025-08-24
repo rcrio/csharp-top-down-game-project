@@ -15,7 +15,7 @@ public class Game
     // Constructor
     public Game()
     {
-        _windowManager = new WindowManager(1600, 900, 144);
+        _windowManager = new WindowManager(1600, 900, 60);
         _gameTime = new GameTime();
         _inputManager = new InputManager();
         _sceneManager = new SceneManager(_inputManager, _gameTime);

@@ -2,6 +2,7 @@
 // This does NOT handle world building, WorldBuilder does that.
 // WorldBuilder will populate the tiles.
 using System.Numerics;
+using Raylib_cs;
 
 public class World
 {
@@ -10,6 +11,8 @@ public class World
 
     public int Width { get; private set; }
     public int Height { get; private set; }
+    // could refactor by only passing in Camera, look at CameraManager and see if world needs anything from CameraManager
+    private CameraManager CameraManager { get; set; }
 
     public World(int width, int height, Tile[,] tileGrid)
     {
@@ -27,13 +30,33 @@ public class World
     }
 
     // Draws the tiles. This does not use On-screen X and On-screen Y co-ordinates.
-    public void Draw()
+    public void Draw(Camera2D camera)
+{
+    // Get the visible region in world coordinates
+    Rectangle cameraView = new Rectangle(
+        camera.Target.X - camera.Offset.X,
+        camera.Target.Y - camera.Offset.Y,
+        Raylib.GetScreenWidth(),
+        Raylib.GetScreenHeight()
+    );
+
+    int tileSize = Constants.TILE_SIZE; // whatever your tile width/height is
+
+    // Convert camera view into tile index range
+    int startX = Math.Max(0, (int)(cameraView.X / tileSize));
+    int startY = Math.Max(0, (int)(cameraView.Y / tileSize));
+    int endX = Math.Min(Width, (int)((cameraView.X + cameraView.Width) / tileSize) + 1);
+    int endY = Math.Min(Height, (int)((cameraView.Y + cameraView.Height) / tileSize) + 1);
+
+    // Loop only over tiles on-screen
+    for (int x = startX; x < endX; x++)
     {
-        for (int x = 0; x < Width; x++)
-            for (int y = 0; y < Height; y++)
-                // We do multiply, to draw the 16x16 sprite, at the designated spot.
-                _tileGrid[x, y].Draw(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
+        for (int y = startY; y < endY; y++)
+        {
+            _tileGrid[x, y].Draw(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
+        }
     }
+}
 
     // Document further
     public bool IsPositionWalkable(Vector2 position, int playerWidth, int playerHeight)
