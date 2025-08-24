@@ -107,23 +107,8 @@ public class InventoryWindow : Window
                 }
 
                 // ---------------- RIGHT CLICK ----------------
-                if (InputManager.RightClick() && _draggedItem != null)
-                {
-                    if (slotStack == null)
-                    {
-                        // Place **one item** from cursor into empty slot
-                        var newStack = _draggedItem.Clone(1);
-                        _slots[i].ItemStack = newStack;
-                        _draggedItem.Remove(1);
-                    }
-                    else if (slotStack.GetId() == _draggedItem.GetId() && slotStack.Quantity < slotStack.MaxStack)
-                    {
-                        // Add **one item** from cursor into slot
-                        slotStack.Add(1);
-                        _draggedItem.Remove(1);
-                    }
-                }
 
+                // Shift right click to get half of a stack of items when cursor is empty
                 if (InputManager.SplitStackInHalf() && _draggedItem == null && slotStack != null && slotStack.Quantity > 1)
                 {
                     var newStack = _slots[i].ItemStack.Clone(_slots[i].ItemStack.Quantity / 2);
@@ -131,9 +116,45 @@ public class InventoryWindow : Window
                     _slots[i].ItemStack.Remove(_draggedItem.Quantity);
                 }
 
+                // Right click logic after shift right click so it doesnt clash
+                if (InputManager.RightClick())
+                {
+                    if (_draggedItem != null)
+                    {
+                        // Right click with an item in your cursor over an empty slot, to put an item in that slot.
+                        if (slotStack == null)
+                        {
+                            // Place **one item** from cursor into empty slot
+                            var newStack = _draggedItem.Clone(1);
+                            _slots[i].ItemStack = newStack;
+                            _draggedItem.Remove(1);
+                        }
+                        // Right click with an item in your cursor, over a slot with the same items, to add one item to the slot stack.
+                        // If the slot stack is max quantity, this doesn't work.
+                        else if (slotStack.GetId() == _draggedItem.GetId() && _draggedItem.Quantity < _draggedItem.MaxStack)
+                        {
+                            // Add **one item** from cursor into slot
+                            _draggedItem.Add(1);
+                            _slots[i].ItemStack.Remove(1);
+                        }
+                    }
+                    // Right click with an empty cursor over an item(s) to get one of that item
+                    else
+                    {
+                        var newStack = _slots[i].ItemStack.Clone(1);
+                        _draggedItem = newStack;
+                        _slots[i].ItemStack.Remove(1);
+                    }
+                }
+                
                 // Remove cursor stack if empty
                 if (_draggedItem != null && _draggedItem.Quantity <= 0)
+                {
                     _draggedItem = null;
+                }
+                        
+
+                
             }
             
         }
