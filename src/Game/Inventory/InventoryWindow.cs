@@ -124,6 +124,13 @@ public class InventoryWindow : Window
                     }
                 }
 
+                if (InputManager.SplitStackInHalf() && _draggedItem == null && slotStack != null && slotStack.Quantity > 1)
+                {
+                    var newStack = _slots[i].ItemStack.Clone(_slots[i].ItemStack.Quantity / 2);
+                    _draggedItem = newStack;
+                    _slots[i].ItemStack.Remove(_draggedItem.Quantity);
+                }
+
                 // Remove cursor stack if empty
                 if (_draggedItem != null && _draggedItem.Quantity <= 0)
                     _draggedItem = null;

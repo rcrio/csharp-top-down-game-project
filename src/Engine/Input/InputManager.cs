@@ -145,4 +145,10 @@ public class InputManager
         if (Raylib.IsKeyDown(KeyboardKey.LeftControl) && Raylib.GetMouseWheelMove() < 0) return true;
         return false;
     }
+
+    public bool SplitStackInHalf()
+    {
+        if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && RightClick()) return true;
+        return false;
+    }
 }
