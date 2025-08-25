@@ -1,5 +1,6 @@
 
 using System.Numerics;
+using System.Runtime.Serialization;
 using Raylib_cs;
 
 public class InventoryWindow : Window
@@ -8,7 +9,8 @@ public class InventoryWindow : Window
     private Slot[] _slots;         // Array of slot UI elements
     private const int Columns = 10; // Number of columns in the grid
     private ItemStack _draggedItem = null;
-    private Slot _draggedFromSlot = null;
+    private Slot _currentHoveredSlot = null;
+    private TooltipElement _tooltip;
 
     // Constructor: creates a new inventory window at the specified position
     public InventoryWindow(Vector2 position, Inventory inventory, InputManager inputManager) : base(position, new Vector2(565, 235), inputManager) // Initial window size
@@ -37,24 +39,26 @@ public class InventoryWindow : Window
             _slots[i] = new Slot(inventory, i, new Vector2(x, y), InputManager);
         }
 
+        _tooltip = new TooltipElement(Vector2.Zero);
     }
 
     // Update the window and all its slots, refactor/recomment
     public override void Update()
     {
         base.Update(); // Update base window logic
+        _currentHoveredSlot = null;
         Position = new Vector2(
             Raylib.GetScreenWidth() - Size.X - 10,   // 10px from right edge
             Raylib.GetScreenHeight() - Size.Y - 100   // 10px from bottom edge
         );
         for (int i = 0; i < _inventory.Size; i++)
         {
-            
             // Update each slot
             _slots[i].Update();
             // Hover over slot and click logic
             if (_slots[i].IsHovered)
             {
+                _currentHoveredSlot = _slots[i];
                 var slotStack = _slots[i].ItemStack;
 
                 // ---------------- LEFT CLICK ----------------
@@ -67,7 +71,7 @@ public class InventoryWindow : Window
                         {
                             _draggedItem = slotStack;
                             _slots[i].ItemStack = null;
-                            _draggedFromSlot = _slots[i];
+                            //_draggedFromSlot = _slots[i];
                         }
                     }
                     else
@@ -151,12 +155,21 @@ public class InventoryWindow : Window
                 if (_draggedItem != null && _draggedItem.Quantity <= 0)
                 {
                     _draggedItem = null;
-                }
-                        
-
-                
+                }          
             }
             
+        }
+
+        if (_currentHoveredSlot != null && _currentHoveredSlot.ItemStack != null)
+        {
+            // refactor later on.
+            string itemName = _currentHoveredSlot.ItemStack.Item.Name;
+            string[] info = [itemName];
+            _tooltip.Show(info, Raylib.GetMousePosition());
+        }
+        else
+        {
+            _tooltip.Hide();
         }
     }
 
@@ -182,9 +195,7 @@ public class InventoryWindow : Window
                 }
             }
         }
-
-
-
+        // Draws the sprite at the mouse when there is an item on mouse.
         // Refactor, 48 is a magic number here
         if (_draggedItem != null)
         {
@@ -207,6 +218,11 @@ public class InventoryWindow : Window
             );
 
             Raylib.DrawTextEx(font, text, position, fontSize, 1, Color.White);
+        }
+
+        if (_draggedItem == null)
+        {
+            _tooltip.Draw();
         }
     }
 }
