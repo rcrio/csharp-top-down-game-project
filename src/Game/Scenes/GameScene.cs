@@ -21,14 +21,20 @@ public class GameScene : Scene
         InputManager = inputManager;
         GameTime = gameTime;
         _gameClock = new GameClock();
+
+        _cameraManager = new CameraManager(new Vector2(400, 400), new Vector2(0, 0), inputManager);
+        _mousePosition = new MousePosition(_cameraManager.Camera);
+
         _worldBuilder = new WorldBuilder();
         _world = _worldBuilder.BuildDefaultWorld(Constants.WORLD_SIZE, Constants.WORLD_SIZE);
+        _tileSelector = new TileSelector(_world, _mousePosition, InputManager, null);
+        
         _customPlayer1 = new CustomPlayer1(new Vector2(0, 0), InputManager, GameTime, _world, new Texture2D());
         _inventoryWindow = new InventoryWindow(new Vector2(100, 50), _customPlayer1.Inventory, InputManager);
         _hotbarWindow = new HotbarWindow(new Vector2(100, Raylib.GetScreenHeight() - 80), _customPlayer1.Inventory, InputManager);
-        _cameraManager = new CameraManager(new Vector2(400, 400), _customPlayer1.Position, inputManager);
-        _mousePosition = new MousePosition(_cameraManager.Camera);
-        _tileSelector = new TileSelector(_world, _mousePosition, InputManager, null);
+        
+        
+        
     }
     public override void Update()
     {
