@@ -12,7 +12,7 @@ public class Game
     // can refactor by passing the reference down
 
 
-    // Constructor
+    // Constructor e
     public Game()
     {
         _windowManager = new WindowManager(1600, 900, 60);
