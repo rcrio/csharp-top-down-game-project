@@ -1,21 +1,13 @@
+using System.Numerics;
+using Raylib_cs;
+
 public class LocalPlayer : Player
 {
-    public float Speed { get; private set; }
-    public int Width { get; private set; }
-    public int Height { get; private set; }
-    public Vector2 Center { get; private set; }
-
-    public Inventory Inventory { get; private set; }
-
-    // Constructor
-    public LocalPlayer(Vector2 position, InputManager inputManager, GameTime gameTime, World world, Texture2D sprite)
-        : base(position, inputManager, gameTime, world, sprite)
+    private InputManager _inputManager;
+    public LocalPlayer(Vector2 position, Texture2D texture, GameTime gameTime, World world, int inventorySize, InputManager inputManager, float speed = 200f, float pickUpRange = 32f)
+        : base(position, texture, gameTime, world, inventorySize, speed, pickUpRange)
     {
-        Speed = 250f;
-        Width = 16;
-        Height = 16;
-        Center = new Vector2(Width / 2, Height / 2);
-        Inventory = new Inventory(50);
+        _inputManager = inputManager;
         GenerateDefaultInventory();
     }
 
@@ -23,10 +15,10 @@ public class LocalPlayer : Player
     {
         Vector2 input = Vector2.Zero;
 
-        if (InputManager.MoveUp()) input.Y -= 1;
-        if (InputManager.MoveDown()) input.Y += 1;
-        if (InputManager.MoveLeft()) input.X -= 1;
-        if (InputManager.MoveRight()) input.X += 1;
+        if (_inputManager.MoveUp()) input.Y -= 1;
+        if (_inputManager.MoveDown()) input.Y += 1;
+        if (_inputManager.MoveLeft()) input.X -= 1;
+        if (_inputManager.MoveRight()) input.X += 1;
 
         Move(input, GameTime.DeltaTime);
     }

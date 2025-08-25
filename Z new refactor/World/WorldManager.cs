@@ -14,7 +14,7 @@ public class WorldManager
         _worldBuilder = new WorldBuilder();
         World = _worldBuilder.BuildDefaultWorld(_worldSize);
         // Make Tile cell null first.
-        _tileSelector = new TileSelector(inputManager, mousePosition, World, null);
+        _tileSelector = new TileSelector(_inputManager, _mousePosition, World, null);
 
     }
 
@@ -26,6 +26,6 @@ public class WorldManager
 
     public void Draw()
     {
-        World.Draw();
+        //World.Draw();
     }
 }

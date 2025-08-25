@@ -1,19 +1,25 @@
 using System.Numerics;
+using System.Runtime;
 using Raylib_cs;
 
 public abstract class Entity
 {
     public Vector2 Position { get; set; }
-    public Texture2D Sprite { get; set; }
+    public Texture2D Texture { get; set; }
+    public string texturePath { get; set; }
 
     // Constructor
-    protected Entity(Vector2 position, Texture2D sprite)
+    protected Entity(Vector2 position, string texturePath)
     {
         Position = position;
-        Sprite = sprite;
     }
 
     public abstract void Update();
     public abstract void Draw();
+    // Load
+    public virtual void Load()
+    {
+
+    }
     public abstract void Unload();
 }

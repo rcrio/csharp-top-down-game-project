@@ -1,7 +1,9 @@
 public class WorldBuilder
 {
-    public World BuildDefaultWorld(int width, int height)
+    public World BuildDefaultWorld(int size)
     {
+        int width = size;
+        int height = size;
         // Create some default items for terrain, floor, object
         // Refactor PlaceableItemFactory, at the moment we are using the Upper class to make ItemPlaceable.
         var terrain = (ItemPlaceableTerrain)ItemPlaceableFactory.PlaceableItems["terrain_grass"];
