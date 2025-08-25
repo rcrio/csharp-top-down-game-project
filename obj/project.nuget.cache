@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "F9dDNEp8r60=",
+  "dgSpecHash": "0IPvuLIvZCM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\p3NgR\\Documents\\repos\\raylib\\Verdania\\Verdania.csproj",
+  "projectFilePath": "C:\\Users\\p3NgR\\Documents\\repos\\raylib\\verdania\\Verdania.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\p3NgR\\.nuget\\packages\\raylib-cs\\7.0.1\\raylib-cs.7.0.1.nupkg.sha512"
   ],

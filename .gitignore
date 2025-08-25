@@ -1,0 +1,34 @@
+# Build directories
+bin/
+obj/
+
+# Visual Studio files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Rider IDE
+.idea/
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# NuGet packages
+*.nupkg
+*.snupkg
+
+# Temporary files
+*.cache
+*.pdb
+*.mdb
+
+# Roslyn / analyzers
+*.ide.*
