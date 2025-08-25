@@ -4,8 +4,8 @@ using Raylib_cs;
 public class LocalPlayer : Player
 {
     private InputManager _inputManager;
-    public LocalPlayer(Vector2 position, Texture2D texture, GameTime gameTime, World world, int inventorySize, InputManager inputManager, float speed = 200f, float pickUpRange = 32f)
-        : base(position, texture, gameTime, world, inventorySize, speed, pickUpRange)
+    public LocalPlayer(Vector2 position, string texturePath, GameTime gameTime, World world, int inventorySize, InputManager inputManager, float speed = 200f, float pickUpRange = 32f)
+        : base(position, texturePath, gameTime, world, inventorySize, speed, pickUpRange)
     {
         _inputManager = inputManager;
         GenerateDefaultInventory();

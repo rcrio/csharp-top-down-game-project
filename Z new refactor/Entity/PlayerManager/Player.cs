@@ -16,8 +16,8 @@ public abstract class Player : Entity
     public float PickupRange { get; private set; }
 
 
-    protected Player(Vector2 position, Texture2D texture, GameTime gameTime, World world, int inventorySize, float speed = 200f, float pickUpRange = 32f)
-        : base(position, texture)
+    protected Player(Vector2 position, string texturePath, GameTime gameTime, World world, int inventorySize, float speed = 200f, float pickUpRange = 32f)
+        : base(position, texturePath)
     {
         GameTime = gameTime;
         World = world;
