@@ -11,7 +11,7 @@ public class TileSelector
     private int _tileY;
     private InputManager _inputManager;
 
-    public TileSelector(World world, MousePosition mousePosition, InputManager inputManager, Tile tileCell = null)
+    public TileSelector(InputManager inputManager, MousePosition mousePosition, World world, Tile tileCell = null)
     {
         _world = world;
         _mousePosition = mousePosition;

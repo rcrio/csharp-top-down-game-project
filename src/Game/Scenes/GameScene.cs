@@ -7,13 +7,15 @@ public class GameScene : Scene
     private GameClock _gameClock;
     private WorldBuilder _worldBuilder;
     private World _world;
-    private CustomPlayer1 _customPlayer1;
+    private LocalPlayer _customPlayer1;
     private MousePosition _mousePosition;
     private TileSelector _tileSelector;
     private bool _inventoryOpen = false;
     private InventoryWindow _inventoryWindow;
     private HotbarWindow _hotbarWindow;
     private CameraManager _cameraManager;
+
+    private WorldManager _worldManager;
 
     public GameScene(InputManager inputManager, GameTime gameTime)
     {
@@ -25,16 +27,16 @@ public class GameScene : Scene
         _cameraManager = new CameraManager(new Vector2(400, 400), new Vector2(0, 0), inputManager);
         _mousePosition = new MousePosition(_cameraManager.Camera);
 
-        _worldBuilder = new WorldBuilder();
-        _world = _worldBuilder.BuildDefaultWorld(Constants.WORLD_SIZE, Constants.WORLD_SIZE);
-        _tileSelector = new TileSelector(_world, _mousePosition, InputManager, null);
-        
+        _worldManager = new WorldManager(inputManager, _mousePosition, 1000); // Later on, add gameTime
+
+        _playerManager =
+
         _customPlayer1 = new CustomPlayer1(new Vector2(0, 0), InputManager, GameTime, _world, new Texture2D());
         _inventoryWindow = new InventoryWindow(new Vector2(100, 50), _customPlayer1.Inventory, InputManager);
         _hotbarWindow = new HotbarWindow(new Vector2(100, Raylib.GetScreenHeight() - 80), _customPlayer1.Inventory, InputManager);
-        
-        
-        
+
+
+
     }
     public override void Update()
     {

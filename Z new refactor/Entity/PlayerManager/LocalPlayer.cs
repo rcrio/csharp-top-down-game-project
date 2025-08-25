@@ -1,7 +1,4 @@
-using System.Numerics;
-using Raylib_cs;
-
-public class CustomPlayer1 : Player
+public class LocalPlayer : Player
 {
     public float Speed { get; private set; }
     public int Width { get; private set; }
@@ -11,7 +8,7 @@ public class CustomPlayer1 : Player
     public Inventory Inventory { get; private set; }
 
     // Constructor
-    public CustomPlayer1(Vector2 position, InputManager inputManager, GameTime gameTime, World world, Texture2D sprite)
+    public LocalPlayer(Vector2 position, InputManager inputManager, GameTime gameTime, World world, Texture2D sprite)
         : base(position, inputManager, gameTime, world, sprite)
     {
         Speed = 250f;

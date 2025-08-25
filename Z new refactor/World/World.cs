@@ -59,36 +59,32 @@ public class World
 }
 
     // Document further
-    public bool IsPositionWalkable(Vector2 position, int playerWidth, int playerHeight)
+    // Check if a rectangular area (in tiles) is walkable
+    public bool IsBoxWalkable(Rectangle rect)
     {
-        // Define the four corners of the player's rectangle
-        // Subtract 1 from right and bottom corners to prevent 1-pixel overshoot
-        Vector2 topLeft = position;
-        Vector2 topRight = new Vector2(position.X + playerWidth - 1, position.Y);
-        Vector2 bottomLeft = new Vector2(position.X, position.Y + playerHeight - 1);
-        Vector2 bottomRight = new Vector2(position.X + playerWidth - 1, position.Y + playerHeight - 1);
+        // Convert rectangle bounds to tile indices
+        int startX = (int)(rect.X / Constants.TILE_SIZE);
+        int startY = (int)(rect.Y / Constants.TILE_SIZE);
+        // Prevents tile overcreep because pixel coordinates are 0-indexed
+        int endX = (int)((rect.X + rect.Width - 1) / Constants.TILE_SIZE);
+        int endY = (int)((rect.Y + rect.Height - 1) / Constants.TILE_SIZE);
 
-        Vector2[] corners = new Vector2[] { topLeft, topRight, bottomLeft, bottomRight };
-
-        foreach (var corner in corners)
+        // Check all tiles covered by the rectangle
+        for (int x = startX; x <= endX; x++)
         {
-            // Out of bounds check
-            if (corner.X < 0 || corner.Y < 0 || corner.X >= Width * Constants.TILE_SIZE || corner.Y >= Height * Constants.TILE_SIZE)
-                return false;
+            for (int y = startY; y <= endY; y++)
+            {
+                // Out of bounds check
+                if (x < 0 || y < 0 || x >= Width || y >= Height)
+                    return false;
 
-            // Convert corner position to tile indices
-            int tileX = (int)(corner.X / Constants.TILE_SIZE);
-            int tileY = (int)(corner.Y / Constants.TILE_SIZE);
-
-            Tile tile = _tileGrid[tileX, tileY];
-            if (!tile.IsWalkable())
-                return false; // Collision detected
+                if (!_tileGrid[x, y].IsWalkable())
+                    return false; // collision with wall or obstacle
+            }
         }
 
-        return true; // All corners are walkable
+        // All tiles are walkable
+        return true;
     }
 
-
-
-    
 }
