@@ -67,5 +67,6 @@ public abstract class Item
             Raylib.UnloadTexture(Sprite);
             Sprite = default; // reset
         }
+        // \you might want to add a destructor
     }
 }

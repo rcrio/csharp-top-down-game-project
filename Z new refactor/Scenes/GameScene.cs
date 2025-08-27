@@ -16,6 +16,7 @@ public class GameScene : Scene
     private CameraManager _cameraManager;
 
     private WorldManager _worldManager;
+    private PlayerManager _playerManager;
 
     public GameScene(InputManager inputManager, GameTime gameTime)
     {
@@ -29,14 +30,7 @@ public class GameScene : Scene
 
         _worldManager = new WorldManager(inputManager, _mousePosition, 1000); // Later on, add gameTime
 
-        _playerManager =
-
-        _customPlayer1 = new CustomPlayer1(new Vector2(0, 0), InputManager, GameTime, _world, new Texture2D());
-        _inventoryWindow = new InventoryWindow(new Vector2(100, 50), _customPlayer1.Inventory, InputManager);
-        _hotbarWindow = new HotbarWindow(new Vector2(100, Raylib.GetScreenHeight() - 80), _customPlayer1.Inventory, InputManager);
-
-
-
+        _playerManager = new PlayerManager(inputManager, gameTime, _worldManager.World);
     }
     public override void Update()
     {

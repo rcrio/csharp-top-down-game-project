@@ -19,7 +19,10 @@ public abstract class Entity
     // Load
     public virtual void Load()
     {
-
+        
     }
-    public abstract void Unload();
+    public virtual void Unload()
+    {
+        
+    }
 }
