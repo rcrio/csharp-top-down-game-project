@@ -5,18 +5,12 @@ public class GameScene : Scene
 {
     // InputManager and GameTime inherited from Scene
     private GameClock _gameClock;
-    private WorldBuilder _worldBuilder;
-    private World _world;
-    private LocalPlayer _customPlayer1;
-    private MousePosition _mousePosition;
-    private TileSelector _tileSelector;
-    private bool _inventoryOpen = false;
-    private InventoryWindow _inventoryWindow;
-    private HotbarWindow _hotbarWindow;
     private CameraManager _cameraManager;
+    private MousePosition _mousePosition;
 
     private WorldManager _worldManager;
     private PlayerManager _playerManager;
+    private bool _inventoryOpen = false;
 
     public GameScene(InputManager inputManager, GameTime gameTime)
     {
@@ -26,7 +20,8 @@ public class GameScene : Scene
         _gameClock = new GameClock();
 
         _cameraManager = new CameraManager(new Vector2(400, 400), new Vector2(0, 0), inputManager);
-        _mousePosition = new MousePosition(_cameraManager.Camera);
+
+        _mousePosition = new MousePosition(_cameraManager);
 
         _worldManager = new WorldManager(inputManager, _mousePosition, 1000); // Later on, add gameTime
 
@@ -34,83 +29,66 @@ public class GameScene : Scene
     }
     public override void Update()
     {
-        // Time
+        // Delta time
         GameTime.Update();                     // updates delta time
+
+        // Game clock update
         _gameClock.Update(GameTime.DeltaTime); // ticks in-game clock
-        // Handle escape and return. This is temporary and we will have an escape menu to save and exit.
-        // Must be before inventory logic
-        if (InputManager.Return() && !_inventoryOpen) RequestPop = true;
 
-
-        // Inventory management, may need an InventoryManager in the future.
-        // can move this, pass screenwidth? or use it
-        
-        
-        if (InputManager.OpenInventory())
-        {
-            _inventoryOpen = !_inventoryOpen;
-        }
-
-        if (_inventoryOpen)
-        {
-            _inventoryWindow.Update();
-            if (InputManager.Return()) _inventoryOpen = false;
-            // Optionally: block player movement or interaction while inventory is open
-        }
-
-
-        // Update player
-        _customPlayer1.Update();
-
-
-        // Update camera
-        var target = _customPlayer1.Position + _customPlayer1.Center;
+        // Update camera, could refactor
+        var target = _playerManager.LocalPlayer.Center;
         var offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2);
         _cameraManager.Update(offset, target);
 
-
         // Update mouse
-        _mousePosition.Update(_cameraManager.Camera);
+        _mousePosition.Update(_cameraManager);
 
+        // Update world
+        _worldManager.Update();
 
-        // Update tile, must be after mouse
-        _tileSelector.Update();
+        // Update player
+        _playerManager.Update();
 
-    
-        // Hotbar update
-        _hotbarWindow.Update();
+        // Handle escape and return. This is temporary and we will have an escape menu to save and exit.
+        // Must be before inventory logic
+        if (InputManager.Return() && !_inventoryOpen) RequestPop = true;
+        
+        if (InputManager.OpenInventory()) _inventoryOpen = !_inventoryOpen;
+
+        if (_inventoryOpen && InputManager.Return()) _inventoryOpen = false;
     }
 
     public override void Draw()
     {
+        // HUD
+        _gameClock.DrawClock();
+
         // Camera Related Graphics, we draw the bottom graphics first. Think of it like a stack.
         Raylib.BeginMode2D(_cameraManager.Camera);
 
         // Draw the world
-        _world.Draw(_cameraManager.Camera);
+        _worldManager.Draw();
 
         // Draw tile selector
-        _tileSelector.DrawTile();
-
-        // Draw the player
-        _customPlayer1.Draw();
+        _playerManager.Draw();
 
         Raylib.EndMode2D(); // Camera graphics end here
 
         // Tile information
-        _tileSelector.DrawInfo();
         if (_inventoryOpen)
         {
-            _inventoryWindow.Draw();
+            _playerManager.InventoryDraw();
         }
-        _hotbarWindow.Draw();
 
-        // HUD
+        _worldManager.DrawInfo();
+
+        _playerManager.HotbarDraw();
+
         _gameClock.DrawClock();
     }
 
     public override void Unload()
     {
-        _customPlayer1.Unload();
+        _playerManager.Unload();
     }
 }

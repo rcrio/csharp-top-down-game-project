@@ -23,18 +23,6 @@ public class LocalPlayer : Player
         Move(input, GameTime.DeltaTime);
     }
 
-    public override void Draw()
-    {
-        // Draw a green 16x16 rectangle at the player's position
-        Raylib.DrawRectangle(
-            (int)Position.X,
-            (int)Position.Y,
-            Width,
-            Height,
-            Color.Green
-        );
-    }
-
     public void GenerateDefaultInventory()
     {
         Inventory.AddItemByIndex(0, ItemFactory.Items["item_regular_wooden_pickaxe"]);
@@ -42,9 +30,5 @@ public class LocalPlayer : Player
         Inventory.AddItemByIndex(2, ItemPlaceableFactory.PlaceableItems["floor_wood"], 98);
         Inventory.AddItemByIndex(3, ItemPlaceableFactory.PlaceableItems["floor_wood"], 30);
         Inventory.AddItemByIndex(4, ItemPlaceableFactory.PlaceableItems["floor_wood"], 30);
-    }
-    public override void Unload()
-    {
-
     }
 }

@@ -4,7 +4,7 @@ public class WorldManager
     private MousePosition _mousePosition;
     private int _worldSize;
     private WorldBuilder _worldBuilder;
-    public World World { get; private set; }
+    public World World { get; private set; } // Used for player manager
     private TileSelector _tileSelector;
     public WorldManager(InputManager inputManager, MousePosition mousePosition, int worldSize)
     {
@@ -21,11 +21,17 @@ public class WorldManager
     // We update non-constructor parameters, because constructor parameters usually get updated a level above us.
     public void Update()
     {
-
+        _tileSelector.Update();
     }
 
-    public void Draw()
+    public void Draw() // Method gets called relative to the camera
     {
-        //World.Draw();
+        World.Draw(_mousePosition.CameraManager.Camera);
+        _tileSelector.DrawTile();
+    }
+
+    public void DrawInfo() // Method gets called statically
+    {
+        _tileSelector.DrawInfo();
     }
 }

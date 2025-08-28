@@ -6,7 +6,7 @@ public class PlayerManager
     private GameTime _gameTime;
     private World _world;
     // in the future, we will use list of players
-    private LocalPlayer _localPlayer;
+    public LocalPlayer LocalPlayer { get; private set; }
     private InventoryWindow _inventoryWindow;
     private HotbarWindow _hotbarWindow;
 
@@ -16,19 +16,36 @@ public class PlayerManager
         _gameTime = gameTime;
         _world = world;
 
-        _localPlayer = new LocalPlayer(new Vector2(0, 0), "nothing_yet", _gameTime, _world, 50, _inputManager);
-        _inventoryWindow = new InventoryWindow(new Vector2(0, 0), _localPlayer.Inventory, _inputManager);
-        _hotbarWindow = new HotbarWindow(new Vector2(0, 0), _localPlayer.Inventory, _inputManager);
+        LocalPlayer = new LocalPlayer(new Vector2(0, 0), "nothing_yet", _gameTime, _world, 50, _inputManager);
+        _inventoryWindow = new InventoryWindow(new Vector2(0, 0), LocalPlayer.Inventory, _inputManager);
+        _hotbarWindow = new HotbarWindow(new Vector2(0, 0), LocalPlayer.Inventory, _inputManager);
     }
 
     public void Update()
     {
-
+        LocalPlayer.Update();
+        _inventoryWindow.Update();
+        _hotbarWindow.Update();
     }
-
+    // We dont draw inventory
     public void Draw()
     {
+        LocalPlayer.Draw();
+    }
 
+    public void InventoryDraw()
+    {
+        _inventoryWindow.Draw();
+    }
+
+    public void HotbarDraw()
+    {
+        _hotbarWindow.Draw();
+    }
+
+    public void Unload()
+    {
+        LocalPlayer.Unload();
     }
     
     

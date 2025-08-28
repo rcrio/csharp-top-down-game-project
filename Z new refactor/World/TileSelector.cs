@@ -77,6 +77,8 @@ public class TileSelector
         {
             Raylib.DrawTextEx(font, "Impassable area", pos, fontSize, spacing, Color.White);
         }
+        pos.Y += lineHeight;
+        Raylib.DrawTextEx(font, "x: " + _tileX + ", y: " + _tileY, pos, fontSize, spacing, Color.White);
     }
 
 

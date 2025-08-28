@@ -5,17 +5,18 @@ public class MousePosition
 {
     public Vector2 MouseScreen { get; set; }
     public Vector2 MouseWorld { get; set; }
-    private Camera2D _camera;
+    public CameraManager CameraManager { get; set; }
 
-    public MousePosition(Camera2D camera)
+    public MousePosition(CameraManager cameraManager)
     {
-        Update(camera);
+        CameraManager = cameraManager;
+        Update(CameraManager);
     }
 
-    public void Update(Camera2D camera)
+    public void Update(CameraManager cameraManager)
     {
         MouseScreen = Raylib.GetMousePosition();
-        MouseWorld = Raylib.GetScreenToWorld2D(MouseScreen, camera);
+        MouseWorld = Raylib.GetScreenToWorld2D(MouseScreen, cameraManager.Camera);
     }
 
     
