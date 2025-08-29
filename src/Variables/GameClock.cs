@@ -53,8 +53,20 @@ public class GameClock
         }
     }
 
+    private string GetSeasonName()
+    {
+        return Season switch
+        {
+            1 => "Spring",
+            2 => "Summer",
+            3 => "Fall",
+            4 => "Winter",
+            _ => "Unknown"
+        };
+    }
+
     public string GetTimeString() => $"{Hour:D2}:{Minute:D2}";
-    public string GetDateString() => $"Day {Day}, Season {Season}, Year {Year}";
+    public string GetDateString() => $"Day {Day}, {GetSeasonName()}, Year {Year}";
     public void DrawClock()
     {
         // refactor, needs constant fontSize. actually if u read this, make all the other fontsizes constant
@@ -75,7 +87,7 @@ public class GameClock
         // Move down for date
         pos.Y += lineHeight;
 
-        string dateText = $"Day {Day}, Season {Season}, Year {Year}";
+        string dateText = GetDateString();
         Vector2 dateSize = Raylib.MeasureTextEx(font, dateText, fontSize, spacing);
         pos.X = Raylib.GetScreenWidth() - dateSize.X - 10; // align right again
         Raylib.DrawTextEx(font, dateText, pos, fontSize, spacing, Color.White);
