@@ -36,7 +36,7 @@ public class HotbarWindow : Window
             // Update each slot
             _slots[i].Update();
         }
-        
+
         // Hotbar scrolling check
         if (InputManager.ScrollUp())
         {
@@ -45,6 +45,47 @@ public class HotbarWindow : Window
         if (InputManager.ScrollDown())
         {
             _currentIndex = (_currentIndex - 1 + HotbarSize) % HotbarSize;
+        }
+        // Refactor: should be a better way to do this
+        if (InputManager.Hotbar1())
+        {
+            _currentIndex = 0;
+        }
+        if (InputManager.Hotbar2())
+        {
+            _currentIndex = 1;
+        }
+        if (InputManager.Hotbar3())
+        {
+            _currentIndex = 2;
+        }
+        if (InputManager.Hotbar4())
+        {
+            _currentIndex = 3;
+        }
+        if (InputManager.Hotbar5())
+        {
+            _currentIndex = 4;
+        }
+        if (InputManager.Hotbar6())
+        {
+            _currentIndex = 5;
+        }
+        if (InputManager.Hotbar7())
+        {
+            _currentIndex = 6;
+        }
+        if (InputManager.Hotbar8())
+        {
+            _currentIndex = 7;
+        }
+        if (InputManager.Hotbar9())
+        {
+            _currentIndex = 8;
+        }
+        if (InputManager.Hotbar0())
+        {
+            _currentIndex = 9;
         }
     }
 
