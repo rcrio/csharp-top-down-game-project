@@ -71,16 +71,16 @@ public class World
         int endX = (int)Math.Ceiling((rect.X + rect.Width) / Constants.TILE_SIZE) - 1;
         int endY = (int)Math.Ceiling((rect.Y + rect.Height) / Constants.TILE_SIZE) - 1;
 
-
-        Console.WriteLine(endX + " " + endY);
-
+        // Loop through all tiles in the map and check if they are walkable
         for (int x = startX; x <= endX; x++)
         {
             for (int y = startY; y <= endY; y++)
             {
+                // Outside of map borders
                 if (x < 0 || y < 0 || x >= Width || y >= Height)
                     return false;
 
+                // Not walkable
                 if (!_tileGrid[x, y].IsWalkable())
                     return false;
             }

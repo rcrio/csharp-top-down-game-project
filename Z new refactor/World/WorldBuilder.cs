@@ -6,9 +6,9 @@ public class WorldBuilder
         int height = size;
         // Create some default items for terrain, floor, object
         // Refactor PlaceableItemFactory, at the moment we are using the Upper class to make ItemPlaceable.
-        var terrain = (ItemPlaceableTerrain)ItemPlaceableFactory.PlaceableItems["terrain_grass"];
-        var floor = (ItemPlaceableFloor)ItemPlaceableFactory.PlaceableItems["floor_wood"];
-        var obstacle = (ItemPlaceableObject)ItemPlaceableFactory.PlaceableItems["wall_stone"];
+        var terrain = (ItemPlaceableTerrain)TerrainFactory.Terrains["terrain_grass"];
+        var floor = (ItemPlaceableFloor)FloorFactory.Floors["floor_wood"];
+        var obstacle = (ItemPlaceableObject)WallFactory.Walls["wall_stone"];
 
         // Create a 2D array of tiles to use as a parameter for World
         Tile[,] tiles = new Tile[width, height];

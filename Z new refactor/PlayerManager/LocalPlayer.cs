@@ -27,8 +27,8 @@ public class LocalPlayer : Player
     {
         Inventory.AddItemByIndex(0, ItemFactory.Items["item_regular_wooden_pickaxe"]);
         Inventory.AddItemByIndex(1, ItemFactory.Items["item_regular_wooden_sword"]);
-        Inventory.AddItemByIndex(2, ItemPlaceableFactory.PlaceableItems["floor_wood"], 98);
-        Inventory.AddItemByIndex(3, ItemPlaceableFactory.PlaceableItems["floor_wood"], 30);
-        Inventory.AddItemByIndex(4, ItemPlaceableFactory.PlaceableItems["floor_wood"], 30);
+        Inventory.AddItemByIndex(2, FloorFactory.Floors["floor_wood"], 98);
+        Inventory.AddItemByIndex(3, FloorFactory.Floors["floor_wood"], 30);
+        Inventory.AddItemByIndex(4, FloorFactory.Floors["floor_wood"], 30);
     }
 }
