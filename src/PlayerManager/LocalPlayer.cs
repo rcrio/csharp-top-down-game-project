@@ -4,21 +4,48 @@ using Raylib_cs;
 public class LocalPlayer : Player
 {
     private InputManager _inputManager;
-    public LocalPlayer(Vector2 position, string texturePath, GameTime gameTime, World world, int inventorySize, InputManager inputManager, float speed = 200f, float pickUpRange = 32f)
-        : base(position, texturePath, gameTime, world, inventorySize, speed, pickUpRange)
+    public LocalPlayer(
+        Vector2 position,
+        string northTexturePath,
+        string southTexturePack,
+        string westTexturePath,
+        string eastTexturePath,
+        GameTime gameTime,
+        World world,
+        int inventorySize,
+        InputManager inputManager,
+        float speed = 200f,
+        float pickUpRange = 32f)
+        : base(position, northTexturePath, southTexturePack, westTexturePath, eastTexturePath, gameTime, world, inventorySize, speed, pickUpRange)
     {
         _inputManager = inputManager;
         GenerateDefaultInventory();
     }
 
-    public override void Update()
+    public void Update()
     {
         Vector2 input = Vector2.Zero;
 
-        if (_inputManager.MoveUp()) input.Y -= 1;
-        if (_inputManager.MoveDown()) input.Y += 1;
-        if (_inputManager.MoveLeft()) input.X -= 1;
-        if (_inputManager.MoveRight()) input.X += 1;
+        if (_inputManager.MoveUp())
+        {
+            input.Y -= 1;
+            FacingDirection = Direction.North;
+        }
+        if (_inputManager.MoveDown())
+        {
+            input.Y += 1;
+            FacingDirection = Direction.South;
+        }
+        if (_inputManager.MoveLeft())
+        {
+            input.X -= 1;
+            FacingDirection = Direction.West;
+        }
+        if (_inputManager.MoveRight())
+        {
+            input.X += 1;
+            FacingDirection = Direction.East;
+        }
 
         Move(input, GameTime.DeltaTime);
     }

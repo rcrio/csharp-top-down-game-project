@@ -16,7 +16,7 @@ public class PlayerManager
         _gameTime = gameTime;
         _world = world;
 
-        LocalPlayer = new LocalPlayer(new Vector2(0, 0), "nothing_yet", _gameTime, _world, 50, _inputManager);
+        LocalPlayer = new LocalPlayer(new Vector2(0, 0), "player_north.png", "player_south.png", "player_west.png", "player_east.png", _gameTime, _world, 50, _inputManager);
         _inventoryWindow = new InventoryWindow(new Vector2(0, 0), LocalPlayer.Inventory, _inputManager);
         _hotbarWindow = new HotbarWindow(new Vector2(0, 0), LocalPlayer.Inventory, _inputManager);
     }

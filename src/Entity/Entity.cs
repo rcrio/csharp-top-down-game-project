@@ -10,6 +10,7 @@ public abstract class Entity
     // Constructor
     protected Entity(Vector2 position, string texturePath)
     {
+        TexturePath = texturePath;
         Position = position;
     }
 

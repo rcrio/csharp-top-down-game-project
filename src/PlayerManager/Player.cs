@@ -1,8 +1,18 @@
 using System.Numerics;
 using Raylib_cs;
 
-public abstract class Player : Entity
+// Could remove inheritance from Entity, we're overriding a lot of the methods
+public abstract class Player
 {
+    public Vector2 Position { get; set; }
+    public Texture2D NorthTexture { get; set; }
+    public Texture2D SouthTexture { get; set; }
+    public Texture2D WestTexture { get; set; }
+    public Texture2D EastTexture { get; set; }
+    public string NorthTexturePath { get; set; }
+    public string SouthTexturePath { get; set; }
+    public string WestTexturePath { get; set; }
+    public string EastTexturePath { get; set; }
     public int Width { get; private set; } = 16;
     public int Height { get; private set; } = 16;
     public Vector2 Center => new Vector2(Position.X + Width / 2, Position.Y + Height / 2);
@@ -14,16 +24,65 @@ public abstract class Player : Entity
 
     public float Speed { get; private set; }
     public float PickupRange { get; private set; }
+    public Direction FacingDirection { get; set; } = Direction.South;
 
 
-    protected Player(Vector2 position, string texturePath, GameTime gameTime, World world, int inventorySize, float speed = 200f, float pickUpRange = 32f)
-        : base(position, texturePath)
+    protected Player(
+        Vector2 position,
+        string northTexturePath,
+        string southTexturePack,
+        string westTexturePath,
+        string eastTexturePath,
+        GameTime gameTime,
+        World world,
+        int inventorySize,
+        float speed = 200f,
+        float pickUpRange = 32f)
     {
+        NorthTexturePath = northTexturePath;
+        SouthTexturePath = southTexturePack;
+        WestTexturePath = westTexturePath;
+        EastTexturePath = eastTexturePath;
+        Position = position;
         GameTime = gameTime;
         World = world;
         Inventory = new Inventory(inventorySize);
         Speed = speed;
         PickupRange = pickUpRange;
+        Load();
+    }
+
+    public virtual void Load()
+    {
+        Console.WriteLine("Loading player textures...adwldk wkldwlk dlk dlk lwdakdlkdlkd");
+        NorthTexture = AssetManager.LoadTexture(NorthTexturePath);
+        SouthTexture = AssetManager.LoadTexture(SouthTexturePath);
+        WestTexture = AssetManager.LoadTexture(WestTexturePath);
+        EastTexture = AssetManager.LoadTexture(EastTexturePath);
+    }
+
+    public virtual void Unload()
+    {
+        if (NorthTexture.Id != 0)
+        {
+            Raylib.UnloadTexture(NorthTexture);
+            NorthTexture = default; // reset
+        }
+        if (SouthTexture.Id != 0)
+        {
+            Raylib.UnloadTexture(SouthTexture);
+            SouthTexture = default; // reset
+        }
+        if (WestTexture.Id != 0)
+        {
+            Raylib.UnloadTexture(WestTexture);
+            WestTexture = default; // reset
+        }
+        if (EastTexture.Id != 0)
+        {
+            Raylib.UnloadTexture(EastTexture);
+            EastTexture = default; // reset
+        }
     }
 
     /*
@@ -89,5 +148,31 @@ public abstract class Player : Entity
         Position = newPos;
     }
 
+    public void Draw()
+    {
+        if (NorthTexture.Id == 0)
+        {
+            Raylib.DrawRectangle((int)Position.X, (int)Position.Y, 16, 16, new Color(200, 200, 230, 255));
+        }
+        else
+        {
+            if (Direction.North == FacingDirection)
+            {
+                Raylib.DrawTexture(NorthTexture, (int)Position.X, (int)Position.Y, Color.White);
+            }
+            else if (Direction.South == FacingDirection)
+            {
+                Raylib.DrawTexture(SouthTexture, (int)Position.X, (int)Position.Y, Color.White);
+            }
+            else if (Direction.West == FacingDirection)
+            {
+                Raylib.DrawTexture(WestTexture, (int)Position.X, (int)Position.Y, Color.White);
+            }
+            else if (Direction.East == FacingDirection)
+            {
+                Raylib.DrawTexture(EastTexture, (int)Position.X, (int)Position.Y, Color.White);
+            }  
+        }
+    }
 
 }

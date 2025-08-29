@@ -72,10 +72,7 @@ public abstract class Item
         }
     }
 
-    public virtual void Load()
-    {
-        AssetManager.LoadTexture(TexturePath);
-    }
+    
 
     public virtual void Unload()
     {
