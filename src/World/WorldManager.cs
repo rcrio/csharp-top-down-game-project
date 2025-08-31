@@ -7,7 +7,6 @@ public class WorldManager
     private WorldBuilder _worldBuilder;
     public World World { get; private set; } // Used for player manager
     private TileSelector _tileSelector;
-    private DroppedItemManager _droppedItemManager;
     public WorldManager(InputManager inputManager, GameTime gameTime, MousePosition mousePosition, int worldSize)
     {
         _inputManager = inputManager;
@@ -23,6 +22,7 @@ public class WorldManager
     // We update non-constructor parameters, because constructor parameters usually get updated a level above us.
     public void Update()
     {
+        World.Update(_gameTime.DeltaTime);
         _tileSelector.Update();
     }
 

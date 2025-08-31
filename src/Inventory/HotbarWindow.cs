@@ -87,6 +87,9 @@ public class HotbarWindow : Window
         {
             _currentIndex = 9;
         }
+
+        // Can refactor, remove _currentIndex from this class and just use inventory selected index 
+        _inventory.currentSelectedIndex = _currentIndex;
     }
 
     public override void Draw()

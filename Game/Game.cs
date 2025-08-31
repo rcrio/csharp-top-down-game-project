@@ -9,10 +9,7 @@ public class Game
     private GameTime _gameTime;
     private InputManager _inputManager;
     private SceneManager _sceneManager;
-    // can refactor by passing the reference down
 
-
-    // Constructor e
     public Game()
     {
         _windowManager = new WindowManager(1600, 900, 60);

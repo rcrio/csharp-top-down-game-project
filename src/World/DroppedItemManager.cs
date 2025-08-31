@@ -1,3 +1,5 @@
+using System.Numerics;
+
 public class DroppedItemManager
 {
     private List<DroppedItem> _droppedItems;
@@ -7,9 +9,15 @@ public class DroppedItemManager
         _droppedItems = new List<DroppedItem>();
     }
 
-    public void AddDroppedItem(Item item)
+    public void AddDroppedItem(ItemStack itemStack, int x, int y)
     {
-        //_droppedItems.Add(new DroppedItem(item));
+        _droppedItems.Add(new DroppedItem(itemStack, new Vector2(x, y)));
+        
+    }
+
+    public void AddThrownDroppedItem(ItemStack itemStack, Vector2 positionToThrowFrom, Direction direction)
+    {
+        _droppedItems.Add(new DroppedItem(itemStack, positionToThrowFrom, 30, direction));
     }
 
     public void RemoveDroppedItem(DroppedItem item)
@@ -19,17 +27,28 @@ public class DroppedItemManager
 
     public void Update(float deltaTime)
     {
-        foreach (var droppedItem in _droppedItems)
+        for (int i = _droppedItems.Count - 1; i >= 0; i--)
         {
-            droppedItem.Update(deltaTime);
+            DroppedItem droppedItem = _droppedItems[i];
+            if (droppedItem.IsAlive)
+            {
+                droppedItem.Update(deltaTime);
+            }
+            if (!droppedItem.IsAlive)
+            {
+                _droppedItems.RemoveAt(i);
+            }
         }
     }
 
-    public void Draw(int x, int y)
+    public void Draw()
     {
         foreach (var droppedItem in _droppedItems)
         {
-            droppedItem.Draw(x, y);
+            if (droppedItem.IsAlive)
+            {
+                droppedItem.Draw();
+            }
         }
     }
 }

@@ -2,7 +2,7 @@ public class Inventory
 {
     public int Size { get; private set; }
     public ItemStack[] ItemStacks { get; private set; }
-    public int currentSelectedIndex { get; private set; }
+    public int currentSelectedIndex { get; set; } // set used by hotbarwindow
 
     public Inventory(int size)
     {
@@ -64,6 +64,7 @@ public class Inventory
         }
     }
 
+    // could refactor to removeitem by replacing Item item with ItemStack
     public bool RemoveItem(Item item, int quantity = 1)
     {
         for (int i = 0; i < ItemStacks.Length; i++)

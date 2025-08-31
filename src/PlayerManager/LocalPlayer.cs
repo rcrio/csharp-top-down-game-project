@@ -1,5 +1,4 @@
 using System.Numerics;
-using Raylib_cs;
 
 public class LocalPlayer : Player
 {
@@ -25,6 +24,18 @@ public class LocalPlayer : Player
     // Refactor eventually to make player's face the cursor
     public void Update()
     {
+        if (_inputManager.DropItem() && Inventory.ItemStacks[Inventory.currentSelectedIndex] != null)
+        {
+            Console.WriteLine("Item drop called.");
+            // remove from player inventory
+            // throw item from player position + distance depending on the direction.
+            // will need to pass direction
+
+            var itemToDrop = Inventory.ItemStacks[Inventory.currentSelectedIndex];
+            var itemToDropClone = itemToDrop.Clone(1);
+            World.DroppedItemManager.AddThrownDroppedItem(itemToDropClone, Position, FacingDirection);
+            Inventory.RemoveItem(itemToDrop.Item, 1);
+        }
         Vector2 input = Vector2.Zero;
 
         if (_inputManager.MoveUp())
@@ -47,10 +58,7 @@ public class LocalPlayer : Player
             input.X += 1;
             FacingDirection = Direction.East;
         }
-        if (_inputManager.DropItem())
-        {
-            
-        }
+        
 
         Move(input, GameTime.DeltaTime);
     }

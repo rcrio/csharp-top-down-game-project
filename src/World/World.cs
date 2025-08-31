@@ -1,8 +1,6 @@
 // A class to store the world, to draw the world, and to check tile boundaries.
 // This does NOT handle world building, WorldBuilder does that.
 // WorldBuilder will populate the tiles.
-using System.ComponentModel;
-using System.IO.Pipes;
 using Raylib_cs;
 
 public class World
@@ -11,14 +9,14 @@ public class World
     private Tile[,] _tileGrid;
     public int Width { get; private set; }
     public int Height { get; private set; }
-    private DroppedItemManager _droppedItemManager;
+    public DroppedItemManager DroppedItemManager { get; private set; }
 
     public World(int width, int height, Tile[,] tileGrid)
     {
         Width = width;
         Height = height;
         _tileGrid = tileGrid;
-        _droppedItemManager = new DroppedItemManager();
+        DroppedItemManager = new DroppedItemManager();
     }
 
     // GetTile from the 2D Array. This does not use On-screen X and On-screen Y co-ordinates.
@@ -29,6 +27,10 @@ public class World
         return _tileGrid[x, y];
     }
 
+    public void Update(float deltaTime)
+    {
+        DroppedItemManager.Update(deltaTime);
+    }
     // Draws the tiles. This does not use On-screen X and On-screen Y co-ordinates.
     public void Draw(Camera2D camera)
     {
@@ -56,6 +58,8 @@ public class World
                 _tileGrid[x, y].Draw(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
             }
         }
+
+        DroppedItemManager.Draw();
     }
 
     // Document further
