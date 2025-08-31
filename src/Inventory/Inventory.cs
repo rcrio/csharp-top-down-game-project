@@ -20,7 +20,7 @@ public class Inventory
         // First try to add to existing stack
         for (int i = 0; i < ItemStacks.Length; i++)
         {
-            if (ItemStacks[i] != null && ItemStacks[i].Item.GetType() == item.GetType() && !ItemStacks[i].IsFull)
+            if (ItemStacks[i] != null && ItemStacks[i].Item.Id == item.Id && !ItemStacks[i].IsFull)
             {
                 quantity = ItemStacks[i].Add(quantity);
                 if (quantity <= 0) return true;

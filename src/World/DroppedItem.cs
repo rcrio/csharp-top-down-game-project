@@ -8,13 +8,16 @@ public class DroppedItem
     public float LifeTime { get; private set; } = 60f;
     public float TimeLived { get; private set; } = 0f;
     public bool IsAlive { get; private set; } = true;
+    public float CollectCooldown { get; private set; }
+    public bool CanCollect { get; private set; } = false;
     public float ThrowDistance { get; private set; }
     public float TravelledDistance { get; set; } = 0;
     public Direction DirectionToThrow { get; private set; }
-    public DroppedItem(ItemStack itemStack, Vector2 position, int throwDistance = 0, Direction directionToThrow = Direction.None)
+    public DroppedItem(ItemStack itemStack, Vector2 position, float collectCooldown = 0, int throwDistance = 0, Direction directionToThrow = Direction.None)
     {
         Position = position;
         ItemStack = itemStack;
+        CollectCooldown = collectCooldown;
         ThrowDistance = throwDistance;
         DirectionToThrow = directionToThrow;
     }
@@ -22,14 +25,16 @@ public class DroppedItem
     public void Update(float deltaTime)
     {
         TimeLived += deltaTime;
+
+        // Manages a dropped item's lifetime
         if (TimeLived >= LifeTime)
         {
             IsAlive = false;
         }
-        Console.WriteLine(TravelledDistance + " " + ThrowDistance);
+
+        // Manages how long a thrown dropped item can be thrown
         if (TravelledDistance < ThrowDistance)
         {
-            Console.WriteLine("Distance called");
             var posX = Position.X;
             var posY = Position.Y;
 
@@ -42,11 +47,16 @@ public class DroppedItem
             Vector2 newVec = new Vector2(posX, posY);
             Position = newVec;
         }
+
+        // Manages dropped item cooldown, mostly for throwing
+        if (TimeLived > CollectCooldown)
+        {
+            CanCollect = true;
+        }
     }
 
     public void Draw()
     {
-        
         ItemStack.Item.Draw((int)Position.X, (int)Position.Y);
     }
 }

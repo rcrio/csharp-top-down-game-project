@@ -14,8 +14,10 @@ public class LocalPlayer : Player
         int inventorySize,
         InputManager inputManager,
         float speed = 200f,
-        float pickUpRange = 32f)
-        : base(position, northTexturePath, southTexturePack, westTexturePath, eastTexturePath, gameTime, world, inventorySize, speed, pickUpRange)
+        float pickUpRange = 32f
+        )
+        :
+        base(position, northTexturePath, southTexturePack, westTexturePath, eastTexturePath, gameTime, world, inventorySize, speed, pickUpRange)
     {
         _inputManager = inputManager;
         GenerateDefaultInventory();
@@ -24,18 +26,29 @@ public class LocalPlayer : Player
     // Refactor eventually to make player's face the cursor
     public void Update()
     {
+        // Drop selected item logic
         if (_inputManager.DropItem() && Inventory.ItemStacks[Inventory.currentSelectedIndex] != null)
         {
             Console.WriteLine("Item drop called.");
-            // remove from player inventory
-            // throw item from player position + distance depending on the direction.
-            // will need to pass direction
 
             var itemToDrop = Inventory.ItemStacks[Inventory.currentSelectedIndex];
             var itemToDropClone = itemToDrop.Clone(1);
             World.DroppedItemManager.AddThrownDroppedItem(itemToDropClone, Position, FacingDirection);
             Inventory.RemoveItem(itemToDrop.Item, 1);
         }
+
+        // Pick up item logic
+        foreach (DroppedItem itemToCollect in World.DroppedItemManager.GetDroppedItemsInRadius(PickupBounds))
+        {
+            Console.WriteLine(itemToCollect.ItemStack.Item.Name);
+            int quantityToCollect = itemToCollect.ItemStack.Quantity;
+            if (Inventory.AddItem(itemToCollect.ItemStack.Item, quantityToCollect))
+            {
+                World.DroppedItemManager.RemoveDroppedItem(itemToCollect);
+            }
+        }
+
+        // Movement logic
         Vector2 input = Vector2.Zero;
 
         if (_inputManager.MoveUp())
@@ -59,7 +72,6 @@ public class LocalPlayer : Player
             FacingDirection = Direction.East;
         }
         
-
         Move(input, GameTime.DeltaTime);
     }
 

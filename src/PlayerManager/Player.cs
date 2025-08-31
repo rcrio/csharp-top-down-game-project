@@ -54,7 +54,7 @@ public abstract class Player
 
     public virtual void Load()
     {
-        Console.WriteLine("Loading player textures...adwldk wkldwlk dlk dlk lwdakdlkdlkd");
+        Console.WriteLine("Loading player textures...");
         NorthTexture = AssetManager.LoadTexture(NorthTexturePath);
         SouthTexture = AssetManager.LoadTexture(SouthTexturePath);
         WestTexture = AssetManager.LoadTexture(WestTexturePath);
@@ -171,7 +171,21 @@ public abstract class Player
             else if (Direction.East == FacingDirection)
             {
                 Raylib.DrawTexture(EastTexture, (int)Position.X, (int)Position.Y, Color.White);
-            }  
+            }
+        }
+    }
+
+    public Rectangle PickupBounds
+    {
+        get
+        {
+            return new Rectangle(
+                // Get the co-ordinate the top-left as that's where rectangle starts drawing
+                Position.X - PickupRange,
+                Position.Y - PickupRange,
+                Width + PickupRange * 2,
+                Height + PickupRange * 2
+            );
         }
     }
 
