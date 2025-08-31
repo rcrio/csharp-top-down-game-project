@@ -36,7 +36,7 @@ public class InputManager
 
     // Inventory
     private KeyboardKey inventoryKey = KeyboardKey.E;
-
+    private KeyboardKey dropKey = KeyboardKey.Q;
     // ========= Public Rebindable methods =========
 
     // Movement
@@ -80,6 +80,7 @@ public class InputManager
 
     // Inventory
     public bool OpenInventory() => Raylib.IsKeyPressed(inventoryKey);
+    public bool DropItem() => Raylib.IsKeyPressed(dropKey);
 
     // ========= Rebinding =========
 
@@ -117,6 +118,7 @@ public class InputManager
 
     // Inventory
     public void RebindInventory(KeyboardKey newKey) => inventoryKey = newKey;
+    public void RebindDrop(KeyboardKey newKey) => dropKey = newKey;
 
     // ====== Unrebindable ====== //
 

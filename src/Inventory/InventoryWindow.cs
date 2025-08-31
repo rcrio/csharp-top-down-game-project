@@ -82,7 +82,7 @@ public class InventoryWindow : Window
                             _slots[i].ItemStack = _draggedItem;
                             _draggedItem = null;
                         }
-                        else if (slotStack.GetId() == _draggedItem.GetId())
+                        else if (slotStack.Item.Id == _draggedItem.Item.Id)
                         {
                             // Same type: try to merge stacks
                             int total = slotStack.Quantity + _draggedItem.Quantity;
@@ -135,7 +135,7 @@ public class InventoryWindow : Window
                         }
                         // Right click with an item in your cursor, over a slot with the same items, to add one item to the slot stack.
                         // If the slot stack is max quantity, this doesn't work.
-                        else if (slotStack.GetId() == _draggedItem.GetId() && _draggedItem.Quantity < _draggedItem.MaxStack)
+                        else if (slotStack.Item.Id == _draggedItem.Item.Id && _draggedItem.Quantity < _draggedItem.MaxStack)
                         {
                             // Add **one item** from cursor into slot
                             _draggedItem.Add(1);

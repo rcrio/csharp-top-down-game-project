@@ -23,7 +23,7 @@ public class GameScene : Scene
 
         _mousePosition = new MousePosition(_cameraManager);
 
-        _worldManager = new WorldManager(inputManager, _mousePosition, 1000); // Later on, add gameTime
+        _worldManager = new WorldManager(inputManager, gameTime, _mousePosition, 20); // Later on, add gameTime
 
         _playerManager = new PlayerManager(inputManager, gameTime, _worldManager.World);
     }

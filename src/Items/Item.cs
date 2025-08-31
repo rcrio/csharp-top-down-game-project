@@ -1,3 +1,5 @@
+// removed get id THANKS MALTESER
+
 using System.Numerics;
 using Raylib_cs;
 
@@ -24,11 +26,6 @@ public abstract class Item
         {
             Texture = AssetManager.LoadTexture(spritePath);
         }
-    }
-
-    public virtual string GetId()
-    {
-        return Id;
     }
 
     // could refactor

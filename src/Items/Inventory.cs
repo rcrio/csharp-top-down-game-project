@@ -2,11 +2,13 @@ public class Inventory
 {
     public int Size { get; private set; }
     public ItemStack[] ItemStacks { get; private set; }
+    public int currentSelectedIndex { get; private set; }
 
     public Inventory(int size)
     {
         Size = size;
         ItemStacks = new ItemStack[size]; // all slots initialized to null by default
+        currentSelectedIndex = 0;
     }
 
     // Try to add item to inventory
@@ -49,7 +51,7 @@ public class Inventory
         // Exit if index is out of bounds.
         if (index > Size - 1) return;
 
-        if (ItemStacks[index] != null && ItemStacks[index].Item.GetId() == item.GetId() && !ItemStacks[index].IsFull)
+        if (ItemStacks[index] != null && ItemStacks[index].Item.Id == item.Id && !ItemStacks[index].IsFull)
         {
             quantity = ItemStacks[index].Add(quantity);
             if (quantity <= 0) return;
@@ -66,7 +68,7 @@ public class Inventory
     {
         for (int i = 0; i < ItemStacks.Length; i++)
         {
-            if (ItemStacks[i] != null && ItemStacks[i].Item.GetId() == item.GetId())
+            if (ItemStacks[i] != null && ItemStacks[i].Item.Id == item.Id)
             {
                 int removed = ItemStacks[i].Remove(quantity);
                 quantity -= removed;

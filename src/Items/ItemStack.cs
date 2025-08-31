@@ -50,10 +50,4 @@ public class ItemStack
     {
         return new ItemStack(Item, quantity);
     }
-
-    // could refactor to type? but Id works fine
-    public string GetId()
-    {
-        return Item.GetId();
-    }
 }

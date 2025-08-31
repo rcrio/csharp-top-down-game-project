@@ -22,6 +22,7 @@ public class LocalPlayer : Player
         GenerateDefaultInventory();
     }
 
+    // Refactor eventually to make player's face the cursor
     public void Update()
     {
         Vector2 input = Vector2.Zero;
@@ -45,6 +46,10 @@ public class LocalPlayer : Player
         {
             input.X += 1;
             FacingDirection = Direction.East;
+        }
+        if (_inputManager.DropItem())
+        {
+            
         }
 
         Move(input, GameTime.DeltaTime);
