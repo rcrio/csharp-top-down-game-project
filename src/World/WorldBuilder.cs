@@ -8,7 +8,7 @@ public class WorldBuilder
         // Refactor PlaceableItemFactory, at the moment we are using the Upper class to make ItemPlaceable.
         var terrain = (ItemPlaceableTerrain)TerrainFactory.Terrains["terrain_grass"];
         var floor = (ItemPlaceableFloor)FloorFactory.Floors["floor_wood"];
-        var obstacle = (ItemPlaceableObject)WallFactory.Walls["wall_stone"];
+        var obstacle = (ItemPlaceableObject)WallFactory.Walls["wall_wooden"];
 
         // Create a 2D array of tiles to use as a parameter for World
         Tile[,] tiles = new Tile[width, height];

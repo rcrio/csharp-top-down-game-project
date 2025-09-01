@@ -40,7 +40,6 @@ public static class AssetManager
         }
 
         Image image = Raylib.LoadImage(path);
-        Raylib.ImageResize(ref image, 16, 16);
 
         Texture2D texture = Raylib.LoadTextureFromImage(image);
         Raylib.UnloadImage(image);
