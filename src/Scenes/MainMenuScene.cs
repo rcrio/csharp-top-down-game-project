@@ -1,5 +1,4 @@
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
 using Raylib_cs;
 
 public class MainMenuScene : Scene
@@ -18,8 +17,7 @@ public class MainMenuScene : Scene
         GameTime = gameTime;
         MusicManager = musicManager;
         _optionIndex = 0;
-        _optionAmount = 3;
-        _selectorPosY = 20;
+        _optionAmount = 7;
         Load();
     }
 
@@ -44,7 +42,7 @@ public class MainMenuScene : Scene
         }
 
         // Scene changing or exit
-        if (_optionIndex == 0) // Play
+        if (_optionIndex == 0) // New Game
         {
             _selectorPosY = 20;
             if (InputManager.Select())
@@ -65,7 +63,46 @@ public class MainMenuScene : Scene
         if (_optionIndex == 2) // Exit
         {
             _selectorPosY = 80;
-            if (InputManager.Select()) RequestExit = true;
+            if (InputManager.Select())
+            {
+                
+            }
+        }
+
+        if (_optionIndex == 3) // Exit
+        {
+            _selectorPosY = 110;
+            if (InputManager.Select())
+            {
+                
+            }
+        }
+
+        if (_optionIndex == 4) // Exit
+        {
+            _selectorPosY = 140;
+            if (InputManager.Select())
+            {
+                
+            }
+        }
+
+        if (_optionIndex == 5) // Exit
+        {
+            _selectorPosY = 170;
+            if (InputManager.Select())
+            {
+                
+            }
+        }
+
+        if (_optionIndex == 6) // Exit
+        {
+            _selectorPosY = 200;
+            if (InputManager.Select())
+            {
+                RequestExit = true;
+            }
         }
     }
 
@@ -76,31 +113,41 @@ public class MainMenuScene : Scene
         int screenWidth = Raylib.GetScreenWidth();
         int screenHeight = Raylib.GetScreenHeight();
 
+        // Center the title horizontally, small padding at top
         int posX = (screenWidth / 2) - (_titleScreen.Width / 2);
-        int posY = 20; // Small padding from top
+        int posY = 20;
 
         Raylib.DrawTexture(_titleScreen, posX, posY, Color.White);
-        Font font = FontHandler.GetFontMenu();
-        float fontSize = 32;
-        float spacing = 1f;
-        float lineHeight = fontSize + 10; // smaller padding than +30 for tighter look
-        Vector2 startPos = new Vector2(50, 50);
 
-        string[] menuItems = { "Play", "Options", "Exit" };
+        Font font = FontHandler.GetFontMenu();
+        float fontSize = 48;
+        float spacing = 1f;
+        float lineHeight = fontSize + 10;
+
+        string[] menuItems = { "New Game", "Load Game", "Multiplayer", "Stats", "Options", "Credits", "Exit" };
+
+        // Total height of all menu items
+        float totalHeight = menuItems.Length * lineHeight;
+
+        // Start drawing so the last item ("Exit") ends up 20px above bottom
+        Vector2 startPos = new Vector2(50, screenHeight - totalHeight - 20);
 
         for (int i = 0; i < menuItems.Length; i++)
         {
+            // Normal order: New Game first, Exit last
             Vector2 pos = new Vector2(startPos.X, startPos.Y + i * lineHeight);
             Raylib.DrawTextEx(font, menuItems[i], pos, fontSize, spacing, Color.White);
 
-            // Draw selector arrow next to the currently selected option
-            if (i == _optionIndex) // assume you track the selected option by index
+            // Draw arrow next to the selected option
+            if (i == _optionIndex)
             {
                 Vector2 selectorPos = new Vector2(startPos.X - 30, pos.Y);
-                Raylib.DrawTextEx(font, "->", selectorPos, fontSize, spacing, Color.White);
+                Raylib.DrawTextEx(font, "*", selectorPos, fontSize, spacing, Color.White);
             }
         }
     }
+
+
 
     public virtual void Load()
     {

@@ -1,7 +1,4 @@
 using Raylib_cs;
-using System;
-using System.IO;
-using System.Collections.Generic;
 
 public static class AssetManager
 {
