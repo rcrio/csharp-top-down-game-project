@@ -9,6 +9,9 @@ public class MainMenuScene : Scene
     private int _selectorPosY;
     private Texture2D _titleScreen;
     private Font _thisFont;
+    private SoundPool _selectSoundPool;
+    private SoundPool _confirmSoundPool;
+    
 
     // Constructor for the Main Menu Scene
     public MainMenuScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager)
@@ -18,6 +21,8 @@ public class MainMenuScene : Scene
         MusicManager = musicManager;
         _optionIndex = 0;
         _optionAmount = 7;
+        _selectSoundPool = new SoundPool("select.mp3", 8);
+        _confirmSoundPool = new SoundPool("confirm.mp3", 8);
         Load();
     }
 
@@ -34,11 +39,13 @@ public class MainMenuScene : Scene
         if (InputManager.MoveUpSelect() || InputManager.ArrowUp())
         {
             _optionIndex = (_optionIndex - 1 + _optionAmount) % _optionAmount;
+            _selectSoundPool.Play();
         }
 
         if (InputManager.MoveDownSelect() || InputManager.ArrowDown())
         {
             _optionIndex = (_optionIndex + 1) % _optionAmount;
+            _selectSoundPool.Play();
         }
 
         // Scene changing or exit
@@ -47,52 +54,54 @@ public class MainMenuScene : Scene
             _selectorPosY = 20;
             if (InputManager.Select())
             {
+                _confirmSoundPool.Play();
                 RequestPush = new GameScene(InputManager, GameTime, MusicManager);
             }
         }
 
-        if (_optionIndex == 1) // Options
+        if (_optionIndex == 1) // Load Game
         {
             _selectorPosY = 50;
             if (InputManager.Select())
             {
-                RequestPush = new OptionsScene(InputManager, GameTime, MusicManager);
+                _confirmSoundPool.Play();
             }
         }
 
-        if (_optionIndex == 2) // Exit
+        if (_optionIndex == 2) // Multiplayer
         {
             _selectorPosY = 80;
             if (InputManager.Select())
             {
-                
+                _confirmSoundPool.Play();
             }
         }
 
-        if (_optionIndex == 3) // Exit
+        if (_optionIndex == 3) // Stats
         {
             _selectorPosY = 110;
             if (InputManager.Select())
             {
-                
+                _confirmSoundPool.Play();
             }
         }
 
-        if (_optionIndex == 4) // Exit
+        if (_optionIndex == 4) // Options
         {
             _selectorPosY = 140;
             if (InputManager.Select())
             {
-                
+                _confirmSoundPool.Play();
+                RequestPush = new OptionsScene(InputManager, GameTime, MusicManager);
             }
         }
 
-        if (_optionIndex == 5) // Exit
+        if (_optionIndex == 5) // Credits
         {
             _selectorPosY = 170;
             if (InputManager.Select())
             {
-                
+                _confirmSoundPool.Play();
             }
         }
 
