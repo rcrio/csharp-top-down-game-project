@@ -24,7 +24,7 @@ public abstract class Item
 
         if (!string.IsNullOrEmpty(spritePath))
         {
-            Texture = AssetManager.LoadTexture(spritePath);
+            Texture = AssetManager.LoadTexture16(spritePath);
         }
     }
 
@@ -68,8 +68,6 @@ public abstract class Item
             Raylib.DrawTexturePro(Texture, src, dest, origin, 0f, Color.White);
         }
     }
-
-    
 
     public virtual void Unload()
     {

@@ -23,7 +23,7 @@ public class PlayerManager
 
     public void Update()
     {
-        LocalPlayer.Update();
+        LocalPlayer.Update(_gameTime.DeltaTime);
         _inventoryWindow.Update();
         _hotbarWindow.Update();
     }

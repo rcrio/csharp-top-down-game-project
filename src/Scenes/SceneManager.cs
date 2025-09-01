@@ -2,6 +2,9 @@
 // It does NOT handle input itself; input is passed to scenes through other managers.
 public class SceneManager
 {
+    private InputManager _inputManager;
+    private GameTime _gameTime;
+    private MusicManager _musicManager;
     private Stack<Scene> _scenes; // Stack to hold all active scenes. Top of the stack is the currently active scene.
 
     private Scene _nextSceneToPush; // Holds a scene that should be pushed at the end of the current frame.
@@ -10,15 +13,24 @@ public class SceneManager
 
     private bool _shouldExit; // Flag indicating that the game should exit.
 
+    // could refactor by using inputManager and gameTime in variables here by using constructor DI instead of passing it thorugh completely
+
+    
+
     // Constructor: initializes the stack and pushes the initial scene (main menu)
     public SceneManager(InputManager inputManager, GameTime gameTime)
     {
+        _inputManager = inputManager;
+        _gameTime = gameTime;
+        _musicManager = new MusicManager();
         _scenes = new Stack<Scene>();
 
         // Push the main menu scene as the first active scene
-        _scenes.Push(new MainMenuScene(inputManager, gameTime));
+        _scenes.Push(new MainMenuScene(_inputManager, _gameTime, _musicManager));
 
         _shouldExit = false; // Game does not exit immediately
+        
+        
     }
 
     // Request to push a new scene. It will not be pushed immediately, but after the current update.
@@ -49,6 +61,9 @@ public class SceneManager
 
         // Update the active scene first. GameUpdate -> SceneManagerUpdate -> SceneUpdate
         active.Update();
+
+        // Update music before potentially changing scenes
+        _musicManager.Update(_gameTime.DeltaTime);
 
         // Handle any requests made by the active scene
         if (active.RequestExit) _shouldExit = true;          // Scene requested game exit. Exit the game completely

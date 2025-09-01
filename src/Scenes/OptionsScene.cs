@@ -3,14 +3,17 @@ using Raylib_cs;
 public class OptionsScene : Scene
 {
     // InputManager and GameTime inherited from Scene
-    public OptionsScene(InputManager inputManager, GameTime gameTime)
+    public OptionsScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager)
     {
         InputManager = inputManager;
         GameTime = gameTime;
+        MusicManager = musicManager;
     }
 
     public override void Update()
     {
+        MusicManager.Update(GameTime.DeltaTime);
+        
         if (InputManager.Return())
         {
             RequestPop = true;

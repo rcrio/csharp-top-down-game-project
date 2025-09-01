@@ -13,6 +13,12 @@ public class Game
     public Game()
     {
         _windowManager = new WindowManager(1600, 900, 60);
+        // Initialise the window
+        _windowManager.Init();
+        // Initialise audio
+        Raylib.InitAudioDevice();
+        // Load font
+        FontHandler.LoadFont();
         _gameTime = new GameTime();
         _inputManager = new InputManager();
         _sceneManager = new SceneManager(_inputManager, _gameTime);
@@ -21,12 +27,6 @@ public class Game
     // Initalise the window, and the game loop then runs
     public void Run()
     {
-        
-        // Initialise the window
-        _windowManager.Init();
-        // Load font
-        FontHandler.LoadFont();
-
         // Main game loop
         while (!Raylib.WindowShouldClose() && !_sceneManager.ShouldClose())
         {
@@ -43,6 +43,7 @@ public class Game
 
         // Game loop exited, now raylib closes
         FontHandler.UnloadFont();
+        Raylib.CloseAudioDevice();
         Raylib.CloseWindow();
     }
 }

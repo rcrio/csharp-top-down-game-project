@@ -12,11 +12,12 @@ public class GameScene : Scene
     private PlayerManager _playerManager;
     private bool _inventoryOpen = false;
 
-    public GameScene(InputManager inputManager, GameTime gameTime)
+    public GameScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager)
     {
         // reorganise variables
         InputManager = inputManager;
         GameTime = gameTime;
+        MusicManager = musicManager;
         _gameClock = new GameClock();
 
         _cameraManager = new CameraManager(new Vector2(400, 400), new Vector2(0, 0), inputManager);
@@ -34,6 +35,10 @@ public class GameScene : Scene
 
         // Game clock update
         _gameClock.Update(GameTime.DeltaTime); // ticks in-game clock
+
+        // Music update
+        MusicManager.Play("song_longview1.mp3", 7f); // fade in 1 second
+        MusicManager.Update(GameTime.DeltaTime);
 
         // Update camera, could refactor
         var target = _playerManager.LocalPlayer.Center;

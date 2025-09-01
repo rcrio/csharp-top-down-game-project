@@ -5,6 +5,7 @@ public abstract class Scene
     public bool RequestExit { get; protected set; } = false;
     public InputManager InputManager { get; protected set; } 
     public GameTime GameTime { get; protected set; }
+    public MusicManager MusicManager { get; protected set; }
 
     public abstract void Update();
     public abstract void Draw();

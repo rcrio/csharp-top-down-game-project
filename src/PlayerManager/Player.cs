@@ -25,6 +25,8 @@ public abstract class Player
     public float Speed { get; private set; }
     public float PickupRange { get; private set; }
     public Direction FacingDirection { get; set; } = Direction.South;
+    protected float _pickupCooldown = 0.09f; // seconds between pickups
+    protected float _timeSinceLastPickup = 0f;
 
 
     protected Player(
@@ -52,13 +54,14 @@ public abstract class Player
         Load();
     }
 
+    // Refactor, move graphics out of player into local player.
     public virtual void Load()
     {
         Console.WriteLine("Loading player textures...");
-        NorthTexture = AssetManager.LoadTexture(NorthTexturePath);
-        SouthTexture = AssetManager.LoadTexture(SouthTexturePath);
-        WestTexture = AssetManager.LoadTexture(WestTexturePath);
-        EastTexture = AssetManager.LoadTexture(EastTexturePath);
+        NorthTexture = AssetManager.LoadTexture16(NorthTexturePath);
+        SouthTexture = AssetManager.LoadTexture16(SouthTexturePath);
+        WestTexture = AssetManager.LoadTexture16(WestTexturePath);
+        EastTexture = AssetManager.LoadTexture16(EastTexturePath);
     }
 
     public virtual void Unload()

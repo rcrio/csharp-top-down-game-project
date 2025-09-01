@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 using Raylib_cs;
 
 public class MainMenuScene : Scene
@@ -7,19 +8,30 @@ public class MainMenuScene : Scene
     private int _optionIndex;
     private int _optionAmount;
     private int _selectorPosY;
+    private Texture2D _titleScreen;
+    private Font _thisFont;
 
     // Constructor for the Main Menu Scene
-    public MainMenuScene(InputManager inputManager, GameTime gameTime)
+    public MainMenuScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager)
     {
         InputManager = inputManager;
         GameTime = gameTime;
+        MusicManager = musicManager;
         _optionIndex = 0;
         _optionAmount = 3;
         _selectorPosY = 20;
+        Load();
     }
 
     public override void Update()
     {
+        // Update delta time
+        GameTime.Update();
+
+        // Update music
+        MusicManager.Play("song_gravity.mp3", 7f); // fade in 1 second        
+        MusicManager.Update(GameTime.DeltaTime);
+
         // Logic for option selector
         if (InputManager.MoveUpSelect() || InputManager.ArrowUp())
         {
@@ -37,7 +49,7 @@ public class MainMenuScene : Scene
             _selectorPosY = 20;
             if (InputManager.Select())
             {
-                RequestPush = new GameScene(InputManager, GameTime);
+                RequestPush = new GameScene(InputManager, GameTime, MusicManager);
             }
         }
 
@@ -46,17 +58,14 @@ public class MainMenuScene : Scene
             _selectorPosY = 50;
             if (InputManager.Select())
             {
-                RequestPush = new OptionsScene(InputManager, GameTime);
+                RequestPush = new OptionsScene(InputManager, GameTime, MusicManager);
             }
         }
 
         if (_optionIndex == 2) // Exit
         {
             _selectorPosY = 80;
-            if (InputManager.Select())
-            {
-                RequestExit = true;
-            }
+            if (InputManager.Select()) RequestExit = true;
         }
     }
 
@@ -64,6 +73,13 @@ public class MainMenuScene : Scene
     {
         Raylib.ClearBackground(Color.Black);
 
+        int screenWidth = Raylib.GetScreenWidth();
+        int screenHeight = Raylib.GetScreenHeight();
+
+        int posX = (screenWidth / 2) - (_titleScreen.Width / 2);
+        int posY = 20; // Small padding from top
+
+        Raylib.DrawTexture(_titleScreen, posX, posY, Color.White);
         Font font = FontHandler.GetFontMenu();
         float fontSize = 32;
         float spacing = 1f;
@@ -86,6 +102,12 @@ public class MainMenuScene : Scene
         }
     }
 
+    public virtual void Load()
+    {
+        Console.WriteLine("Loading title screen...");
+        _titleScreen = AssetManager.LoadTitleTexture("title.png");
+        _thisFont = AssetManager.LoadFont("ferrum.otf");
+    }
     public override void Unload()
     {
 

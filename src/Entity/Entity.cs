@@ -42,7 +42,7 @@ public abstract class Entity
     // Load
     public virtual void Load()
     {
-        AssetManager.LoadTexture(TexturePath);
+        AssetManager.LoadTexture16(TexturePath);
     }
     public virtual void Unload()
     {

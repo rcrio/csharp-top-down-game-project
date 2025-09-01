@@ -3,6 +3,9 @@ using System.Numerics;
 public class LocalPlayer : Player
 {
     private InputManager _inputManager;
+
+    // Sounds
+    private SoundPool _itemCollectSoundPool;
     public LocalPlayer(
         Vector2 position,
         string northTexturePath,
@@ -21,10 +24,12 @@ public class LocalPlayer : Player
     {
         _inputManager = inputManager;
         GenerateDefaultInventory();
+
+        _itemCollectSoundPool = new SoundPool("item_collect.mp3", 8);
     }
 
-    // Refactor eventually to make player's face the cursor
-    public void Update()
+    // Refactor eventually to make player's face the cursor.
+    public void Update(float deltaTime)
     {
         // Drop selected item logic
         if (_inputManager.DropItem() && Inventory.ItemStacks[Inventory.currentSelectedIndex] != null)
@@ -35,18 +40,28 @@ public class LocalPlayer : Player
             var itemToDropClone = itemToDrop.Clone(1);
             World.DroppedItemManager.AddThrownDroppedItem(itemToDropClone, Position, FacingDirection);
             Inventory.RemoveItem(itemToDrop.Item, 1);
+
         }
 
         // Pick up item logic
-        foreach (DroppedItem itemToCollect in World.DroppedItemManager.GetDroppedItemsInRadius(PickupBounds))
+        _timeSinceLastPickup += GameTime.DeltaTime;
+
+        if (_timeSinceLastPickup >= _pickupCooldown)
         {
-            Console.WriteLine(itemToCollect.ItemStack.Item.Name);
-            int quantityToCollect = itemToCollect.ItemStack.Quantity;
-            if (Inventory.AddItem(itemToCollect.ItemStack.Item, quantityToCollect))
+            foreach (DroppedItem itemToCollect in World.DroppedItemManager.GetDroppedItemsInRadius(PickupBounds))
             {
-                World.DroppedItemManager.RemoveDroppedItem(itemToCollect);
+                int quantityToCollect = itemToCollect.ItemStack.Quantity;
+                if (Inventory.AddItem(itemToCollect.ItemStack.Item, quantityToCollect))
+                {
+                    World.DroppedItemManager.RemoveDroppedItem(itemToCollect);
+                    _itemCollectSoundPool.Play();
+
+                    _timeSinceLastPickup = 0f; // reset cooldown
+                    break; // optional: only pick up one item per cooldown
+                }
             }
         }
+
 
         // Movement logic
         Vector2 input = Vector2.Zero;
@@ -71,7 +86,7 @@ public class LocalPlayer : Player
             input.X += 1;
             FacingDirection = Direction.East;
         }
-        
+
         Move(input, GameTime.DeltaTime);
     }
 
