@@ -32,11 +32,16 @@ public class Tile
         _itemPlaceableObject = null;
     }
 
-    public void Draw(int x, int y)
+    public void DrawBeforePlayer(int x, int y)
     {
         _itemPlaceableTerrain.Draw(x, y);
         _itemPlaceableFloor?.Draw(x, y);
-        _itemPlaceableObject?.Draw(x, y);
+        _itemPlaceableObject?.DrawWallBottomInFront(x, y);
+    }
+
+    public void DrawAfterPlayer(int x, int y)
+    {
+        _itemPlaceableObject?.DrawWallTopBehindPlayer(x, y);
     }
 
     // Checks if current tile is walkable.

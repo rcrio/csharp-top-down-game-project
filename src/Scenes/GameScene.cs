@@ -72,10 +72,12 @@ public class GameScene : Scene
         Raylib.BeginMode2D(_cameraManager.Camera);
 
         // Draw the world
-        _worldManager.Draw();
+        _worldManager.DrawBeforePlayer();
 
         // Draw tile selector
         _playerManager.Draw();
+
+        _worldManager.DrawAfterPlayer();
 
         Raylib.EndMode2D(); // Camera graphics end here
 

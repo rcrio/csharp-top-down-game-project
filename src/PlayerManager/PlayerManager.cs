@@ -47,6 +47,4 @@ public class PlayerManager
     {
         LocalPlayer.Unload();
     }
-    
-    
 }

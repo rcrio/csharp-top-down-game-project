@@ -97,5 +97,6 @@ public class LocalPlayer : Player
         Inventory.AddItemByIndex(2, FloorFactory.Floors["floor_wood"], 98);
         Inventory.AddItemByIndex(3, FloorFactory.Floors["floor_wood"], 30);
         Inventory.AddItemByIndex(4, FloorFactory.Floors["floor_wood"], 30);
+        Inventory.AddItemByIndex(5, WallFactory.Walls["wall_wooden"], 30);
     }
 }

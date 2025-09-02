@@ -26,10 +26,15 @@ public class WorldManager
         _tileSelector.Update();
     }
 
-    public void Draw() // Method gets called relative to the camera
+    public void DrawBeforePlayer() // Method gets called relative to the camera
     {
-        World.Draw(_mousePosition.CameraManager.Camera);
+        World.DrawBeforePlayer(_mousePosition.CameraManager.Camera);
         _tileSelector.DrawTile();
+    }
+
+    public void DrawAfterPlayer()
+    {
+        World.DrawAfterPlayer(_mousePosition.CameraManager.Camera);
     }
 
     public void DrawInfo() // Method gets called statically
