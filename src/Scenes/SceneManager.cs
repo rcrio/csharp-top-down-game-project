@@ -7,7 +7,7 @@ public class SceneManager
     private MusicManager _musicManager;
     private Stack<Scene> _scenes; // Stack to hold all active scenes. Top of the stack is the currently active scene.
 
-    private Scene _nextSceneToPush; // Holds a scene that should be pushed at the end of the current frame.
+    private Scene? _nextSceneToPush; // Holds a scene that should be pushed at the end of the current frame.
     
     private bool _shouldPop; // Flag indicating that the top scene should be popped after the current update.
 
@@ -34,23 +34,11 @@ public class SceneManager
     }
 
     // Request to push a new scene. It will not be pushed immediately, but after the current update.
-    public void Push(Scene scene)
-    {
-        _nextSceneToPush = scene;
-    }
 
     // Request to pop the current scene. Actual pop happens after the current update.
     // This prevents modifying the stack in the middle of a scene's Update() call.
-    public void Pop()
-    {
-        _shouldPop = true;
-    }
 
     // Request to exit the game. Will be checked in ShouldClose().
-    public void RequestExit()
-    {
-        _shouldExit = true;
-    }
 
     // Updates the active scene and handles queued scene operations.
     public void Update()
@@ -95,12 +83,6 @@ public class SceneManager
     {
         if (_scenes.Count == 0) return;
         _scenes.Peek().Draw();
-    }
-
-    // Returns the currently active scene, or null if no scenes exist
-    public Scene GetActiveScene()
-    {
-        return _scenes.Count > 0 ? _scenes.Peek() : null;
     }
 
     // Determines if the game should close:
