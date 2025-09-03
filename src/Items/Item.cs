@@ -9,23 +9,17 @@ public abstract class Item
     public string Name { get; private set; }
     public string Description { get; private set; }
     public int MaxStack { get; private set; }
-    public string TexturePath { get; set; }
     public Texture2D Texture { get; private set; }
     public bool CanBeInInventory { get; set; }
 
-    public Item(string id, string name, string description, int maxStack, string spritePath = null, bool canBeInInventory = true)
+    public Item(string id, string name, string description, int maxStack, Texture2D texture, bool canBeInInventory = true)
     {
         Id = id;
         Name = name;
         Description = description;
         MaxStack = maxStack;
-        TexturePath = spritePath;
+        Texture = texture;
         CanBeInInventory = canBeInInventory;
-
-        if (!string.IsNullOrEmpty(spritePath))
-        {
-            Texture = AssetManager.LoadTexture(spritePath);
-        }
     }
 
     // could refactor
@@ -66,15 +60,6 @@ public abstract class Item
             Vector2 origin = Vector2.Zero;
 
             Raylib.DrawTexturePro(Texture, src, dest, origin, 0f, Color.White);
-        }
-    }
-
-    public virtual void Unload()
-    {
-        if (Texture.Id != 0)
-        {
-            Raylib.UnloadTexture(Texture);
-            Texture = default; // reset
         }
     }
 }

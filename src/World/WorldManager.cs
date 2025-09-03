@@ -4,18 +4,20 @@ public class WorldManager
     private GameTime _gameTime;
     private MousePosition _mousePosition;
     private int _worldSize;
+    private FactoryLoader _factoryLoader;
     private WorldBuilder _worldBuilder;
     public World World { get; private set; } // Used for player manager
     private TileSelector _tileSelector;
-    public WorldManager(InputManager inputManager, GameTime gameTime, MousePosition mousePosition, int worldSize)
+    public WorldManager(InputManager inputManager, GameTime gameTime, MousePosition mousePosition, FactoryLoader factoryLoader, int worldSize)
     {
         _inputManager = inputManager;
         _gameTime = gameTime;
         _mousePosition = mousePosition;
         _worldSize = worldSize;
-        _worldBuilder = new WorldBuilder();
+
+        _factoryLoader = factoryLoader;
+        _worldBuilder = new WorldBuilder(_factoryLoader);
         World = _worldBuilder.BuildDefaultWorld(_worldSize);
-        // Make Tile cell null first.
         _tileSelector = new TileSelector(_inputManager, _mousePosition, World, null);
     }
 
@@ -40,5 +42,15 @@ public class WorldManager
     public void DrawInfo() // Method gets called statically
     {
         _tileSelector.DrawInfo();
+    }
+
+    public void Load()
+    {
+        _tileSelector.Load();
+    }
+
+    public void Unload()
+    {
+        _tileSelector.Unload();
     }
 }

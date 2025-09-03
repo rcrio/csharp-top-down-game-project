@@ -10,6 +10,7 @@ public class TileSelector
     private int _tileX;
     private int _tileY;
     private InputManager _inputManager;
+    private Font _font;
 
     public TileSelector(InputManager inputManager, MousePosition mousePosition, World world, Tile tileCell = null)
     {
@@ -46,7 +47,6 @@ public class TileSelector
 
     public void DrawInfo()
     {
-        Font font = FontHandler.GetFontNormal();
         float fontSize = 16;   // desired text size for drawing
         float spacing = 1;     // optional letter spacing
         float lineHeight = fontSize + 4; // space between lines
@@ -56,29 +56,29 @@ public class TileSelector
         {
             var info = Tile.TileInformation(); // call once
 
-            Raylib.DrawTextEx(font, "Terrain: " + info["Terrain Name"], pos, fontSize, spacing, Color.White);
+            Raylib.DrawTextEx(_font, "Terrain: " + info["Terrain Name"], pos, fontSize, spacing, Color.White);
             pos.Y += lineHeight;
 
-            Raylib.DrawTextEx(font, "Description: " + info["Terrain Description"], pos, fontSize, spacing, Color.White);
+            Raylib.DrawTextEx(_font, "Description: " + info["Terrain Description"], pos, fontSize, spacing, Color.White);
             pos.Y += lineHeight;
 
-            Raylib.DrawTextEx(font, "Floor: " + info["Floor Name"], pos, fontSize, spacing, Color.White);
+            Raylib.DrawTextEx(_font, "Floor: " + info["Floor Name"], pos, fontSize, spacing, Color.White);
             pos.Y += lineHeight;
 
-            Raylib.DrawTextEx(font, "Description: " + info["Floor Description"], pos, fontSize, spacing, Color.White);
+            Raylib.DrawTextEx(_font, "Description: " + info["Floor Description"], pos, fontSize, spacing, Color.White);
             pos.Y += lineHeight;
 
-            Raylib.DrawTextEx(font, "Object/Wall: " + info["Object Name"], pos, fontSize, spacing, Color.White);
+            Raylib.DrawTextEx(_font, "Object/Wall: " + info["Object Name"], pos, fontSize, spacing, Color.White);
             pos.Y += lineHeight;
 
-            Raylib.DrawTextEx(font, "Description: " + info["Object Description"], pos, fontSize, spacing, Color.White);
+            Raylib.DrawTextEx(_font, "Description: " + info["Object Description"], pos, fontSize, spacing, Color.White);
         }
         else
         {
-            Raylib.DrawTextEx(font, "Impassable area", pos, fontSize, spacing, Color.White);
+            Raylib.DrawTextEx(_font, "Impassable area", pos, fontSize, spacing, Color.White);
         }
         pos.Y += lineHeight;
-        Raylib.DrawTextEx(font, "x: " + _tileX + ", y: " + _tileY, pos, fontSize, spacing, Color.White);
+        Raylib.DrawTextEx(_font, "x: " + _tileX + ", y: " + _tileY, pos, fontSize, spacing, Color.White);
     }
 
 
@@ -94,5 +94,16 @@ public class TileSelector
         {
             Tile.RemoveObject();
         }
+    }
+
+    public void Load()
+    {
+        _font = AssetManager.LoadFont("Fonts/Roboto-Regular.ttf", 16);
+    }
+
+    public void Unload()
+    {
+        AssetManager.UnloadFont(_font);
+        _font = new Font();
     }
 }

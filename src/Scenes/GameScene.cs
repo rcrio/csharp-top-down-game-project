@@ -7,26 +7,27 @@ public class GameScene : Scene
     // InputManager InputManager
     // GameTime GameTime
     // MusicManager MusicManager
-    
+
     private GameClock _gameClock;
     private CameraManager _cameraManager;
     private MousePosition _mousePosition;
-
+    private FactoryLoader _factoryLoader;
     private WorldManager _worldManager;
     private PlayerManager _playerManager;
     private bool _inventoryOpen = false;
 
-    public GameScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager) : base(inputManager, gameTime, musicManager)
+    public GameScene(InputManager inputManager, GameTime gameTime) : base(inputManager, gameTime)
     {
         _gameClock = new GameClock();
 
         _cameraManager = new CameraManager(new Vector2(400, 400), new Vector2(0, 0), inputManager);
 
         _mousePosition = new MousePosition(_cameraManager);
+        _factoryLoader = new FactoryLoader();
 
-        _worldManager = new WorldManager(inputManager, gameTime, _mousePosition, 20); // Later on, add gameTime
+        _worldManager = new WorldManager(inputManager, gameTime, _mousePosition, _factoryLoader, 20); // Later on, add gameTime
 
-        _playerManager = new PlayerManager(inputManager, gameTime, _worldManager.World);
+        _playerManager = new PlayerManager(inputManager, gameTime, _worldManager.World, _factoryLoader);
     }
     public override void Update()
     {
@@ -35,10 +36,6 @@ public class GameScene : Scene
 
         // Game clock update
         _gameClock.Update(GameTime.DeltaTime); // ticks in-game clock
-
-        // Music update
-        MusicManager.Play("song_longview1.mp3", 7f); // fade in 1 second
-        MusicManager.Update(GameTime.DeltaTime);
 
         // Update camera, could refactor
         var target = _playerManager.LocalPlayer.Center;
@@ -94,8 +91,19 @@ public class GameScene : Scene
         _gameClock.DrawClock();
     }
 
+    public override void Load()
+    {   
+        _gameClock.Load();
+        _factoryLoader.Load();
+        _worldManager.Load();
+        _playerManager.Load();
+    }
+    
     public override void Unload()
     {
+        _gameClock.Unload();
+        _factoryLoader.Unload();
+        _worldManager.Unload();
         _playerManager.Unload();
     }
 }

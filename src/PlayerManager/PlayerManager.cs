@@ -5,18 +5,20 @@ public class PlayerManager
     private InputManager _inputManager;
     private GameTime _gameTime;
     private World _world;
+    private FactoryLoader _factoryLoader;
     // in the future, we will use list of players
     public LocalPlayer LocalPlayer { get; private set; }
     private InventoryWindow _inventoryWindow;
     private HotbarWindow _hotbarWindow;
 
-    public PlayerManager(InputManager inputManager, GameTime gameTime, World world)
+    public PlayerManager(InputManager inputManager, GameTime gameTime, World world, FactoryLoader factoryLoader)
     {
         _inputManager = inputManager;
         _gameTime = gameTime;
         _world = world;
+        _factoryLoader = factoryLoader;
 
-        LocalPlayer = new LocalPlayer(new Vector2(0, 0), "player_north.png", "player_south.png", "player_west.png", "player_east.png", _gameTime, _world, 50, _inputManager);
+        LocalPlayer = new LocalPlayer(new Vector2(0, 0), "player_north.png", "player_south.png", "player_west.png", "player_east.png", _gameTime, _world, 50, _inputManager, _factoryLoader);
         _inventoryWindow = new InventoryWindow(new Vector2(0, 0), LocalPlayer.Inventory, _inputManager);
         _hotbarWindow = new HotbarWindow(new Vector2(0, 0), LocalPlayer.Inventory, _inputManager);
     }
@@ -41,6 +43,11 @@ public class PlayerManager
     public void HotbarDraw()
     {
         _hotbarWindow.Draw();
+    }
+
+    public void Load()
+    {
+        LocalPlayer.Load();
     }
 
     public void Unload()

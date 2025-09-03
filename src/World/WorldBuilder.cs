@@ -1,14 +1,20 @@
 public class WorldBuilder
 {
+    public FactoryLoader FactoryLoader { get; private set; }
+    public WorldBuilder(FactoryLoader factoryLoader)
+    {
+        FactoryLoader = factoryLoader;
+    }
+
     public World BuildDefaultWorld(int size)
     {
         int width = size;
         int height = size;
         // Create some default items for terrain, floor, object
-        // Refactor PlaceableItemFactory, at the moment we are using the Upper class to make ItemPlaceable.
-        var terrain = (ItemPlaceableTerrain)TerrainFactory.Terrains["terrain_grass"];
-        var floor = (ItemPlaceableFloor)FloorFactory.Floors["floor_wood"];
-        var obstacle = (ItemPlaceableObject)WallFactory.Walls["wall_wooden"];
+        // Refactor terrain, floor and wall dictionary to their actual types rather than use casting.
+        var terrain = (ItemPlaceableTerrain)FactoryLoader.TerrainFactory.Terrains["grass"];
+        var floor = (ItemPlaceableFloor)FactoryLoader.FloorFactory.Floors["wood"];
+        var obstacle = (ItemPlaceableObject)FactoryLoader.WallFactory.Walls["wood"];
 
         // Create a 2D array of tiles to use as a parameter for World
         Tile[,] tiles = new Tile[width, height];

@@ -6,9 +6,9 @@ public static class FontHandler
     public static Font FontMenu;
     public static void LoadFont()
     {
-        FontNormal = AssetManager.LoadFont("Roboto-Regular.ttf", 16);
+        FontNormal = AssetManager.LoadFont("Fonts/Roboto-Regular.ttf", 16);
         Raylib.SetTextureFilter(FontNormal.Texture, TextureFilter.Bilinear);
-        FontMenu = AssetManager.LoadFont("ferrum.otf", 48);
+        FontMenu = AssetManager.LoadFont("Fonts/ferrum.otf", 48);
         Raylib.SetTextureFilter(FontNormal.Texture, TextureFilter.Bilinear);
     }
 

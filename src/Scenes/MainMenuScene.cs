@@ -13,27 +13,22 @@ public class MainMenuScene : Scene
     private SoundPool _selectSoundPool;
     private SoundPool _confirmSoundPool;
     string[] menuItems = { "New Game", "Load Game", "Multiplayer", "Stats", "Options", "Credits", "Exit" };
-    string [] itemsLoaded = { "title.png" };
+    private Font _font;
     
 
     // Constructor for the Main Menu Scene
-    public MainMenuScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager) : base(inputManager, gameTime, musicManager)
+    public MainMenuScene(InputManager inputManager, GameTime gameTime) : base(inputManager, gameTime)
     {
         _optionIndex = 0;
         _optionAmount = menuItems.Length;
         _selectSoundPool = new SoundPool("select.mp3", 8);
         _confirmSoundPool = new SoundPool("confirm.mp3", 8);
-        Load();
     }
 
     public override void Update()
     {
         // Update delta time
         GameTime.Update();
-
-        // Update music
-        MusicManager.Play("song_gravity.mp3", 7f); // fade in 1 second        
-        MusicManager.Update(GameTime.DeltaTime);
 
         // Logic for option selector
         if (InputManager.MoveUpSelect() || InputManager.ArrowUp())
@@ -54,7 +49,7 @@ public class MainMenuScene : Scene
             if (InputManager.Select())
             {
                 _confirmSoundPool.Play();
-                RequestPush = new GameScene(InputManager, GameTime, MusicManager);
+                RequestPush = new GameScene(InputManager, GameTime);
             }
         }
 
@@ -87,7 +82,6 @@ public class MainMenuScene : Scene
             if (InputManager.Select())
             {
                 _confirmSoundPool.Play();
-                RequestPush = new OptionsScene(InputManager, GameTime, MusicManager);
             }
         }
 
@@ -115,9 +109,6 @@ public class MainMenuScene : Scene
         // Draw the title
         int titleX = (Raylib.GetScreenWidth() - _titleScreen.Width) / 2;
         Raylib.DrawTexture(_titleScreen, titleX, 20, Color.White);
-
-        // Menu setup
-        Font font = FontHandler.GetFontMenu();
         
         float fontSize = 48;
         float lineSpacing = fontSize + 10;
@@ -133,23 +124,24 @@ public class MainMenuScene : Scene
             Vector2 pos = new Vector2(startPos.X, startPos.Y - i * lineSpacing);
 
             // Draw menu item
-            Raylib.DrawTextEx(font, menuItems[reverseIndex], pos, fontSize, 1f, Color.White);
+            Raylib.DrawTextEx(_font, menuItems[reverseIndex], pos, fontSize, 1f, Color.White);
 
             // Draw selector arrow if selected
             if (reverseIndex == _optionIndex)
             {
                 Vector2 selectorPos = new Vector2(startPos.X - 30, pos.Y);
-                Raylib.DrawTextEx(font, "*", selectorPos, fontSize, 1f, Color.White);
+                Raylib.DrawTextEx(_font, "*", selectorPos, fontSize, 1f, Color.White);
             }
         }
     }
-    public virtual void Load()
+    public override void Load()
     {
-        Console.WriteLine("Loading title screen...");
-        _titleScreen = AssetManager.LoadTexture("title.png", 1000, 500);
+        _titleScreen = AssetManager.LoadTexture("Textures/title_smaller.png", 1000, 500);
+        _font = FontHandler.GetFontMenu(); // Don't need to call unload, font handler does this in the main game class
     }
     public override void Unload()
     {
-
+        AssetManager.UnloadTexture(_titleScreen);
+        _titleScreen = new Texture2D();
     }
 }

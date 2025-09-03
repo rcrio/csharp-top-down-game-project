@@ -31,7 +31,6 @@ public class Tile
     {
         _itemPlaceableObject = null;
     }
-
     public void DrawBeforePlayer(int x, int y)
     {
         _itemPlaceableTerrain.Draw(x, y);

@@ -3,6 +3,7 @@ using System.Numerics;
 public class LocalPlayer : Player
 {
     private InputManager _inputManager;
+    private FactoryLoader _factoryLoader;
 
     // Sounds
     private SoundPool _itemCollectSoundPool;
@@ -16,6 +17,7 @@ public class LocalPlayer : Player
         World world,
         int inventorySize,
         InputManager inputManager,
+        FactoryLoader factoryLoader,
         float speed = 200f,
         float pickUpRange = 32f
         )
@@ -23,14 +25,16 @@ public class LocalPlayer : Player
         base(position, northTexturePath, southTexturePack, westTexturePath, eastTexturePath, gameTime, world, inventorySize, speed, pickUpRange)
     {
         _inputManager = inputManager;
-        GenerateDefaultInventory();
+        _factoryLoader = factoryLoader;
 
         _itemCollectSoundPool = new SoundPool("item_collect.mp3", 8);
+        GenerateDefaultInventory();
     }
 
     // Refactor eventually to make player's face the cursor.
     public void Update(float deltaTime)
     {
+        
         // Drop selected item logic
         if (_inputManager.DropItem() && Inventory.ItemStacks[Inventory.currentSelectedIndex] != null)
         {
@@ -92,11 +96,12 @@ public class LocalPlayer : Player
 
     public void GenerateDefaultInventory()
     {
-        Inventory.AddItemByIndex(0, ItemFactory.Items["item_regular_wooden_pickaxe"]);
-        Inventory.AddItemByIndex(1, ItemFactory.Items["item_regular_wooden_sword"]);
-        Inventory.AddItemByIndex(2, FloorFactory.Floors["floor_wood"], 98);
-        Inventory.AddItemByIndex(3, FloorFactory.Floors["floor_wood"], 30);
-        Inventory.AddItemByIndex(4, FloorFactory.Floors["floor_wood"], 30);
-        Inventory.AddItemByIndex(5, WallFactory.Walls["wall_wooden"], 30);
+        Inventory.AddItemByIndex(0, _factoryLoader.ItemFactory.Items["wood_sword"]);
+        Inventory.AddItemByIndex(1, _factoryLoader.ItemFactory.Items["wood_pickaxe"]);
+        Inventory.AddItemByIndex(2, _factoryLoader.FloorFactory.Floors["wood"], 98);
+        Inventory.AddItemByIndex(3, _factoryLoader.FloorFactory.Floors["wood"], 30);
+        Inventory.AddItemByIndex(4, _factoryLoader.FloorFactory.Floors["wood"], 30);
+        Inventory.AddItemByIndex(5, _factoryLoader.WallFactory.Walls["wood"], 30);
     }
+
 }
