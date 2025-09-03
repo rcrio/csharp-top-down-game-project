@@ -24,7 +24,7 @@ public abstract class Item
 
         if (!string.IsNullOrEmpty(spritePath))
         {
-            Texture = AssetManager.LoadTexture16(spritePath);
+            Texture = AssetManager.LoadTexture(spritePath);
         }
     }
 

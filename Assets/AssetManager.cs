@@ -10,7 +10,7 @@ public static class AssetManager
     private static readonly List<Sound> loadedSounds = new();
     private static readonly List<Music> loadedMusic = new();
 
-    public static Texture2D LoadTitleTexture(string filename)
+    public static Texture2D LoadTexture(string filename, int width = 0, int height = 0)
     {
         string path = Path.Combine(AssetsRoot, filename);
         if (!File.Exists(path))
@@ -20,33 +20,18 @@ public static class AssetManager
         }
 
         Image image = Raylib.LoadImage(path);
-        Raylib.ImageResize(ref image, 998, 561);
-
-        Texture2D texture = Raylib.LoadTextureFromImage(image);
-        Raylib.UnloadImage(image);
-
-        loadedTextures.Add(texture);
-
-        Console.WriteLine($"Loaded & resized texture: {filename} -> {998}x{561}");
-        return texture;
-    }
-    public static Texture2D LoadTexture16(string filename)
-    {
-        string path = Path.Combine(AssetsRoot, filename);
-        if (!File.Exists(path))
+        // If width and height are provided, resize the image
+        if (width > 0 && height > 0)
         {
-            Console.WriteLine($"ERROR: Asset not found: {path}");
-            return new Texture2D(); // safe fallback
+            Raylib.ImageResize(ref image, width, height);
         }
 
-        Image image = Raylib.LoadImage(path);
-
-        Texture2D texture = Raylib.LoadTextureFromImage(image);
-        Raylib.UnloadImage(image);
+        Texture2D texture = Raylib.LoadTextureFromImage(image); // Loads into VRAM
+        Raylib.UnloadImage(image); // Unload from RAM, you still need to call UnloadTexture later
 
         loadedTextures.Add(texture);
 
-        Console.WriteLine($"Loaded & resized texture: {filename} -> {16}x{16}");
+        Console.WriteLine($"Loaded & resized texture: {filename} -> {texture.Width}x{texture.Height}");
         return texture;
     }
 

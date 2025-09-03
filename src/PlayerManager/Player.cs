@@ -58,10 +58,10 @@ public abstract class Player
     public virtual void Load()
     {
         Console.WriteLine("Loading player textures...");
-        NorthTexture = AssetManager.LoadTexture16(NorthTexturePath);
-        SouthTexture = AssetManager.LoadTexture16(SouthTexturePath);
-        WestTexture = AssetManager.LoadTexture16(WestTexturePath);
-        EastTexture = AssetManager.LoadTexture16(EastTexturePath);
+        NorthTexture = AssetManager.LoadTexture(NorthTexturePath);
+        SouthTexture = AssetManager.LoadTexture(SouthTexturePath);
+        WestTexture = AssetManager.LoadTexture(WestTexturePath);
+        EastTexture = AssetManager.LoadTexture(EastTexturePath);
     }
 
     public virtual void Unload()
