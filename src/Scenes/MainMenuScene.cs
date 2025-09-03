@@ -3,7 +3,10 @@ using Raylib_cs;
 
 public class MainMenuScene : Scene
 {
-    // InputManager and GameTime inherited from Scene
+    // Inherited:
+    // InputManager InputManager
+    // GameTime GameTime
+    // MusicManager MusicManager
     private int _optionIndex;
     private int _optionAmount;
     private int _selectorPosY;
@@ -14,11 +17,8 @@ public class MainMenuScene : Scene
     
 
     // Constructor for the Main Menu Scene
-    public MainMenuScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager)
+    public MainMenuScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager) : base(inputManager, gameTime, musicManager)
     {
-        InputManager = inputManager;
-        GameTime = gameTime;
-        MusicManager = musicManager;
         _optionIndex = 0;
         _optionAmount = 7;
         _selectSoundPool = new SoundPool("select.mp3", 8);

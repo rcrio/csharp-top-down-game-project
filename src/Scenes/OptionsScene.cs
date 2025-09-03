@@ -2,12 +2,13 @@ using Raylib_cs;
 
 public class OptionsScene : Scene
 {
-    // InputManager and GameTime inherited from Scene
-    public OptionsScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager)
-    {
-        InputManager = inputManager;
-        GameTime = gameTime;
-        MusicManager = musicManager;
+    // Inherited:
+    // InputManager InputManager
+    // GameTime GameTime
+    // MusicManager MusicManager
+    public OptionsScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager) : base(inputManager, gameTime, musicManager)
+    { 
+        
     }
 
     public override void Update()

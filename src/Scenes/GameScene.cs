@@ -3,7 +3,11 @@ using Raylib_cs;
 
 public class GameScene : Scene
 {
-    // InputManager and GameTime inherited from Scene
+    // Inherited:
+    // InputManager InputManager
+    // GameTime GameTime
+    // MusicManager MusicManager
+    
     private GameClock _gameClock;
     private CameraManager _cameraManager;
     private MousePosition _mousePosition;
@@ -12,12 +16,8 @@ public class GameScene : Scene
     private PlayerManager _playerManager;
     private bool _inventoryOpen = false;
 
-    public GameScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager)
+    public GameScene(InputManager inputManager, GameTime gameTime, MusicManager musicManager) : base(inputManager, gameTime, musicManager)
     {
-        // reorganise variables
-        InputManager = inputManager;
-        GameTime = gameTime;
-        MusicManager = musicManager;
         _gameClock = new GameClock();
 
         _cameraManager = new CameraManager(new Vector2(400, 400), new Vector2(0, 0), inputManager);
