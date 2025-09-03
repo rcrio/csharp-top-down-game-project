@@ -13,9 +13,7 @@ public abstract class Scene
         GameTime = gameTime;
         MusicManager = musicManager;
 
-        RequestPop = false;
-        RequestPush = null;
-        RequestExit = false;
+        ResetRequests();
     }
 
     public abstract void Update();
