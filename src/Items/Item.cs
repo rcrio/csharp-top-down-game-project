@@ -23,7 +23,6 @@ public abstract class Item
         CanBeInInventory = canBeInInventory;
     }
 
-    // could refactor
     public virtual void Draw(Vector2 drawPosition)
     {
         if (Texture.Id == 0)

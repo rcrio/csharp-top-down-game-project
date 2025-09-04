@@ -1,11 +1,11 @@
 
 using System.Numerics;
-using System.Runtime.Serialization;
 using Raylib_cs;
 
 public class InventoryWindow : Window
 {
     private Inventory _inventory;  // The inventory to display
+    private MousePosition _mousePosition;
     private Slot[] _slots;         // Array of slot UI elements
     private const int Columns = 10; // Number of columns in the grid
     private ItemStack _draggedItem = null;
@@ -13,9 +13,11 @@ public class InventoryWindow : Window
     private TooltipElement _tooltip;
 
     // Constructor: creates a new inventory window at the specified position
-    public InventoryWindow(Vector2 position, Inventory inventory, InputManager inputManager) : base(position, new Vector2(565, 235), inputManager) // Initial window size
+    public InventoryWindow(Vector2 position, InputManager inputManager, Inventory inventory, MousePosition mousePosition) : base(position, new Vector2(565, 235), inputManager) // Initial window size
     {
         _inventory = inventory;
+        _mousePosition = mousePosition;
+
         _slots = new Slot[inventory.Size];
 
         // Calculate how many rows are needed for this inventory
@@ -162,10 +164,10 @@ public class InventoryWindow : Window
 
         if (_currentHoveredSlot != null && _currentHoveredSlot.ItemStack != null)
         {
-            // refactor later on.
+            // Refactor this to show more info later
             string itemName = _currentHoveredSlot.ItemStack.Item.Name;
             string[] info = [itemName];
-            _tooltip.Show(info, Raylib.GetMousePosition());
+            _tooltip.Show(info, _mousePosition.MouseScreen);
         }
         else
         {
@@ -199,7 +201,7 @@ public class InventoryWindow : Window
         // Refactor, 48 is a magic number here
         if (_draggedItem != null)
         {
-            Vector2 mousePos = Raylib.GetMousePosition();
+            Vector2 mousePos = _mousePosition.MouseScreen;
 
             // Draw the item at the mouse
             _draggedItem.DrawInSlot(mousePos, 48);

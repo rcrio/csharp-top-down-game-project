@@ -1,4 +1,3 @@
-//rename this class (refactor)
 using Raylib_cs;
 
 public class GameTime

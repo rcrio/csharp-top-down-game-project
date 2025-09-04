@@ -27,7 +27,7 @@ public class GameScene : Scene
 
         _worldManager = new WorldManager(inputManager, gameTime, _mousePosition, _factoryLoader, 20); // Later on, add gameTime
 
-        _playerManager = new PlayerManager(inputManager, gameTime, _worldManager.World, _factoryLoader);
+        _playerManager = new PlayerManager(inputManager, gameTime, _mousePosition ,_worldManager.World, _factoryLoader);
     }
     public override void Update()
     {

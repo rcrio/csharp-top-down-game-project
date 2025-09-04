@@ -83,15 +83,14 @@ public class Slot
     }
 
     // Draws a number in the bottom-left corner of the slot
-    // Can perhaps refactor, maybe move it to ItemStack? this also means we could move the number amount drawing to stack!
     public void DrawStackAmount(int amount, Font font, int fontSize, Color color)
     {
         if (amount <= 0) return; // Skip drawing if nothing in the stack
 
-        string text = amount.ToString();
+        string amountInText = amount.ToString();
 
         // Measure text so we can align it properly
-        Vector2 textSize = Raylib.MeasureTextEx(font, text, fontSize, 1);
+        Vector2 textSize = Raylib.MeasureTextEx(font, amountInText, fontSize, 1);
 
         // Calculate position (bottom-left, with padding)
         Vector2 position = new Vector2(
@@ -100,7 +99,7 @@ public class Slot
         );
 
         // Draw the text
-        Raylib.DrawTextEx(font, text, position, fontSize, 1, color);
+        Raylib.DrawTextEx(font, amountInText, position, fontSize, 1, color);
     }
 
 
