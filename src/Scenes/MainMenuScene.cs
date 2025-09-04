@@ -10,19 +10,15 @@ public class MainMenuScene : Scene
     private int _optionIndex;
     private int _optionAmount;
     private Texture2D _titleScreen;
-    private SoundPool _selectSoundPool;
-    private SoundPool _confirmSoundPool;
     string[] menuItems = { "New Game", "Load Game", "Multiplayer", "Stats", "Options", "Credits", "Exit" };
     private Font _font;
-    
+
 
     // Constructor for the Main Menu Scene
     public MainMenuScene(InputManager inputManager, GameTime gameTime) : base(inputManager, gameTime)
     {
         _optionIndex = 0;
         _optionAmount = menuItems.Length;
-        _selectSoundPool = new SoundPool("select.mp3", 8);
-        _confirmSoundPool = new SoundPool("confirm.mp3", 8);
     }
 
     public override void Update()
@@ -34,13 +30,11 @@ public class MainMenuScene : Scene
         if (InputManager.MoveUpSelect() || InputManager.ArrowUp())
         {
             _optionIndex = (_optionIndex - 1 + _optionAmount) % _optionAmount;
-            _selectSoundPool.Play();
         }
 
         if (InputManager.MoveDownSelect() || InputManager.ArrowDown())
         {
             _optionIndex = (_optionIndex + 1) % _optionAmount;
-            _selectSoundPool.Play();
         }
 
         // Scene changing or exit
@@ -48,7 +42,6 @@ public class MainMenuScene : Scene
         {
             if (InputManager.Select())
             {
-                _confirmSoundPool.Play();
                 RequestPush = new GameScene(InputManager, GameTime);
             }
         }
@@ -57,7 +50,6 @@ public class MainMenuScene : Scene
         {
             if (InputManager.Select())
             {
-                _confirmSoundPool.Play();
             }
         }
 
@@ -65,7 +57,6 @@ public class MainMenuScene : Scene
         {
             if (InputManager.Select())
             {
-                _confirmSoundPool.Play();
             }
         }
 
@@ -73,7 +64,6 @@ public class MainMenuScene : Scene
         {
             if (InputManager.Select())
             {
-                _confirmSoundPool.Play();
             }
         }
 
@@ -81,7 +71,6 @@ public class MainMenuScene : Scene
         {
             if (InputManager.Select())
             {
-                _confirmSoundPool.Play();
             }
         }
 
@@ -89,7 +78,6 @@ public class MainMenuScene : Scene
         {
             if (InputManager.Select())
             {
-                _confirmSoundPool.Play();
             }
         }
 
@@ -138,10 +126,13 @@ public class MainMenuScene : Scene
     {
         _titleScreen = AssetManager.LoadTexture("Textures/title_smaller.png", 1000, 500);
         _font = FontHandler.GetFontMenu(); // Don't need to call unload, font handler does this in the main game class
+        Music = AssetManager.LoadMusic("Sound/Music/song_gravity_temp.mp3");
     }
     public override void Unload()
     {
         AssetManager.UnloadTexture(_titleScreen);
+        AssetManager.UnloadMusic(Music);
         _titleScreen = new Texture2D();
+        Music = new Music();
     }
 }

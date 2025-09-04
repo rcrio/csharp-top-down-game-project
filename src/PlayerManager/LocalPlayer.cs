@@ -4,9 +4,6 @@ public class LocalPlayer : Player
 {
     private InputManager _inputManager;
     private FactoryLoader _factoryLoader;
-
-    // Sounds
-    private SoundPool _itemCollectSoundPool;
     public LocalPlayer(
         Vector2 position,
         string northTexturePath,
@@ -26,8 +23,6 @@ public class LocalPlayer : Player
     {
         _inputManager = inputManager;
         _factoryLoader = factoryLoader;
-
-        _itemCollectSoundPool = new SoundPool("item_collect.mp3", 8);
         GenerateDefaultInventory();
     }
 
@@ -58,7 +53,6 @@ public class LocalPlayer : Player
                 if (Inventory.AddItem(itemToCollect.ItemStack.Item, quantityToCollect))
                 {
                     World.DroppedItemManager.RemoveDroppedItem(itemToCollect);
-                    _itemCollectSoundPool.Play();
 
                     _timeSinceLastPickup = 0f; // reset cooldown
                     break; // optional: only pick up one item per cooldown

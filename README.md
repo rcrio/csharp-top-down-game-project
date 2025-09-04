@@ -16,5 +16,3 @@
    git clone https://github.com/rcrio/verdania.git
 
 ## Extras
-
-.csproj has been changed a tiny bit to accommodate for AssetLoader.

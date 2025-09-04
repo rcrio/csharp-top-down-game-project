@@ -57,6 +57,19 @@ public static class AssetManager
         return Raylib.LoadFontEx(fullPath, bakeSize, null, 0);
     }
 
+    public static Music LoadMusic(string relativePath)
+    {
+        string fullPath = Path.Combine(AssetsRoot, relativePath);
+        if (!File.Exists(fullPath))
+        {
+            Console.WriteLine($"ERROR: Music not found: {fullPath}");
+            return new Music(); // Fallback
+        }
+
+        return Raylib.LoadMusicStream(fullPath);
+    }
+
+
     // Unload a texture
     public static void UnloadTexture(Texture2D texture)
     {
@@ -73,5 +86,10 @@ public static class AssetManager
     public static void UnloadFont(Font font)
     {
         Raylib.UnloadFont(font);
+    }
+
+    public static void UnloadMusic(Music music)
+    {
+        Raylib.UnloadMusicStream(music);
     }
 }

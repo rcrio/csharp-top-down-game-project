@@ -92,11 +92,12 @@ public class GameScene : Scene
     }
 
     public override void Load()
-    {   
+    {
         _gameClock.Load();
         _factoryLoader.Load();
         _worldManager.Load();
         _playerManager.Load();
+        Music = AssetManager.LoadMusic("Sound/Music/song_longview1_temp.mp3");
     }
     
     public override void Unload()

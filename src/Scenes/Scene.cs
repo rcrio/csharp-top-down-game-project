@@ -1,3 +1,4 @@
+using Raylib_cs;
 
 public abstract class Scene
 {
@@ -6,6 +7,7 @@ public abstract class Scene
     public bool RequestExit { get; protected set; }
     public InputManager InputManager { get; protected set; } 
     public GameTime GameTime { get; protected set; }
+    public Music Music { get; protected set; } = default;
     public Scene(InputManager inputManager, GameTime gameTime)
     {
         InputManager = inputManager;
