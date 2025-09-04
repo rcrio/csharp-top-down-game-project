@@ -99,12 +99,14 @@ public class GameScene : Scene
         _playerManager.Load();
         Music = AssetManager.LoadMusic("Sound/Music/song_longview1_temp.mp3");
     }
-    
+
     public override void Unload()
     {
         _gameClock.Unload();
         _factoryLoader.Unload();
         _worldManager.Unload();
         _playerManager.Unload();
+        AssetManager.UnloadMusic(Music);
+        Music = default;
     }
 }
