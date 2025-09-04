@@ -126,7 +126,7 @@ public class MainMenuScene : Scene
     {
         _titleScreen = AssetManager.LoadTexture("Textures/title_smaller.png", 1000, 500);
         _font = FontHandler.GetFontMenu(); // Don't need to call unload, font handler does this in the main game class
-        Music = AssetManager.LoadMusic("Sound/Music/title.ogg");
+        Music = AssetManager.LoadMusic("Sound/Music/song_longview1_temp.mp3");
     }
     public override void Unload()
     {

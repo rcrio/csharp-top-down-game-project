@@ -1,6 +1,7 @@
 // removed get id THANKS MALTESER
 
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 using Raylib_cs;
 
 public abstract class Item
@@ -37,14 +38,8 @@ public abstract class Item
 
     public virtual void Draw(int x, int y)
     {
-        if (Texture.Id == 0)
-        {
-            Raylib.DrawRectangle(x, y, 16, 16, new Color(200, 200, 230, 255));
-        }
-        else
-        {
-            Raylib.DrawTexture(Texture, x, y, Color.White);
-        }
+        Vector2 drawPosition = new Vector2(x, y);
+        Draw(drawPosition);
     }
     
     public virtual void DrawInSlot(Vector2 drawPosition, int slotSize)

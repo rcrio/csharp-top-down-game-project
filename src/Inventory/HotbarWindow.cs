@@ -6,14 +6,12 @@ public class HotbarWindow : Window
     private Inventory _inventory;  // The inventory to display
     private const int HotbarSize = 10; // Number of slots in the hotbar
     private Slot[] _slots;
-    private int  _currentIndex;
 
     public HotbarWindow(Vector2 position, Inventory inventory, InputManager inputManager)
         : base(position, new Vector2(HotbarSize * (Slot.SlotSize + Slot.SlotSpacing) + 20, Slot.SlotSize + 20), inputManager)
     {
         _inventory = inventory;
         _slots = new Slot[HotbarSize];
-        _currentIndex = 0;
 
         for (int i = 0; i < HotbarSize; i++)
         {
@@ -40,56 +38,53 @@ public class HotbarWindow : Window
         // Hotbar scrolling check
         if (InputManager.ScrollUp())
         {
-            _currentIndex = (_currentIndex + 1) % HotbarSize;
+            _inventory.currentSelectedIndex = (_inventory.currentSelectedIndex + 1) % HotbarSize;
         }
         if (InputManager.ScrollDown())
         {
-            _currentIndex = (_currentIndex - 1 + HotbarSize) % HotbarSize;
+            _inventory.currentSelectedIndex = (_inventory.currentSelectedIndex - 1 + HotbarSize) % HotbarSize;
         }
         // Refactor: should be a better way to do this
         if (InputManager.Hotbar1())
         {
-            _currentIndex = 0;
+            _inventory.currentSelectedIndex = 0;
         }
         if (InputManager.Hotbar2())
         {
-            _currentIndex = 1;
+            _inventory.currentSelectedIndex = 1;
         }
         if (InputManager.Hotbar3())
         {
-            _currentIndex = 2;
+            _inventory.currentSelectedIndex = 2;
         }
         if (InputManager.Hotbar4())
         {
-            _currentIndex = 3;
+            _inventory.currentSelectedIndex = 3;
         }
         if (InputManager.Hotbar5())
         {
-            _currentIndex = 4;
+            _inventory.currentSelectedIndex = 4;
         }
         if (InputManager.Hotbar6())
         {
-            _currentIndex = 5;
+            _inventory.currentSelectedIndex = 5;
         }
         if (InputManager.Hotbar7())
         {
-            _currentIndex = 6;
+            _inventory.currentSelectedIndex = 6;
         }
         if (InputManager.Hotbar8())
         {
-            _currentIndex = 7;
+            _inventory.currentSelectedIndex = 7;
         }
         if (InputManager.Hotbar9())
         {
-            _currentIndex = 8;
+            _inventory.currentSelectedIndex = 8;
         }
         if (InputManager.Hotbar0())
         {
-            _currentIndex = 9;
+            _inventory.currentSelectedIndex = 9;
         }
-
-        // Can refactor, remove _currentIndex from this class and just use inventory selected index 
-        _inventory.currentSelectedIndex = _currentIndex;
     }
 
     public override void Draw()
@@ -104,7 +99,7 @@ public class HotbarWindow : Window
             _slots[i].Draw(Position);
             int number = (i + 1) % HotbarSize;
             _slots[i].DrawNumber(number, FontHandler.GetFontNormal(), 16, Color.White);
-            if (i == _currentIndex)
+            if (i == _inventory.currentSelectedIndex)
             {
                 _slots[i].DrawHightlight();
             }
