@@ -12,8 +12,7 @@ public class WallFactory
 
     public WallFactory()
     {
-        Load();
-        Initialise();
+
     }
 
     // Load textures first
@@ -21,6 +20,7 @@ public class WallFactory
     {
         StoneWallTexture = AssetManager.LoadTexture("Textures/item_placeable_stone_wall.png");
         WoodenWallTexture = AssetManager.LoadTexture("Textures/wood_wall.png");
+        Initialise();
     }
 
     // Initialise wall templates using loaded textures

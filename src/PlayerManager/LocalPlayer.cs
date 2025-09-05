@@ -1,4 +1,5 @@
 using System.Numerics;
+using Raylib_cs;
 
 public class LocalPlayer : Player
 {
@@ -26,7 +27,6 @@ public class LocalPlayer : Player
         _inputManager = inputManager;
         _factoryLoader = factoryLoader;
         _tileSelector = tileSelector;
-        GenerateDefaultInventory();
     }
 
     // Refactor eventually to make player's face the cursor.
@@ -108,6 +108,42 @@ public class LocalPlayer : Player
         Inventory.AddItemByIndex(3, _factoryLoader.FloorFactory.Floors["wood"], 30);
         Inventory.AddItemByIndex(4, _factoryLoader.FloorFactory.Floors["wood"], 30);
         Inventory.AddItemByIndex(5, _factoryLoader.WallFactory.Walls["wood"], 30);
+    }
+
+    // Refactor, move graphics out of player into local player.
+    public virtual void Load(World world)
+    {
+        World = world;
+        GenerateDefaultInventory();
+        Console.WriteLine("Loading player textures...");
+        NorthTexture = AssetManager.LoadTexture(NorthTexturePath);
+        SouthTexture = AssetManager.LoadTexture(SouthTexturePath);
+        WestTexture = AssetManager.LoadTexture(WestTexturePath);
+        EastTexture = AssetManager.LoadTexture(EastTexturePath);
+    }
+
+    public virtual void Unload()
+    {
+        if (NorthTexture.Id != 0)
+        {
+            Raylib.UnloadTexture(NorthTexture);
+            NorthTexture = default; // reset
+        }
+        if (SouthTexture.Id != 0)
+        {
+            Raylib.UnloadTexture(SouthTexture);
+            SouthTexture = default; // reset
+        }
+        if (WestTexture.Id != 0)
+        {
+            Raylib.UnloadTexture(WestTexture);
+            WestTexture = default; // reset
+        }
+        if (EastTexture.Id != 0)
+        {
+            Raylib.UnloadTexture(EastTexture);
+            EastTexture = default; // reset
+        }
     }
 
 }

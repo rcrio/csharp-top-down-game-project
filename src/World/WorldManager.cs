@@ -16,7 +16,6 @@ public class WorldManager
 
         _factoryLoader = factoryLoader;
         _worldBuilder = new WorldBuilder(_factoryLoader);
-        World = _worldBuilder.BuildDefaultWorld(_worldSize);
     }
 
     // We update non-constructor parameters, because constructor parameters usually get updated a level above us.
@@ -38,7 +37,7 @@ public class WorldManager
     
     public void Load()
     {
-        
+        World = _worldBuilder.BuildDefaultWorld(_worldSize);
     }
 
     public void Unload()

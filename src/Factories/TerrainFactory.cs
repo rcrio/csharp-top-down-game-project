@@ -11,9 +11,8 @@ public class TerrainFactory
     public Texture2D GrassTerrainTexture { get; private set; }
 
     public TerrainFactory()
-    {
-        Load();
-        Initialise();
+    { 
+
     }
 
     // Firstly, load textures
@@ -21,6 +20,7 @@ public class TerrainFactory
     {
         // Assign to the class field, not a local variable
         GrassTerrainTexture = AssetManager.LoadTexture("Textures/terrain_grass.png");
+        Initialise();
     }
 
     // Secondly, initialise item templates using the loaded textures

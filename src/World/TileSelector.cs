@@ -88,8 +88,9 @@ public class TileSelector
         Raylib.DrawTextEx(_font, "x: " + _tileX + ", y: " + _tileY, pos, fontSize, spacing, Color.White);
     }
 
-    public void Load()
+    public void Load(World world)
     {
+        _world = world;
         _font = AssetManager.LoadFont("Fonts/Roboto-Regular.ttf", 16);
     }
 

@@ -5,6 +5,7 @@ public abstract class Scene
     public bool RequestPop { get; protected set; }
     public Scene RequestPush { get; protected set; }
     public bool RequestExit { get; protected set; }
+    public bool RequestFade { get; protected set; }
     public InputManager InputManager { get; protected set; } 
     public GameTime GameTime { get; protected set; }
     public Music Music { get; protected set; } = default;
@@ -25,6 +26,7 @@ public abstract class Scene
         RequestPop = false;
         RequestPush = null;
         RequestExit = false;
+        RequestFade = false;
     }
 
 }

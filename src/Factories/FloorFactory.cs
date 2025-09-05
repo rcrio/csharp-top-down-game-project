@@ -10,18 +10,19 @@ public class FloorFactory
     // Class field for the texture
     public Texture2D FloorWoodTexture { get; private set; }
 
-    
+
+
 
     public FloorFactory()
     {
-        Load();
-        Initialise();
+
     }
 
     public void Load()
     {
         // Assign to the class field, not a local variable
         FloorWoodTexture = AssetManager.LoadTexture("Textures/wood_floor.png");
+        Initialise();
     }
 
     private void Initialise()

@@ -42,6 +42,7 @@ public class MainMenuScene : Scene
         {
             if (InputManager.Select())
             {
+                RequestFade = true;
                 RequestPush = new GameScene(InputManager, GameTime);
             }
         }
@@ -126,7 +127,7 @@ public class MainMenuScene : Scene
     {
         _titleScreen = AssetManager.LoadTexture("Textures/title_smaller.png", 1000, 500);
         _font = FontHandler.GetFontMenu(); // Don't need to call unload, font handler does this in the main game class
-        Music = AssetManager.LoadMusic("Sound/Music/song_longview1_temp.mp3");
+        Music = AssetManager.LoadMusic("Sound/Music/song_gravity_temp.mp3");
     }
     public override void Unload()
     {

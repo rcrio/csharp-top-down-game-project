@@ -53,7 +53,11 @@ public class GameScene : Scene
 
         // Handle escape and return. This is temporary and we will have an escape menu to save and exit.
         // Must be before inventory logic
-        if (InputManager.Return() && !_inventoryOpen) RequestPop = true;
+        if (InputManager.Return() && !_inventoryOpen)
+        {
+            RequestFade = true;
+            RequestPop = true;
+        }
         
         if (InputManager.OpenInventory()) _inventoryOpen = !_inventoryOpen;
 
@@ -93,10 +97,11 @@ public class GameScene : Scene
 
     public override void Load()
     {
+        Console.WriteLine("\n\n\nLoading Game Scene...\n\n\n");
         _gameClock.Load();
         _factoryLoader.Load();
         _worldManager.Load();
-        _playerManager.Load();
+        _playerManager.Load(_worldManager.World);
         Music = AssetManager.LoadMusic("Sound/Music/song_longview1_temp.mp3");
     }
 

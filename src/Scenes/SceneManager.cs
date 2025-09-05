@@ -1,152 +1,165 @@
+using System.Runtime.CompilerServices;
 using Raylib_cs;
 
 public class SceneManager
 {
-    private Stack<Scene> _scenes = new Stack<Scene>();
-    private Scene _nextScene = null!;
-    private bool _popPending = false;
+    private Stack<Scene> _scenes;
+    private Scene _nextSceneToPush;
+    private bool _shouldPop;
+    private bool _shouldExit;
+    private bool _shouldFade;
 
-    // Screen fade
-    private float _fadeAlpha = 1f;
-    private float _fadeSpeed = 0.5f;
-    private bool _fadingIn = true;
-
-    // Music
+    // Fading variables
+    private Fader _fader;
+    private bool _fadingBlackIn = false;
+    private bool _fadingBlackOut = false;
+    private bool _transitioning = false;
     private Music _currentMusic;
-    private bool _musicLoaded = false;
-    private float _musicVolume = 1f;
-    private float _musicFadeSpeed = 0.5f; // per second
-    private float _targetMusicVolume = 1f;
 
-    private GameTime _time;
-
-    public SceneManager(InputManager input, GameTime time)
+    public SceneManager(InputManager inputManager, GameTime gameTime)
     {
-        _time = time;
-
-        // Load initial scene
-        var mainMenu = new MainMenuScene(input, time);
-        mainMenu.Load();
-        _scenes.Push(mainMenu);
-
-        // Start music if present
-        _currentMusic = mainMenu.Music;
-        _musicLoaded = true; // assume loaded from AssetManager
-        _musicVolume = 0f;
-        _targetMusicVolume = 1f;
+        _scenes = new Stack<Scene>();
+        var mainMenuScene = new MainMenuScene(inputManager, gameTime);
+        mainMenuScene.Load();
+        _scenes.Push(mainMenuScene);
+        // Set the current music to the main menu music
+        _currentMusic = mainMenuScene.Music;
+        // Start playing it. This doesn't play automatically, we need to call UpdateMusicStream in the update loop
         Raylib.PlayMusicStream(_currentMusic);
-        Raylib.SetMusicVolume(_currentMusic, _musicVolume);
+        _shouldExit = false;
+        Console.WriteLine("Called!");
     }
 
     public void Push(Scene scene)
     {
-        _nextScene = scene;
-        _fadingIn = false;
-        _fadeAlpha = 0f;
-
-        // Fade out current music
-        if (_musicLoaded) _targetMusicVolume = 0f;
+        _nextSceneToPush = scene;
     }
 
     public void Pop()
     {
-        _popPending = true;
-        _fadingIn = false;
-        _fadeAlpha = 0f;
+        _shouldPop = true;
+    }
 
-        if (_musicLoaded) _targetMusicVolume = 0f;
+    public void RequestExit()
+    {
+        _shouldExit = true;
     }
 
     public void Update()
     {
         if (_scenes.Count == 0) return;
 
-        float delta = _time.DeltaTime;
+        Scene active = _scenes.Peek();
 
-        // --- Screen fade logic ---
-        if (!_fadingIn)
+        
+        // Only actively update active scene if not transitioning
+        if (!_transitioning)
         {
-            _fadeAlpha += _fadeSpeed * delta;
-            if (_fadeAlpha >= 1f)
-            {
-                _fadeAlpha = 1f;
-
-                // 1️⃣ Handle pop first
-                if (_popPending && _scenes.Count > 0)
-                {
-                    _scenes.Peek().Unload();
-                    _scenes.Pop();
-                    _popPending = false;
-                }
-
-                // 2️⃣ Handle push / replace
-                if (_nextScene != null)
-                {
-                    // Optional: prevent duplicate top scene
-                    if (_scenes.Count == 0 || _scenes.Peek().GetType() != _nextScene.GetType())
-                    {
-                        _nextScene.Load();
-                        _scenes.Push(_nextScene);
-
-                        // Start new music if any
-                        _currentMusic = _nextScene.Music;
-                        _musicLoaded = true;
-                        _musicVolume = 0f;
-                        _targetMusicVolume = 1f;
-                        Raylib.PlayMusicStream(_currentMusic);
-                        Raylib.SetMusicVolume(_currentMusic, _musicVolume);
-                    }
-
-                    _nextScene = null!;
-                }
-
-                // Done fading out → fade in
-                _fadingIn = true;
-            }
-            else return; // still fading out, skip rest of update
-        }
-        else if (_fadeAlpha > 0f)
-        {
-            _fadeAlpha -= _fadeSpeed * delta;
-            if (_fadeAlpha < 0f) _fadeAlpha = 0f;
-        }
-
-        // --- Update the active scene ---
-        if (_scenes.Count > 0)
-        {
-            var active = _scenes.Peek();
             active.Update();
-
-            if (active.RequestExit) _scenes.Clear();
-            if (active.RequestPop) Pop();
-            if (active.RequestPush != null) Push(active.RequestPush);
-            active.ResetRequests();
-        }
-
-        // --- Music fade + looping ---
-        if (_musicLoaded)
-        {
+            // Plays music stream
             Raylib.UpdateMusicStream(_currentMusic);
 
-            if (_musicVolume < _targetMusicVolume)
-            {
-                _musicVolume += _musicFadeSpeed * delta;
-                if (_musicVolume > _targetMusicVolume) _musicVolume = _targetMusicVolume;
-            }
-            else if (_musicVolume > _targetMusicVolume)
-            {
-                _musicVolume -= _musicFadeSpeed * delta;
-                if (_musicVolume < _targetMusicVolume) _musicVolume = _targetMusicVolume;
-            }
-            Raylib.SetMusicVolume(_currentMusic, _musicVolume);
+            // Handle scene requests
+            if (active.RequestExit) _shouldExit = true;
+            if (active.RequestFade) _shouldFade = true;
+            if (active.RequestPop) _shouldPop = true;
+            if (active.RequestPush != null) _nextSceneToPush = active.RequestPush;
 
-            if (!Raylib.IsMusicStreamPlaying(_currentMusic))
+            active.ResetRequests();
+
+            if (_shouldPop)
             {
-                Raylib.PlayMusicStream(_currentMusic);
+                _transitioning = true; // start transition
+                if (_shouldFade) _fadingBlackIn = true;
+            }
+
+            if (_nextSceneToPush != null)
+            {
+                _transitioning = true; // start transition
+                if (_shouldFade) _fadingBlackIn = true;
+            }
+        }  
+
+        
+        // Transitioning without fade
+        if (_transitioning && !_shouldFade)
+        {
+            // No fading, just do the scene switch immediately
+            if (_shouldPop)
+            {
+                _scenes.Peek().Unload();
+                _scenes.Pop();
+                _shouldPop = false;
+                if (_scenes.Count > 0)
+                {
+                    _scenes.Peek().Load();
+                    _scenes.Peek().Update();
+                }
+                _transitioning = false;
+            }
+
+            if (_nextSceneToPush != null)
+            {
+                _nextSceneToPush.Load();
+                _scenes.Push(_nextSceneToPush);
+                _nextSceneToPush.Update();
+                _nextSceneToPush = null;
+                _transitioning = false;
             }
         }
-    }
 
+        // Transitioning with fasde
+        if (_transitioning && _shouldFade && _fader == null)
+        {
+            // Set this flag to true to start fading to black
+            _fader = new Fader(0.02f);
+        }
+
+        // Fading logic only works if fader exists
+        if (_shouldFade && _fader != null)
+        {
+            if (_fadingBlackIn)
+            {
+                Console.WriteLine("Fading out");
+                if (_fader.FadeOut())
+                {
+                    if (_shouldPop)
+                    {
+                        _scenes.Peek().Unload();
+                        _scenes.Pop();
+                        _shouldPop = false;
+                        _scenes.Peek().Load();
+                        _scenes.Peek().Update();
+                    }
+
+                    if (_nextSceneToPush != null)
+                    {
+                        _nextSceneToPush.Load();
+                        _scenes.Push(_nextSceneToPush);
+                        _nextSceneToPush.Update();
+                        _nextSceneToPush = null;
+                    }
+                    _fadingBlackIn = false;
+                    _fadingBlackOut = true;
+                }
+            }
+            if (_fadingBlackOut)
+            {
+                Console.WriteLine("Fading back in");
+                if (_fader.FadeIn())
+                {
+                    _fadingBlackOut = false;
+                }
+            }
+            // Fader has completed fading, we set it to null to continue regular scene logic
+            if (!_fadingBlackIn && !_fadingBlackOut)
+            {
+                _transitioning = false;
+                _shouldFade = false;
+                _fader = null;
+            }
+        }   
+    }
 
     public void Draw()
     {
@@ -154,16 +167,20 @@ public class SceneManager
 
         _scenes.Peek().Draw();
 
-        if (_fadeAlpha > 0f)
+        if (_fader != null)
         {
-            Raylib.DrawRectangle(
-                0, 0,
-                Raylib.GetScreenWidth(),
-                Raylib.GetScreenHeight(),
-                new Color((byte)0, (byte)0, (byte)0, (byte)(_fadeAlpha * 255))
-            );
+            _fader.Draw();
+
         }
     }
 
-    public bool ShouldClose() => _scenes.Count == 0;
+    public Scene GetActiveScene()
+    {
+        return _scenes.Count > 0 ? _scenes.Peek() : null;
+    }
+
+    public bool ShouldClose()
+    {
+        return _shouldExit || _scenes.Count == 0;
+    }
 }

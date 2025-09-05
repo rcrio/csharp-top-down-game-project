@@ -63,10 +63,10 @@ public class PlayerManager
         _hotbarWindow.Draw();
     }
 
-    public void Load()
+    public void Load(World world)
     {
-        _tileSelector.Load();
-        LocalPlayer.Load();
+        _tileSelector.Load(world);
+        LocalPlayer.Load(world);
     }
 
     public void Unload()

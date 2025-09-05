@@ -19,7 +19,7 @@ public abstract class Player
 
     // position, texture inherited
     public GameTime GameTime { get; private set; }
-    public World World { get; private set; }
+    public World World { get; protected set; }
     public Inventory Inventory { get; private set; }
 
     public float Speed { get; private set; }
@@ -51,42 +51,9 @@ public abstract class Player
         Inventory = new Inventory(inventorySize);
         Speed = speed;
         PickupRange = pickUpRange;
-        Load();
     }
 
-    // Refactor, move graphics out of player into local player.
-    public virtual void Load()
-    {
-        Console.WriteLine("Loading player textures...");
-        NorthTexture = AssetManager.LoadTexture(NorthTexturePath);
-        SouthTexture = AssetManager.LoadTexture(SouthTexturePath);
-        WestTexture = AssetManager.LoadTexture(WestTexturePath);
-        EastTexture = AssetManager.LoadTexture(EastTexturePath);
-    }
-
-    public virtual void Unload()
-    {
-        if (NorthTexture.Id != 0)
-        {
-            Raylib.UnloadTexture(NorthTexture);
-            NorthTexture = default; // reset
-        }
-        if (SouthTexture.Id != 0)
-        {
-            Raylib.UnloadTexture(SouthTexture);
-            SouthTexture = default; // reset
-        }
-        if (WestTexture.Id != 0)
-        {
-            Raylib.UnloadTexture(WestTexture);
-            WestTexture = default; // reset
-        }
-        if (EastTexture.Id != 0)
-        {
-            Raylib.UnloadTexture(EastTexture);
-            EastTexture = default; // reset
-        }
-    }
+    
 
     /*
     Why separate rectangles

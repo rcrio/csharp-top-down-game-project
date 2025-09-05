@@ -12,9 +12,8 @@ public class ItemFactory
     public Texture2D SwordWoodTexture { get; private set; }
 
     public ItemFactory()
-    {
-        Load();
-        Initialise();
+    { 
+
     }
 
     // Firstly, load textures
@@ -23,6 +22,7 @@ public class ItemFactory
         // Assign to the class field, not a local variable
         PickaxeWoodTexture = AssetManager.LoadTexture("Textures/wood_pickaxe.png");
         SwordWoodTexture = AssetManager.LoadTexture("Textures/wood_sword.png");
+        Initialise();
     }
 
     // Secondly, initialise item templates using the loaded textures
