@@ -40,6 +40,8 @@ public abstract class Item
         Vector2 drawPosition = new Vector2(x, y);
         Draw(drawPosition);
     }
+
+    public abstract void Use(World world, Player player);
     
     public virtual void DrawInSlot(Vector2 drawPosition, int slotSize)
     {

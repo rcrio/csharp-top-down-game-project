@@ -84,7 +84,7 @@ public class GameScene : Scene
             _playerManager.InventoryDraw();
         }
 
-        _worldManager.DrawInfo();
+        _playerManager.DrawInfo();
 
         _playerManager.HotbarDraw();
 

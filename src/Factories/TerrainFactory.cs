@@ -20,7 +20,7 @@ public class TerrainFactory
     public void Load()
     {
         // Assign to the class field, not a local variable
-        //GrassTerrainTexture = Raylib.LoadTexture("Textures/wood_pickaxe.png");
+        GrassTerrainTexture = AssetManager.LoadTexture("Textures/terrain_grass.png");
     }
 
     // Secondly, initialise item templates using the loaded textures
