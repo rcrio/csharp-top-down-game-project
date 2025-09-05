@@ -91,4 +91,9 @@ public class Inventory
             return null; // out of bounds
         return ItemStacks[index];
     }
+
+    public ItemStack GetSelectedItemStack()
+    {
+        return GetStack(currentSelectedIndex);
+    }
 }

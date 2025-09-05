@@ -27,7 +27,6 @@ public class TileSelector
         _tileX = (int)(_mousePosition.MouseWorld.X / Constants.TILE_SIZE);
         _tileY = (int)(_mousePosition.MouseWorld.Y / Constants.TILE_SIZE);
         Tile = _world.GetTile(_tileX, _tileY);
-        ChangeTile();
     }
 
     public void DrawTile()
@@ -42,6 +41,14 @@ public class TileSelector
                 2,
                 Color.Gold
             );
+        }
+    }
+
+    public void BreakFloor()
+    {
+        if (Tile != null && Tile._itemPlaceableFloor != null /*&& Tile.Floor.IsDestructible*/)
+        {
+            Tile.RemoveFloor();
         }
     }
 
@@ -79,21 +86,6 @@ public class TileSelector
         }
         pos.Y += lineHeight;
         Raylib.DrawTextEx(_font, "x: " + _tileX + ", y: " + _tileY, pos, fontSize, spacing, Color.White);
-    }
-
-
-
-    public void ChangeTile()
-    {
-        if (_inputManager.LeftClick() && Tile != null)
-        {
-            Tile.RemoveFloor();
-        }
-
-        if (_inputManager.RightClick() && Tile != null)
-        {
-            Tile.RemoveObject();
-        }
     }
 
     public void Load()

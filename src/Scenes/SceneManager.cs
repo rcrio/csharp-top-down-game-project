@@ -63,7 +63,7 @@ public class SceneManager
 
         float delta = _time.DeltaTime;
 
-        // Screen fade
+        // --- Screen fade logic ---
         if (!_fadingIn)
         {
             _fadeAlpha += _fadeSpeed * delta;
@@ -71,32 +71,39 @@ public class SceneManager
             {
                 _fadeAlpha = 1f;
 
-                if (_popPending)
+                // 1️⃣ Handle pop first
+                if (_popPending && _scenes.Count > 0)
                 {
                     _scenes.Peek().Unload();
                     _scenes.Pop();
                     _popPending = false;
                 }
 
+                // 2️⃣ Handle push / replace
                 if (_nextScene != null)
                 {
-                    _nextScene.Load();
-                    _scenes.Push(_nextScene);
+                    // Optional: prevent duplicate top scene
+                    if (_scenes.Count == 0 || _scenes.Peek().GetType() != _nextScene.GetType())
+                    {
+                        _nextScene.Load();
+                        _scenes.Push(_nextScene);
 
-                    // Start new music
-                    _currentMusic = _nextScene.Music;
-                    _musicLoaded = true;
-                    _musicVolume = 0f;
-                    _targetMusicVolume = 1f;
-                    Raylib.PlayMusicStream(_currentMusic);
-                    Raylib.SetMusicVolume(_currentMusic, _musicVolume);
+                        // Start new music if any
+                        _currentMusic = _nextScene.Music;
+                        _musicLoaded = true;
+                        _musicVolume = 0f;
+                        _targetMusicVolume = 1f;
+                        Raylib.PlayMusicStream(_currentMusic);
+                        Raylib.SetMusicVolume(_currentMusic, _musicVolume);
+                    }
 
                     _nextScene = null!;
                 }
 
+                // Done fading out → fade in
                 _fadingIn = true;
             }
-            else return;
+            else return; // still fading out, skip rest of update
         }
         else if (_fadeAlpha > 0f)
         {
@@ -104,21 +111,23 @@ public class SceneManager
             if (_fadeAlpha < 0f) _fadeAlpha = 0f;
         }
 
-        // Update active scene
-        var active = _scenes.Peek();
-        active.Update();
+        // --- Update the active scene ---
+        if (_scenes.Count > 0)
+        {
+            var active = _scenes.Peek();
+            active.Update();
 
-        if (active.RequestExit) _scenes.Clear();
-        if (active.RequestPop) Pop();
-        if (active.RequestPush != null) Push(active.RequestPush);
-        active.ResetRequests();
+            if (active.RequestExit) _scenes.Clear();
+            if (active.RequestPop) Pop();
+            if (active.RequestPush != null) Push(active.RequestPush);
+            active.ResetRequests();
+        }
 
-        // Music update + fade + looping
+        // --- Music fade + looping ---
         if (_musicLoaded)
         {
             Raylib.UpdateMusicStream(_currentMusic);
 
-            // Smooth fade
             if (_musicVolume < _targetMusicVolume)
             {
                 _musicVolume += _musicFadeSpeed * delta;
@@ -131,13 +140,13 @@ public class SceneManager
             }
             Raylib.SetMusicVolume(_currentMusic, _musicVolume);
 
-            // Manual looping
             if (!Raylib.IsMusicStreamPlaying(_currentMusic))
             {
                 Raylib.PlayMusicStream(_currentMusic);
             }
         }
     }
+
 
     public void Draw()
     {

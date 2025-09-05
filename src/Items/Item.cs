@@ -41,7 +41,10 @@ public abstract class Item
         Draw(drawPosition);
     }
 
-    public abstract void Use(World world, Player player);
+    // Needs to implement use, and then call one of the overloads
+    public virtual void Use() { }
+    public virtual void Use(Player player) { }
+    public virtual void Use(World world, Player player) { }
     
     public virtual void DrawInSlot(Vector2 drawPosition, int slotSize)
     {

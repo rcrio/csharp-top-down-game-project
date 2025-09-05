@@ -4,6 +4,7 @@ public class LocalPlayer : Player
 {
     private InputManager _inputManager;
     private FactoryLoader _factoryLoader;
+    private TileSelector _tileSelector;
     public LocalPlayer(
         Vector2 position,
         string northTexturePath,
@@ -15,6 +16,7 @@ public class LocalPlayer : Player
         int inventorySize,
         InputManager inputManager,
         FactoryLoader factoryLoader,
+        TileSelector tileSelector,
         float speed = 200f,
         float pickUpRange = 32f
         )
@@ -23,13 +25,13 @@ public class LocalPlayer : Player
     {
         _inputManager = inputManager;
         _factoryLoader = factoryLoader;
+        _tileSelector = tileSelector;
         GenerateDefaultInventory();
     }
 
     // Refactor eventually to make player's face the cursor.
     public void Update(float deltaTime)
     {
-        
         // Drop selected item logic
         if (_inputManager.DropItem() && Inventory.ItemStacks[Inventory.currentSelectedIndex] != null)
         {
@@ -60,7 +62,6 @@ public class LocalPlayer : Player
             }
         }
 
-
         // Movement logic
         Vector2 input = Vector2.Zero;
 
@@ -86,6 +87,17 @@ public class LocalPlayer : Player
         }
 
         Move(input, GameTime.DeltaTime);
+
+        // Change second to a method in inventory to return current selected item
+        if (_inputManager.LeftClick() && Inventory.GetSelectedItemStack() != null)
+        {
+            Inventory.GetSelectedItemStack().Item.Use(World, this);
+        }
+
+        if (_inputManager.LeftClick() && Inventory.GetSelectedItemStack() == null)
+        {
+            _tileSelector.BreakFloor();
+        }
     }
 
     public void GenerateDefaultInventory()
