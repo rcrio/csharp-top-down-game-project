@@ -1,8 +1,8 @@
 public class Tile
 {
-    public ItemPlaceableTerrain _itemPlaceableTerrain { get; private set; }
-    public ItemPlaceableFloor _itemPlaceableFloor { get; private set; }
-    public ItemPlaceableObject _itemPlaceableObject { get; private set; }
+    public ItemPlaceableTerrain _itemPlaceableTerrain { get; set; }
+    public ItemPlaceableFloor _itemPlaceableFloor { get; set; }
+    public ItemPlaceableObject _itemPlaceableObject { get; set; }
 
 
     public Tile(ItemPlaceableTerrain itemPlaceableTerrain, ItemPlaceableFloor itemPlaceableFloor, ItemPlaceableObject itemPlaceableObject)

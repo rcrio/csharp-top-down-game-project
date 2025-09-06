@@ -6,4 +6,14 @@ public class ItemPlaceableFloor : ItemPlaceable
     {
         IsWalkable = true;
     }
+
+    public override bool Use(Tile tile)
+    {
+        if (tile._itemPlaceableFloor == null)
+        {
+            tile._itemPlaceableFloor = this;
+            return true;
+        }
+        return false;
+    }
 }

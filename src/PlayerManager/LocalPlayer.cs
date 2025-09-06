@@ -91,7 +91,15 @@ public class LocalPlayer : Player
         // Change second to a method in inventory to return current selected item
         if (_inputManager.LeftClick() && Inventory.GetSelectedItemStack() != null)
         {
-            Inventory.GetSelectedItemStack().Item.Use(World, this);
+            var selectedItem = Inventory.GetSelectedItemStack().Item;
+            if (selectedItem is ItemPlaceable placeable && _tileSelector.Tile != null)
+            {
+                // You can now use 'placeable' as an ItemPlaceable
+                if (selectedItem.Use(_tileSelector.Tile))
+                {
+                    Inventory.GetSelectedItemStack().Remove(1);
+                }
+            }
         }
 
         if (_inputManager.LeftClick() && Inventory.GetSelectedItemStack() == null)
