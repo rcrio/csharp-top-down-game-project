@@ -1,7 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
 
-// Could remove inheritance from Entity, we're overriding a lot of the methods
 public abstract class Player
 {
     public Vector2 Position { get; set; }
@@ -13,11 +12,17 @@ public abstract class Player
     public string SouthTexturePath { get; set; }
     public string WestTexturePath { get; set; }
     public string EastTexturePath { get; set; }
+
+    // Sprite size
     public int Width { get; private set; } = 16;
     public int Height { get; private set; } = 16;
+
+    // Collision box size (slightly smaller to prevent jank collisions)
+    private const int CollisionWidth = 12;
+    private const int CollisionHeight = 12;
+
     public Vector2 Center => new Vector2(Position.X + Width / 2, Position.Y + Height / 2);
 
-    // position, texture inherited
     public GameTime GameTime { get; private set; }
     public World World { get; protected set; }
     public Inventory Inventory { get; private set; }
@@ -25,9 +30,8 @@ public abstract class Player
     public float Speed { get; private set; }
     public float PickupRange { get; private set; }
     public Direction FacingDirection { get; set; } = Direction.South;
-    protected float _pickupCooldown = 0.09f; // seconds between pickups
+    protected float _pickupCooldown = 0.09f;
     protected float _timeSinceLastPickup = 0f;
-
 
     protected Player(
         Vector2 position,
@@ -53,68 +57,44 @@ public abstract class Player
         PickupRange = pickUpRange;
     }
 
-    
+    // Build a smaller collision box centered inside the sprite
+    private Rectangle GetCollisionBox(Vector2 pos)
+    {
+        int padX = (Width - CollisionWidth) / 2;
+        int padY = (Height - CollisionHeight) / 2;
 
-    /*
-    Why separate rectangles
-    testBoxX: rectangle at new X, old Y
-    Checks horizontal collisions without worrying about vertical position.
-    testBoxY: rectangle at new X, new Y
-    Checks vertical collisions with updated horizontal position.
-    By checking separately, your player can:
-    Move along X if Y is blocked.
-    Move along Y if X is blocked.
-    Slide diagonally smoothly if no walls block either axis.
-    */
+        return new Rectangle(
+            pos.X + padX,
+            pos.Y + padY,
+            CollisionWidth,
+            CollisionHeight
+        );
+    }
+
     protected void Move(Vector2 direction, float deltaTime)
     {
-        // If there is no movement input, exit early
         if (direction == Vector2.Zero) return;
 
-        // Normalize the direction vector so diagonal movement isn't faster
-        // Example: moving (1,1) diagonally should not move faster than (1,0) horizontally
         direction = Vector2.Normalize(direction);
-
-        // Calculate how far the player wants to move this frame
-        // deltaMove = movement vector scaled by speed and deltaTime
         Vector2 deltaMove = direction * Speed * deltaTime;
-
-        // Start with current position
         Vector2 newPos = Position;
 
-        // --- Horizontal movement ---
+        // Horizontal
         if (deltaMove.X != 0)
         {
-            // Create a rectangle representing the player's proposed horizontal position
-            // testBoxX covers the player's entire width and height at the new horizontal position
-            Rectangle testBoxX = new Rectangle(newPos.X + deltaMove.X, newPos.Y, Width, Height);
-
-            // Check if that rectangle is walkable in the world (no walls/obstacles)
+            Rectangle testBoxX = GetCollisionBox(new Vector2(newPos.X + deltaMove.X, newPos.Y));
             if (World.IsBoxWalkable(testBoxX))
-            {
-                // If walkable, update the horizontal position
                 newPos.X += deltaMove.X;
-            }
-            // else blocked, do not move horizontally
         }
 
-        // --- Vertical movement ---
+        // Vertical
         if (deltaMove.Y != 0)
         {
-            // Create a rectangle representing the player's proposed vertical position
-            // testBoxY covers the player's entire width and height at the new vertical position
-            Rectangle testBoxY = new Rectangle(newPos.X, newPos.Y + deltaMove.Y, Width, Height);
-
-            // Check if that rectangle is walkable in the world (no walls/obstacles)
+            Rectangle testBoxY = GetCollisionBox(new Vector2(newPos.X, newPos.Y + deltaMove.Y));
             if (World.IsBoxWalkable(testBoxY))
-            {
-                // If walkable, update the vertical position
                 newPos.Y += deltaMove.Y;
-            }
-            // else blocked, do not move vertically
         }
 
-        // Apply the final position after horizontal and vertical movement
         Position = newPos;
     }
 
@@ -122,27 +102,23 @@ public abstract class Player
     {
         if (NorthTexture.Id == 0)
         {
-            Raylib.DrawRectangle((int)Position.X, (int)Position.Y, 16, 16, new Color(200, 200, 230, 255));
+            Raylib.DrawRectangle((int)Position.X, (int)Position.Y, Width, Height, new Color(200, 200, 230, 255));
         }
         else
         {
             if (Direction.North == FacingDirection)
-            {
                 Raylib.DrawTexture(NorthTexture, (int)Position.X, (int)Position.Y, Color.White);
-            }
             else if (Direction.South == FacingDirection)
-            {
                 Raylib.DrawTexture(SouthTexture, (int)Position.X, (int)Position.Y, Color.White);
-            }
             else if (Direction.West == FacingDirection)
-            {
                 Raylib.DrawTexture(WestTexture, (int)Position.X, (int)Position.Y, Color.White);
-            }
             else if (Direction.East == FacingDirection)
-            {
                 Raylib.DrawTexture(EastTexture, (int)Position.X, (int)Position.Y, Color.White);
-            }
         }
+
+        // Debug: draw collision box in red
+        Rectangle colBox = GetCollisionBox(Position);
+        Raylib.DrawRectangleLines((int)colBox.X, (int)colBox.Y, (int)colBox.Width, (int)colBox.Height, Color.Red);
     }
 
     public Rectangle PickupBounds
@@ -150,7 +126,6 @@ public abstract class Player
         get
         {
             return new Rectangle(
-                // Get the co-ordinate the top-left as that's where rectangle starts drawing
                 Position.X - PickupRange,
                 Position.Y - PickupRange,
                 Width + PickupRange * 2,
@@ -158,5 +133,4 @@ public abstract class Player
             );
         }
     }
-
 }

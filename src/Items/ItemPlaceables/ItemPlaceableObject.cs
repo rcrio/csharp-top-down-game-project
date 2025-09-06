@@ -37,7 +37,7 @@ public class ItemPlaceableObject : ItemPlaceable
         int drawX = baseX + Constants.TILE_SIZE / 2 - width / 2;
         int drawY = baseY + (Constants.TILE_SIZE * 2) - height;
 
-        drawY -= Constants.TILE_SIZE; // shift 1 tile up
+        drawY -= Constants.TILE_SIZE - 2; // shift 1 tile up
 
         Rectangle topPart = new Rectangle(0, 0, width, topPixelsBehindPlayer);
         Raylib.DrawTextureRec(Texture, topPart, new Vector2(drawX, drawY), Color.White);
@@ -64,4 +64,13 @@ public class ItemPlaceableObject : ItemPlaceable
         Raylib.DrawTextureRec(Texture, bottomPart, new Vector2(drawX, drawY + topPixelsBehindPlayer), Color.White);
     }
 
+    public override bool Use(Tile tile)
+    {
+        if (tile._itemPlaceableObject == null)
+        {
+            tile._itemPlaceableObject = this;
+            return true;
+        }
+        return false;
+    }
 }

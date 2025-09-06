@@ -18,7 +18,7 @@ public class LocalPlayer : Player
         InputManager inputManager,
         FactoryLoader factoryLoader,
         TileSelector tileSelector,
-        float speed = 200f,
+        float speed = 100f,
         float pickUpRange = 32f
         )
         :

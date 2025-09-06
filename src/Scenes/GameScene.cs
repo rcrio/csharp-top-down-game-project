@@ -25,7 +25,7 @@ public class GameScene : Scene
         _mousePosition = new MousePosition(_cameraManager);
         _factoryLoader = new FactoryLoader();
 
-        _worldManager = new WorldManager(inputManager, gameTime, _mousePosition, _factoryLoader, 20); // Later on, add gameTime
+        _worldManager = new WorldManager(inputManager, gameTime, _mousePosition, _factoryLoader, 2000); // Later on, add gameTime
 
         _playerManager = new PlayerManager(inputManager, gameTime, _mousePosition ,_worldManager.World, _factoryLoader);
     }
