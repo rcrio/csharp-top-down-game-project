@@ -2,7 +2,7 @@
 ## Introduction
 This is an unfinished game project which will not be continued as my vision for the game has changed and I will be changing frameworks.
 This was meant to be a top-down game like Rimworld, where you can edit the terrain, but what's different is that you can control a main player and move around using WASD, rather than being a colony simulation like Rimworld.
-However, my vision has changed and I will be aiming for a voxel game like Minecraft, which means most of the code here cannot be translated nor refactored in a way that is more beneficial than making the whole new project.
+However, my vision has changed and I will be aiming for a voxel game like Minecraft, which means most of the code here cannot be translated nor refactored in a way that is more beneficial than making a whole new project.
 This has been a great experience for me to learn about core game development principles.
 
 ## Video showcasing the game
